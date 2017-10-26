@@ -1,6 +1,6 @@
-# ansible-playbook main.yml -i hosts --tags docker_apps
+# ansible-playbook production.yml -i hosts --tags docker_apps
 ---
-- hosts: zeus
+- hosts: production
   sudo: true
   roles:
     - docker
