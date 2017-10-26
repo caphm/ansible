@@ -1,34 +1,35 @@
 ---
-- name: install packages required by docker
+- name: Install prerequisite packages
   apt:
-    name: "apt-transport-https"
+    name: "{{ item.package }}"
     state: present
-    update_cache: yes
+  with_items: "{{ docker_prerequisite_packages_Ubuntu }}"
 
-- name: add docker repository key
+- name: Import Docker CE repository gpg key
   apt_key:
-    id: "{{ apt_key_sig }}"
     url: "{{ apt_key_url }}"
     state: present
+    id: "{{ apt_key_sig }}"
   register: add_repository_key
   ignore_errors: true
 
-- name: add docker repository and update apt cache
+- name: Add Docker CE repository and update apt cache
   apt_repository:
     repo: "{{ apt_repository }}"
     update_cache: yes
     state: present
 
-- name: install (or update) docker package
+- name: Install Docker CE
   apt:
-    name: "docker-engine"
+    name: docker-ce
     state: "{{ 'latest' if update_docker_package else 'present' }}"
     update_cache: yes
   notify:
     - systemd daemon-reload
     - restart docker service
 
-- name: start docker
+- name: Enable Docker CE service on startup
   service:
     name: docker
     state: started
+    enabled: yes
