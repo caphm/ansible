@@ -1,5 +1,5 @@
 ---
-# epsilon specific setup
+# zeus specific setup
 - name: configure base-os
   include: base-os.yml
   when: base-os

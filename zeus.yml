@@ -1,10 +1,10 @@
 # ansible-playbook main.yml -i hosts --tags docker_apps
 ---
-- hosts: epsilon
+- hosts: zeus
   sudo: true
   roles:
     - docker
     - docker-compose
     - mergerfs
     - snapraid
-    - epsilon
+    - zeus

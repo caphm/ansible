@@ -1,2 +1,5 @@
-[epsilon]
-epsilon
+[dev]
+zeus-dev
+
+[production]
+zeus
