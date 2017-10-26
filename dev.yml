@@ -3,7 +3,7 @@
 # the binary | this.file | -i targets | *optional --tags | -K asks for sudo pass
 
 - hosts: dev
-  sudo: true
+  become: true
 
   roles:
     - docker

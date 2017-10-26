@@ -1,7 +1,7 @@
 # ansible-playbook production.yml -i hosts --tags docker_apps
 ---
 - hosts: production
-  sudo: true
+  become: true
   roles:
     - docker
     - docker-compose
