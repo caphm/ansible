@@ -20,22 +20,6 @@
     owner: "{{dockeruser}}"
     group: "{{dockergroup}}"
 
-- name: ensure download folder is present
-  file:
-    dest: "{{ downloaddir }}"
-    state: directory
-    recurse: yes
-    owner: "{{ dockeruser }}"
-    group: "{{ dockergroup }}"
-
-- name: ensure torrent download dir is present
-  file:
-    dest: "{{ downloaddir }}/torrents"
-    state: directory
-    recurse: yes
-    owner: "{{ dockeruser }}"
-    group: "{{ dockergroup }}"
-
 - name: add dtail
   copy:
     src: "usr/bin/dtail"
@@ -60,5 +44,7 @@
     group: nogroup
     mode: 0775
 
-#- name: use docker-compose to bring up apps
-#  shell: docker-compose -f /opt/docker-compose.yml up -d
+- name: use docker-compose to bring up apps
+  shell: docker-compose -f /opt/docker-compose.yml up -d
+  when: start_containers
+  tags: start_containers

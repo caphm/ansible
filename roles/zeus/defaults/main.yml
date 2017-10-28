@@ -4,5 +4,6 @@ base-os: true
 
 # set to 'no' or 'false' to disable item
 backups: false
-file_sharing: false
-docker_apps: false
+file_sharing: true
+docker_apps: true
+start_containers: false

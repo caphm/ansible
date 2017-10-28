@@ -40,6 +40,12 @@
   tags:
     - packages
 
+- name: create user caphm
+  user:
+    name: caphm
+    state: present
+    groups: "sudo,docker"
+
 - name: create /mnt points
   file:
     dest: "/mnt/{{ item }}"
@@ -58,11 +64,20 @@
     state: mounted
   with_items: "{{ mounts }}"
 
+- name: create basic folder structure on storage array
+  file:
+    dest: "/mnt/{{ item }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0777
+  with_items: "{{ folders }}"
+
 - name: mount mergerfs array
   mount:
     name: /mnt/storage
     src: /mnt/disk*
-    opts: direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs
+    opts: defaults,allow_other,direct_io,use_ino,minfreespace=50G,fsname=mergerfs
     fstype: fuse.mergerfs
     # change to 'mounted' to auto mount
     state: mounted

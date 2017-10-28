@@ -1,4 +1,5 @@
 ---
+# Filesystem & mergerfs
 mntpoints:
   - parity1
   - disk1
@@ -7,33 +8,44 @@ mntpoints:
   - storage
 
 mounts:
-    - { name: /mnt/parity1, src: /dev/disk/by-label/8.0T-Seagate-P1, fs: ext4}
-    - { name: /mnt/disk1, src: /dev/disk/by-label/8.0T-Seagate-D1, fs: ntfs}
-    - { name: /mnt/disk2, src: /dev/disk/by-label/3.0T-WD-D2, fs: ext4}
-    - { name: /mnt/disk3, src: /dev/disk/by-label/3.0T-WD-D3, fs: ext4}
+  - { name: /mnt/parity1, src: /dev/disk/by-label/8.0T-Seagate-P1, fs: ext4}
+  - { name: /mnt/disk1, src: /dev/disk/by-label/8.0T-Seagate-D1, fs: ntfs}
+  - { name: /mnt/disk2, src: /dev/disk/by-label/3.0T-WD-D2, fs: ext4}
+  - { name: /mnt/disk3, src: /dev/disk/by-label/3.0T-WD-D3, fs: ext4}
 
-dockeruser: dockeruser
+folders:
+  # on all drives
+  - disk1/media/2d-movies
+  - disk1/media/3d-movies
+  - disk1/media/tv-shows
+  - disk1/software
+  - disk2/media/2d-movies
+  - disk2/media/3d-movies
+  - disk2/media/tv-shows
+  - disk2/software
+  - disk3/media/2d-movies
+  - disk3/media/3d-movies
+  - disk3/media/tv-shows
+  - disk3/software
+  # only on disk2
+  - disk2/backups
+  - disk2/media/videos
+  - disk2/media/music
+  # only on disk3
+  - disk3/downloads
+  - disk3/media/audio-books
+  - disk3/media/photos
+
+# Docker
+dockeruser: docker
 dockergroup: dockergroup
 
-appdata: /opt/appdata
-downloaddir: /opt/downloads
-dockerlist: /opt/docker.list
+appdata: /home/docker/appdata
 
+# Backups
 snapraidconf: /etc/snapraid.conf
-rsnapshotconf: /etc/rsnapshot.conf
 
 snap_run_path: /opt/snapraid-runner/snapraid-runner
 snap_run_conf: "{{ snap_run_path }}.conf"
 snap_run_bin: "{{ snap_run_path }}.py"
 snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"
-
-mount_options:
-  "/home": "defaults"
-  "/mnt/disk1": "defaults"
-  "/mnt/storage": "defaults,allow_other,minfreespace=50G,fsname=mergerfs"
-
-snapshot_command: "rsnapshot -c /etc/rsnapshot.conf"
-snapshot_hourly: "{{ snapshot_command }} sync && {{ snapshot_command }} hourly"
-snapshot_daily: "{{ snapshot_command }} daily"
-snapshot_weekly: "{{ snapshot_command }} weekly"
-snapshot_monthly: "{{ snapshot_command }} monthly"
