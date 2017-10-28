@@ -6,7 +6,7 @@
   changed_when: pkg_check.rc == 1
 
 - include: "{{ build-src.yml if install_from_source else download-latest.yml }}"
-  - when: pkg_check.rc == 1
+  when: pkg_check.rc == 1
 
 # an example of how to mount an array of disks using mergerfs
 # don't forget to install fuse
