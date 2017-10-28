@@ -7,4 +7,4 @@
     - docker-compose
     - mergerfs
     - snapraid
-    - zeus
+    #- zeus
