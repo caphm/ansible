@@ -3,6 +3,6 @@
 base-os: true
 
 # set to 'no' or 'false' to disable item
-backups: true
-file_sharing: true
-docker_apps: true
+backups: false
+file_sharing: false
+docker_apps: false
