@@ -9,7 +9,7 @@
 
 - name: download mergerfs release package
   get_url:
-    url: "{{ release_url }}"
+    url: "{{ release_url.stdout }}"
     dest: /tmp/mergerfs-build/artifact/mergerfs-latest.deb
 
 - name: Install downloaded .deb file

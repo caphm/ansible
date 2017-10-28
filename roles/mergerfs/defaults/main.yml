@@ -6,4 +6,5 @@ install_from_source: false
 mergerfs_version: 2.8.0
 
 # mergerfs releases URL (target)
-release_url: https://github.com/trapexit/mergerfs/releases/download/{{ mergerfs_version }}/mergerfs_{{ mergerfs_version }}.ubuntu-{{ ansible_distribution_release }}_amd64.deb
+release_url:
+  stdout: https://github.com/trapexit/mergerfs/releases/download/{{ mergerfs_version }}/mergerfs_{{ mergerfs_version }}.ubuntu-{{ ansible_distribution_release }}_amd64.deb
