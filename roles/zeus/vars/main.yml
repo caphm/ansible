@@ -8,7 +8,7 @@ mntpoints:
 
 mounts:
     - { name: /mnt/parity1, src: /dev/disk/by-label/8.0T-Seagate-P1, fs: ext4}
-    - { name: /mnt/disk1, src: /dev/disk/by-label/Data, fs: ntfs}
+    - { name: /mnt/disk1, src: /dev/disk/by-label/8.0T-Seagate-D1, fs: ntfs}
     - { name: /mnt/disk2, src: /dev/disk/by-label/3.0T-WD-D2, fs: ext4}
     - { name: /mnt/disk3, src: /dev/disk/by-label/3.0T-WD-D3, fs: ext4}
 
