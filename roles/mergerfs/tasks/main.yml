@@ -7,7 +7,15 @@
 
 - name: build mergerfs from source in a container
   include: build-src.yml
-  when: pkg_check.rc == 1
+  when:
+    - pkg_check.rc == 1
+    - install_from_source == yes
+
+- name: download and install latest mergerfs release
+  include: download-latest.yml
+  when:
+    - pkg_check.rc == 1
+    - install_from_source == no
 
 # an example of how to mount an array of disks using mergerfs
 # don't forget to install fuse

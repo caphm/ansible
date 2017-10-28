@@ -1,0 +1,20 @@
+---
+
+- name: determine latest mergerfs release
+  command: curl -s https://api.github.com/repos/trapexit/mergerfs/releases | grep browser_download_url | grep '{{ ansible_distribution_release }}_amd64[.]deb' | head -n 1 | cut -d '"' -f 4
+  register: release_url
+
+- name: create download directory
+  file: dest=/tmp/mergerfs-build/artifact/ state=directory
+
+- name: download mergerfs release package
+  get_url:
+    url: {{ release_url }}
+    dest: /tmp/mergerfs-build/artifact/mergerfs-latest.deb
+
+- name: Install downloaded .deb file
+  apt: /tmp/mergerfs-build/artifact/mergerfs-latest.deb
+  become: true
+
+- name: Delete build directory
+  file: dest=/tmp/mergerfs-build/ state=absent
