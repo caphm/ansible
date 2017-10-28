@@ -11,11 +11,11 @@
 
 - name: Build MergerFS .deb
   command: /tmp/mergerfs-build/build-container
-  sudo: true
+  become: true
 
 - name: Install built .deb file
   apt: deb=/tmp/mergerfs-build/artifact/mergerfs-from-source.deb
-  sudo: true
+  become: true
 
 - name: Delete build directory
   file: dest=/tmp/mergerfs-build/ state=absent
