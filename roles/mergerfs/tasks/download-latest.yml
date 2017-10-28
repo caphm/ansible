@@ -13,7 +13,7 @@
     dest: /tmp/mergerfs-build/artifact/mergerfs-latest.deb
 
 - name: Install downloaded .deb file
-  apt: /tmp/mergerfs-build/artifact/mergerfs-latest.deb
+  apt: deb=/tmp/mergerfs-build/artifact/mergerfs-latest.deb
   become: true
 
 - name: Delete build directory
