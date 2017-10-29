@@ -1,0 +1,21 @@
+---
+- name: create download directory
+  file: dest=/tmp/mergerfs-tools/ state=directory
+
+- name: download from github
+  git:
+    repo: 'https://github.com/trapexit/mergerfs-tools.git'
+    dest: /tmp/mergerfs-tools
+
+- name: copy scripts to /usr/sbin
+  copy:
+    src: "{{ item }}"
+    dest: /usr/bin/
+    owner: root
+    group: root
+    mode: 0755
+  with_fileglob:
+    - /tmp/mergerfs-tools/src/*
+
+- name: cleanup download directory
+  file: dest=/tmp/mergerfs-tools/ state=absent

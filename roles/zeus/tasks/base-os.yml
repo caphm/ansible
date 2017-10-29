@@ -44,15 +44,15 @@
   user:
     name: caphm
     state: present
-    groups: "sudo,docker"
+    groups: "sudo,docker,dockergroup"
 
 - name: create /mnt points
   file:
     dest: "/mnt/{{ item }}"
     state: directory
-    owner: nobody
-    group: nogroup
-    mode: 0777
+    owner: caphm
+    group: dockergroup
+    mode: 0775
   with_items: "{{ mntpoints }}"
 
 - name: mount disks
@@ -68,9 +68,9 @@
   file:
     dest: "/mnt/{{ item }}"
     state: directory
-    owner: nobody
-    group: nogroup
-    mode: 0777
+    owner: caphm
+    group: dockergroup
+    mode: 0775
   with_items: "{{ folders }}"
 
 - name: mount mergerfs array

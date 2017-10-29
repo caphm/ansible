@@ -40,8 +40,8 @@
   copy:
     src: "opt/docker-compose.yml"
     dest: "/opt/docker-compose.yml"
-    owner: nobody
-    group: nogroup
+    owner: root
+    group: root
     mode: 0775
 
 - name: use docker-compose to bring up apps

@@ -5,16 +5,12 @@
   failed_when: pkg_check.rc > 1
   changed_when: pkg_check.rc == 1
 
-- include: "{{ './build-src.yml' if install_from_source else './download-latest.yml' }}"
+- include_tasks: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
   when: pkg_check.rc == 1
 
-# an example of how to mount an array of disks using mergerfs
-# don't forget to install fuse
-# - name: mount mergerfs array
-#   mount:
-#     name: /mnt/storage
-#     src: /mnt/disk*
-#     opts: defaults,allow_other,minfreespace=50G,fsname=mergerfs
-#     fstype: fuse.mergerfs
-#     # change to 'mounted' to auto mount
-#     state: present
+- stat: path=/usr/bin/mergerfs.balance
+  register: mfst_installed
+  changed_when: not mfst_installed.stat.exists
+
+- include_tasks: install-mergerfs-tools.yml
+  when: not mfst_installed.stat.exists

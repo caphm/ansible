@@ -6,4 +6,4 @@ base-os: true
 backups: false
 file_sharing: true
 docker_apps: true
-start_containers: false
+start_containers: true

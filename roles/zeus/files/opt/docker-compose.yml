@@ -10,8 +10,36 @@ services:
     network_mode: host
     restart: always
     environment:
-      - PLEX_CLAIM="claim-mR3rarVobeNjsf6ccs4q"
+      - PLEX_CLAIM
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ="Europe/Berlin"
       - ALLOWED_NETWORKS="192.168.1.0/24"
+
+  filebot:
+    image: rednoah/filebot:node
+    container_name: filebot
+    volumes:
+      - /home/docker/appdata/filebot:/data
+      - /mnt/storage/downloads:/download
+    network_mode: bridge
+    ports:
+      - "5452:5452"
+    restart: always
+
+  jdownloader:
+    image: aptalca/docker-jdownloader2
+    container_name: jdownloader
+    volumes:
+      - /home/docker/appdata/jdownloader:/config
+      - /mnt/storage/downloads:/download
+    network_mode: bridge
+    ports:
+      - "5453:8080"
+    restart: always
+    environment:
+      - WIDTH="1280"
+      - HEIGHT="720"
+      - TZ="Europe/Berlin"
+      - USER_ID=${PUID}
+      - GROUP_ID=${PGID}
