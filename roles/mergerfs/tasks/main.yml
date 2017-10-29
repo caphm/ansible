@@ -5,12 +5,12 @@
   failed_when: pkg_check.rc > 1
   changed_when: pkg_check.rc == 1
 
-- include_tasks: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
+- include: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
   when: pkg_check.rc == 1
 
 - stat: path=/usr/bin/mergerfs.balance
   register: mfst_installed
   changed_when: not mfst_installed.stat.exists
 
-- include_tasks: install-mergerfs-tools.yml
+- include: install-mergerfs-tools.yml
   when: not mfst_installed.stat.exists
