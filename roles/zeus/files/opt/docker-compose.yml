@@ -38,8 +38,8 @@ services:
       - "5453:8080"
     restart: always
     environment:
-      - WIDTH="1280"
-      - HEIGHT="720"
-      - TZ="Europe/Berlin"
+      - WIDTH=1280
+      - HEIGHT=720
+      - TZ=Europe/Berlin
       - USER_ID=${PUID}
       - GROUP_ID=${PGID}
