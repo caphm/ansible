@@ -3,13 +3,13 @@
   group:
     name: "{{dockergroup}}"
     state: present
-    gid: 1050
+    gid: "{{dockergid}}"
 
 - name: create user for docker appdata
   user:
     name: "{{dockeruser}}"
     shell: /sbin/nologin
-    uid: 1050
+    uid: "{{dockeruid}}"
     group: "{{dockergroup}}"
 
 - name: create docker appdata base directory
@@ -28,16 +28,8 @@
     group: root
     mode: 0777
 
-- name: set docker PUID and PGID environment variables for compose
-  copy:
-    src: "etc/environment"
-    dest: "/etc/environment"
-    owner: root
-    group: root
-    mode: 0775
-
 - name: copy docker-compose.yml into position
-  copy:
+  template:
     src: "opt/docker-compose.yml"
     dest: "/opt/docker-compose.yml"
     owner: root

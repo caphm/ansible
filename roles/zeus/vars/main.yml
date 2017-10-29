@@ -38,7 +38,9 @@ folders:
 
 # Docker
 dockeruser: docker
+dockeruid: 1050
 dockergroup: dockergroup
+dockergid: 1050
 
 appdata: /home/docker/appdata
 

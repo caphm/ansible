@@ -11,8 +11,8 @@ services:
     restart: always
     environment:
       - PLEX_CLAIM
-      - PUID=${PUID}
-      - PGID=${PGID}
+      - PUID={{dockeruid}}
+      - PGID={{dockergid}}
       - TZ="Europe/Berlin"
       - ALLOWED_NETWORKS="192.168.1.0/24"
 
@@ -41,5 +41,5 @@ services:
       - WIDTH=1280
       - HEIGHT=720
       - TZ=Europe/Berlin
-      - USER_ID=${PUID}
-      - GROUP_ID=${PGID}
+      - USER_ID={{dockeruid}}
+      - GROUP_ID={{dockergid}}
