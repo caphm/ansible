@@ -41,5 +41,3 @@ services:
       - WIDTH="1280"
       - HEIGHT="720"
       - TZ="Europe/Berlin"
-      - USER_ID=${PUID}
-      - GROUP_ID=${PGID}
