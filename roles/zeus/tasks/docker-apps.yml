@@ -20,6 +20,14 @@
     owner: "{{dockeruser}}"
     group: "{{dockergroup}}"
 
+- name: create tmp folder for plex transcoder
+  file:
+    dest: /tmp/plex-transcode
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0777
+
 - name: add dtail
   copy:
     src: "usr/bin/dtail"

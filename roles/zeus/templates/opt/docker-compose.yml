@@ -1,11 +1,14 @@
 ---
-version: '2'
+version: '3'
 services:
   plex:
     image: plexinc/pms-docker:latest
     container_name: plex
+    hostname: plex
     volumes:
       - /home/docker/appdata/plex:/config
+      - /tmp/plex-transcode:/transcode
+      - /mnt/storage/media:/library
       - /mnt/storage:/data
     network_mode: host
     restart: always
@@ -20,6 +23,7 @@ services:
   filebot:
     image: rednoah/filebot:node
     container_name: filebot
+    hostname: filebot
     volumes:
       - /home/docker/appdata/filebot:/data
       - /mnt/storage/downloads:/download
@@ -31,6 +35,7 @@ services:
   jdownloader:
     image: aptalca/docker-jdownloader2
     container_name: jdownloader
+    hostname: jdownloader
     volumes:
       - /home/docker/appdata/jdownloader:/config
       - /mnt/storage/downloads:/download
