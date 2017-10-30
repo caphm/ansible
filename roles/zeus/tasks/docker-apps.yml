@@ -18,7 +18,7 @@
     state: directory
     #recurse: yes
     owner: "{{dockeruser}}"
-    groups: "{{dockergroup}}",storage
+    groups: "{{dockergroup}},storage"
 
 - name: create tmp folder for plex transcoder
   file:
