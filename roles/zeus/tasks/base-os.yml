@@ -44,10 +44,12 @@
   group:
     name: storage
     state: present
+    gid: {{storagegid}}
 
 - name: create user caphm
   user:
     name: caphm
+    uid: "{{caphmuid}}"
     state: present
     groups: sudo,docker,storage
 
@@ -65,6 +67,7 @@
     name: "{{ item.name }}"
     src: "{{ item.src }}"
     fstype: "{{ item.fs }}"
+    opts: "{{item.opts}}"
     # change to 'mounted' to auto mount
     state: mounted
   with_items: "{{ mounts }}"
