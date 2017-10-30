@@ -10,7 +10,7 @@
     name: "{{dockeruser}}"
     shell: /sbin/nologin
     uid: "{{dockeruid}}"
-    group: "{{dockergroup}}"
+    groups: "{{dockergroup}},storage"
 
 - name: create docker appdata base directory
   file:
@@ -18,7 +18,7 @@
     state: directory
     #recurse: yes
     owner: "{{dockeruser}}"
-    groups: "{{dockergroup}},storage"
+    group: "{{dockergroup}}"
 
 - name: create tmp folder for plex transcoder
   file:
