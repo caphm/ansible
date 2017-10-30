@@ -3,7 +3,8 @@
   lineinfile:
     dest: /etc/default/grub
     regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on video=efifb:off"'
+    #line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on video=efifb:off"'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="rd.driver.pre=vfio-pci quiet splash intel_iommu=on vfio_iommu_type1.allow_unsafe_interrupts=1 iommu=pt"'
   become: true
   notify: update-grub
 
@@ -48,4 +49,6 @@
       vfio_pci
       vfio_virqfd
       vhost-net
+      kvm
+      kvm_intel
   notify: update-initramfs
