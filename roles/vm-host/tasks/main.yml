@@ -1,0 +1,23 @@
+---
+- name: prepare system and grub configuration
+  include: prepare-system.yml
+  when: not system_prepared
+  tags: prepare_system
+
+- name: install required packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - qemu-kvm
+    - seabios
+    - qemu-utils
+    - hugepages
+    - bridge-utils
+    - ovmf
+
+- name: download virtio-win drivers
+  get_url:
+    url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+    dest: /opt/virtio-win/virtio-win.iso
+    owner: root
+    group: root
+    mode: 0775
