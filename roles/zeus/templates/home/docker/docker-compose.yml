@@ -27,6 +27,7 @@ services:
     volumes:
       - /home/docker/appdata/filebot:/data
       - /mnt/storage/downloads:/download
+      - /mnt/storage/media:/out
     network_mode: bridge
     ports:
       - "5452:5452"
