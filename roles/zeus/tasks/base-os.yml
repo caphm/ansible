@@ -44,7 +44,7 @@
   group:
     name: storage
     state: present
-    gid: {{storagegid}}
+    gid: "{{storagegid}}"
 
 - name: create user caphm
   user:
