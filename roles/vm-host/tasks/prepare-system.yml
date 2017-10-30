@@ -10,7 +10,7 @@
 - name: blacklist default IGP drivers
   become: true
   blockinfile:
-    path: /etc/modprobe.d/blacklist.conf
+    dest: /etc/modprobe.d/blacklist.conf
     backup: yes
     block: |
       # blacklist vga drivers for IGP to allow passthrough to VM
@@ -21,7 +21,7 @@
 - name: add placeholder vfio drivers
   become: true
   blockinfile:
-    path: /etc/modprobe.d/vfio.conf
+    dest: /etc/modprobe.d/vfio.conf
     backup: yes
     create: yes
     block: |
@@ -30,7 +30,7 @@
 - name: add ignore_msrs option to kvm.conf
   become: true
   blockinfile:
-    path: /etc/modprobe.d/kvm.conf
+    dest: /etc/modprobe.d/kvm.conf
     backup: yes
     create: yes
     block: |
@@ -39,7 +39,7 @@
 - name: update list of modules in initramfs
   become: true
   blockinfile:
-    path: /etc/initramfs-tools/modules
+    dest: /etc/initramfs-tools/modules
     backup: yes
     create: yes
     block: |
