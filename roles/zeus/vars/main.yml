@@ -13,10 +13,10 @@ mntpoints:
   - storage
 
 mounts:
-  - { name: /mnt/parity1, src: /dev/disk/by-label/8.0T-Seagate-P1, fs: ext4, opts: "defaults,nobootwait,errors=remount-ro"}
-  - { name: /mnt/disk1, src: /dev/disk/by-label/8.0T-Seagate-D1, fs: ntfs, opts: "defaults,nobootwait,errors=remount-ro,uid={{caphmuid}},gid={{storagegid}},umask=0775"}
-  - { name: /mnt/disk2, src: /dev/disk/by-label/3.0T-WD-D2, fs: ext4, opts: "defaults,nobootwait,errors=remount-ro"}
-  - { name: /mnt/disk3, src: /dev/disk/by-label/3.0T-WD-D3, fs: ext4, opts: "defaults,nobootwait,errors=remount-ro"}
+  - { name: /mnt/parity1, src: /dev/disk/by-label/8.0T-Seagate-P1, fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: /mnt/disk1, src: /dev/disk/by-label/8.0T-Seagate-D1, fs: ntfs, opts: "defaults,nofail,errors=remount-ro,uid={{caphmuid}},gid={{storagegid}},umask=0775"}
+  - { name: /mnt/disk2, src: /dev/disk/by-label/3.0T-WD-D2, fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: /mnt/disk3, src: /dev/disk/by-label/3.0T-WD-D3, fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
 
 folders:
   # on all drives
