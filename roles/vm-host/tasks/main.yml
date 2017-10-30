@@ -14,10 +14,18 @@
     - bridge-utils
     - ovmf
 
+- name: create folder for virtio-win drivers
+  file:
+    dest: /opt/virtio-win/
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+
 - name: download virtio-win drivers
   get_url:
     url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
-    dest: /opt/virtio-win/virtio-win.iso
+    dest: /opt/virtio-win/
     owner: root
     group: root
     mode: 0775
