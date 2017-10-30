@@ -24,8 +24,8 @@
   file:
     dest: /tmp/plex-transcode
     state: directory
-    owner: {{dockeruser}}
-    group: {{dockergroup}}
+    owner: "{{dockeruser}}"
+    group: "{{dockergroup}}"
     mode: 0777
 
 - name: add dtail
