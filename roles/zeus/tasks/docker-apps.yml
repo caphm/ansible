@@ -38,13 +38,13 @@
 
 - name: copy docker-compose.yml into position
   template:
-    src: "opt/docker-compose.yml"
-    dest: "/opt/docker-compose.yml"
-    owner: root
-    group: root
-    mode: 0775
+    src: "home/docker/docker-compose.yml"
+    dest: "/home/docker/docker-compose.yml"
+    owner: "{{dockeruser}}"
+    group: "{{dockergroup}}"
+    mode: 0755
 
 - name: use docker-compose to bring up apps
-  shell: docker-compose -f /opt/docker-compose.yml up -d
+  shell: docker-compose -f /home/docker/docker-compose.yml up -d
   when: start_containers
   tags: start_containers
