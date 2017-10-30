@@ -1,9 +1,4 @@
 ---
-- name: prepare system and grub configuration
-  include: prepare-system.yml
-  when: not system_prepared
-  tags: prepare_system
-
 - name: install required packages
   apt: pkg={{ item }} state=present
   with_items:
@@ -13,6 +8,15 @@
     - hugepages
     - bridge-utils
     - ovmf
+
+- name: prepare system configuration for IGP passthrough
+  include: prepare-system.yml
+  when: not system_prepared
+  tags: prepare_system
+
+- name: enable hugepages
+  include: enable-hugepages.yml
+  when: enable_hugepages
 
 - name: create folder for virtio-win drivers
   file:

@@ -1,0 +1,7 @@
+---
+- name: enable hugepages in qemu
+  lineinfile:
+    dest: /etc/default/qemu-kvm
+    regexp: "^KVM_HUGEPAGES="
+    line: "KVM_HUGEPAGES=1"
+  become: true
