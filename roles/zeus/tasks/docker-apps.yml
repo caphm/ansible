@@ -18,14 +18,14 @@
     state: directory
     #recurse: yes
     owner: "{{dockeruser}}"
-    group: "{{dockergroup}}"
+    groups: "{{dockergroup}}",storage
 
 - name: create tmp folder for plex transcoder
   file:
     dest: /tmp/plex-transcode
     state: directory
-    owner: nobody
-    group: nogroup
+    owner: {{dockeruser}}
+    group: {{dockergroup}}
     mode: 0777
 
 - name: add dtail

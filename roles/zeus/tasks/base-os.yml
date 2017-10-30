@@ -40,18 +40,23 @@
   tags:
     - packages
 
+- name: create group for storage
+  group:
+    name: storage
+    state: present
+
 - name: create user caphm
   user:
     name: caphm
     state: present
-    groups: "sudo,docker,dockergroup"
+    groups: sudo,docker,storage
 
 - name: create /mnt points
   file:
     dest: "/mnt/{{ item }}"
     state: directory
-    owner: caphm
-    group: dockergroup
+    owner: root
+    group: root
     mode: 0775
   with_items: "{{ mntpoints }}"
 
@@ -69,7 +74,7 @@
     dest: "/mnt/{{ item }}"
     state: directory
     owner: caphm
-    group: dockergroup
+    group: storage
     mode: 0775
   with_items: "{{ folders }}"
 
