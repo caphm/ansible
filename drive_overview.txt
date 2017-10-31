@@ -1,5 +1,5 @@
 Mountpoint      Device          ID                                              Label           FS      MKFS
 /mnt/parity1    /dev/sdb        ata-ST8000AS0002-1NA17Z_Z8414XMV                8.0T-Seagate-P1 ext4    mkfs.ext4 -m 0 -T largefile4 -L 8.0T-Seagate-P1 /dev/sdb
-/mnt/disk1      /dev/sdc        ata-ST8000AS0002-1NA17Z_Z840BRNH                8.0T-Seagate-D1 ntfs    
+/mnt/disk1      /dev/sdc        ata-ST8000AS0002-1NA17Z_Z840BRNH                8.0T-Seagate-D1 ext4    mkfs.ext4 -m 0 -T largefile -L 8.0T-Seagate-D1 /dev/sdc
 /mnt/disk2      /dev/sdd        ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0D475RE        3.0T-WD-D2      ext4    mkfs.ext4 -m 0 -T largefile -L 3.0T-WD-D2 /dev/sdd
 /mnt/disk3      /dev/sde        ata-WDC_WD30EFRX-68EUZN0_WD-WMC4N0EA5FM2        3.0T-WD-D3      ext4    mkfs.ext4 -m 0 -T largefile -L 3.0T-WD-D3 /dev/sde

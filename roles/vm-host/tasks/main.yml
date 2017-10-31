@@ -33,3 +33,4 @@
     owner: root
     group: root
     mode: 0775
+  tags: virtiodrivers
