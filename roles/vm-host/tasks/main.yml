@@ -7,7 +7,6 @@
     - qemu-utils
     - hugepages
     - bridge-utils
-    - ovmf
 
 - name: prepare system configuration for IGP passthrough
   include: prepare-system.yml
