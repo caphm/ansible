@@ -33,3 +33,11 @@
     group: root
     mode: 0775
   tags: virtiodrivers
+
+- name: bring startup script in place
+  copy:
+    src: home/caphm/start-win10vm.sh
+    dest: /home/caphm/start-win10vm.sh
+    owner: caphm
+    group: caphm
+    mode: 0755
