@@ -18,7 +18,7 @@ qemu-system-x86_64\
   -boot order=dc\
   -drive id=disk0,if=virtio,cache=none,format=qcow2,file=/home/caphm/vdisks/win10.qcow2 \
   -drive file=/mnt/storage/ISOs/win10.iso,media=cdrom \
-  -drive file=/opt/virtio-win/virtio-win-0.1.141.iso,media=cdrom \
+  -drive file=/opt/virtio-win/virtio-win.iso,media=cdrom \
   -usb -usbdevice host:1267:0103 -usbdevice host:046d:c077 \
   -device vfio-pci,host=00:02.0,addr=02.0,bus=pci.0,x-vga=on\
   -chardev stdio,id=seabios\
