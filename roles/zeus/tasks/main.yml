@@ -2,7 +2,7 @@
 # zeus specific setup
 - name: configure base-os
   include: base-os.yml
-  when: base-os
+  when: baseos
   tags: baseos
 
 - name: configure network file sharing
