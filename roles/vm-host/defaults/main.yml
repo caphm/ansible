@@ -1,4 +1,3 @@
 ---
 system_prepared: false
 enable_hugepages: false
-downloadvirtio: false

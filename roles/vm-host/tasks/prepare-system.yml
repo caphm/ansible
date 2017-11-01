@@ -3,8 +3,7 @@
   lineinfile:
     dest: /etc/default/grub
     regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
-    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet nomodeset"'
-    #line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on video=efifb:off"'
+    line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on video=efifb:off"'
     #line: 'GRUB_CMDLINE_LINUX_DEFAULT="rd.driver.pre=vfio-pci quiet splash intel_iommu=on iommu=pt video=efifb:off"'
   become: true
   notify: update-grub
@@ -14,7 +13,6 @@
   blockinfile:
     dest: /etc/modprobe.d/blacklist.conf
     backup: yes
-    state: absent
     block: |
       # blacklist vga drivers for IGP to allow passthrough to VM
       blacklist snd_hda_intel
@@ -27,7 +25,6 @@
     dest: /etc/modprobe.d/vfio.conf
     backup: yes
     create: yes
-    state: absent
     block: |
       options vfio-pci ids=8086:0412,8086:0c0c
 
@@ -37,7 +34,6 @@
     dest: /etc/modprobe.d/kvm.conf
     backup: yes
     create: yes
-    state: absent
     block: |
       options kvm ignore_msrs=1
 
@@ -47,7 +43,6 @@
     dest: /etc/initramfs-tools/modules
     backup: yes
     create: yes
-    state: absent
     block: |
       vfio
       vfio_iommu_type1

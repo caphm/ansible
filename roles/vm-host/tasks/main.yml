@@ -1,6 +1,6 @@
 ---
 - name: install required packages
-  apt: pkg={{ item }} state=absent
+  apt: pkg={{ item }} state=present
   with_items:
     - qemu-kvm
     - seabios
@@ -21,7 +21,7 @@
 - name: create folder for virtio-win drivers
   file:
     dest: /opt/virtio-win/
-    state: absent
+    state: directory
     owner: root
     group: root
     mode: 0775
@@ -33,5 +33,4 @@
     owner: root
     group: root
     mode: 0775
-  when: downloadvirtio
   tags: virtiodrivers
