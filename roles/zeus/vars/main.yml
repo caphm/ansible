@@ -59,27 +59,28 @@ snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"
 # Virtual machines
 vms:
   - {
-    name: htpc
-    machine: "pc,accel-kvm"
-    mem: 4
-    cpu: {
-      mode: host
-      kvm: off
-      smp: 2
-      sockets: 1
-      cores: 2
-      threads: 1
-    }
+    name: htpc,
+    machine: "pc,accel-kvm",
+    mem: 4,
+    cpu:
+      {
+        mode: host,
+        kvm: off,
+        smp: 2,
+        sockets: 1,
+        cores: 2,
+        threads: 1
+      },
     drives:
       - {
-        id: disk0
-        if: virtio
-        cache: none
-        format: qcow2
-        path: /home/caphm/vdisks/htpc.qcow2
-      }
+          id: disk0,
+          if: virtio,
+          cache: none,
+          format: qcow2,
+          path: /home/caphm/vdisks/htpc.qcow2
+        }
       - {
-        file: /opt/virtio-win/virtio-win.iso
-        media: cdrom
-      }
+          file: /opt/virtio-win/virtio-win.iso,
+          media: cdrom
+        }
   }
