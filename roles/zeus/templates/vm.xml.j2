@@ -1,13 +1,18 @@
-<domain type="kvm">
+<domain type="kvm" xmlns:qemu="http://libvirt.org/schemas/domain/qemu/1.0">
   <name>htpc</name>
   <uuid>a534e1c1-9a9a-4b8c-be6a-b4a51e19298e</uuid>
-  <memory>4194304</memory>
-  <currentMemory>4194304</currentMemory>
+
+  <memory unit="GiB">4</memory>
+  <currentMemory unit="GiB">4</currentMemory>
+
   <vcpu>2</vcpu>
+
   <os>
     <type arch="x86_64">hvm</type>
     <boot dev="hd"/>
+    <bootmenu enable="no"/>
   </os>
+
   <features>
     <acpi/>
     <apic/>
@@ -17,22 +22,28 @@
       <spinlocks state="on" retries="8191"/>
     </hyperv>
   </features>
-  <cpu mode="host-model"/>
+
+  <cpu mode="host-passthrough"/>
+
   <clock offset="localtime">
     <timer name="rtc" tickpolicy="catchup"/>
     <timer name="pit" tickpolicy="delay"/>
     <timer name="hpet" present="no"/>
     <timer name="hypervclock" present="yes"/>
   </clock>
+
   <on_poweroff>destroy</on_poweroff>
   <on_reboot>restart</on_reboot>
-  <on_crash>reboot</on_crash>
+  <on_crash>restart</on_crash>
+
   <pm>
     <suspend-to-mem enabled="no"/>
     <suspend-to-disk enabled="no"/>
   </pm>
+
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
+
     <disk type="file" device="cdrom">
       <driver name="qemu" type="raw"/>
       <source file="/opt/virtio-win/virtio-win.iso"/>
@@ -41,10 +52,12 @@
       <address type="drive" controller="0" bus="0" target="0" unit="1"/>
     </disk>
     <disk type="file" device="disk">
-      <driver name="qemu" type="qcow2" cache="none" io="native" iothread="1"/>
+      <driver name="qemu" type="qcow2" cache="none" io="native"/>
       <source file="/home/caphm/vdisks/htpc.qcow2"/>
-      <target dev="vda" bus="virtio"/>
+      <target dev="sda" bus="virtio"/>
+      <boot order="1"/>
     </disk>
+
     <controller type="usb" index="0" model="ich9-ehci1"/>
     <controller type="usb" index="0" model="ich9-uhci1">
       <master startport="0"/>
@@ -55,18 +68,28 @@
     <controller type="usb" index="0" model="ich9-uhci3">
       <master startport="4"/>
     </controller>
+
     <interface type="bridge">
       <source bridge="br0"/>
       <mac address="52:54:00:a3:92:8f"/>
       <model type="virtio"/>
     </interface>
-    <input type="tablet" bus="usb"/>
+
     <console type="pty"/>
+
     <hostdev mode="subsystem" type="pci" managed="yes">
-      <source>
-        <address domain="0" bus="0" slot="2" function="0"/>
-      </source>
       <driver name="vfio"/>
+      <source>
+        <address domain="0x0000" bus="0x00" slot="0x02" function="0x0"/>
+      </source>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x02" function="0x0"/>
+    </hostdev>
+    <hostdev mode="subsystem" type="pci" managed="yes">
+      <driver name="vfio"/>
+      <source>
+        <address domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
+      </source>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
     </hostdev>
     <hostdev mode="subsystem" type="usb" managed="yes">
       <source>
@@ -80,6 +103,7 @@
         <product id="0xc077"/>
       </source>
     </hostdev>
+
     <memballoon model="none"/>
   </devices>
 </domain>
