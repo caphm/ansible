@@ -67,3 +67,4 @@
       /etc/udev/udev.conf r,
       /sys/bus/ r,
       /sys/class/ r,
+  notify: update-initramfs
