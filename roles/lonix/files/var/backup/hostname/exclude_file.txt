@@ -1,9 +1,0 @@
-- /sys
-- /proc
-- /tmp
-- /dev
-- /var/lib/libvirt/images
-- /var/lock
-- /var/run
-- /var/backup
-+ /*
