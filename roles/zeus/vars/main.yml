@@ -57,3 +57,5 @@ snap_run_bin: "{{ snap_run_path }}.py"
 snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"
 
 # Virtual machines
+vms:
+  - htpc
