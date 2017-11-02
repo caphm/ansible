@@ -7,5 +7,5 @@
     - docker-compose
     - mergerfs
     - snapraid
-    - zeus
     - vm-host
+    - zeus
