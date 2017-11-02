@@ -1,169 +1,85 @@
-<domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
-  <name>{{item.name}}</name>
-  <uuid>-id-</uuid>
-  <memory unit='GiB'>{{item.mem}}</memory>
-  <memoryBacking>
-    <hugepages/>
-  </memoryBacking>
-  <vcpu placement='static'>3</vcpu>
-  <iothreads>1</iothreads>
-  <cputune>
-    <vcpupin vcpu='1' cpuset='1'/>
-    <vcpupin vcpu='2' cpuset='2'/>
-    <emulatorpin cpuset='3'/>
-    <iothreadpin iothread='1' cpuset='3'/>
-  </cputune>
+<domain type="kvm">
+  <name>htpc</name>
+  <uuid>a534e1c1-9a9a-4b8c-be6a-b4a51e19298e</uuid>
+  <memory>4194304</memory>
+  <currentMemory>4194304</currentMemory>
+  <vcpu>2</vcpu>
   <os>
-    <type arch='x86_64' machine='pc-i440fx-2.7'>hvm</type>
-    <bootmenu enable='no'/>
+    <type arch="x86_64">hvm</type>
+    <boot dev="hd"/>
   </os>
   <features>
     <acpi/>
     <apic/>
     <hyperv>
-      <relaxed state='on'/>
-      <vapic state='on'/>
-      <spinlocks state='on' retries='8191'/>
+      <relaxed state="on"/>
+      <vapic state="on"/>
+      <spinlocks state="on" retries="8191"/>
     </hyperv>
-    <vmport state='off'/>
   </features>
-  <cpu mode='host-passthrough' check='none'>
-    <topology sockets='1' cores='3' threads='1'/>
-    <feature policy='optional' name='invtsc'/>
-  </cpu>
-  <clock offset='localtime'>
-    <timer name='rtc' present='yes' tickpolicy='delay' track='guest'/>
-    <timer name='pit' tickpolicy='delay'/>
-    <timer name='hpet' present='no'/>
-    <timer name='hypervclock' present='yes'/>
+  <cpu mode="host-model"/>
+  <clock offset="localtime">
+    <timer name="rtc" tickpolicy="catchup"/>
+    <timer name="pit" tickpolicy="delay"/>
+    <timer name="hpet" present="no"/>
+    <timer name="hypervclock" present="yes"/>
   </clock>
   <on_poweroff>destroy</on_poweroff>
-  <on_reboot>destroy</on_reboot>
-  <on_crash>destroy</on_crash>
+  <on_reboot>restart</on_reboot>
+  <on_crash>reboot</on_crash>
   <pm>
-    <suspend-to-mem enabled='no'/>
-    <suspend-to-disk enabled='no'/>
+    <suspend-to-mem enabled="no"/>
+    <suspend-to-disk enabled="no"/>
   </pm>
   <devices>
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
-    <disk type='file' device='cdrom'>
-      <driver name='qemu' type='raw'/>
-      <target dev='sdc' bus='sata'/>
+    <disk type="file" device="cdrom">
+      <driver name="qemu" type="raw"/>
+      <source file="/opt/virtio-win/virtio-win.iso"/>
+      <target dev="sdb" bus="sata"/>
       <readonly/>
-      <address type='drive' controller='0' bus='0' target='0' unit='1'/>
+      <address type="drive" controller="0" bus="0" target="0" unit="1"/>
     </disk>
-    <disk type='file' device='cdrom'>
-      <driver name='qemu' type='raw'/>
-      <source file='path-/virtio-win-0.1.118.iso'/>
-      <target dev='sdd' bus='sata'/>
-      <readonly/>
-      <address type='drive' controller='0' bus='0' target='0' unit='4'/>
+    <disk type="file" device="disk">
+      <driver name="qemu" type="qcow2" cache="none" io="native" iothread="1"/>
+      <source file="/home/caphm/vdisks/htpc.qcow2"/>
+      <target dev="vda" bus="virtio"/>
     </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native' iothread='1'/>
-      <source file='-img3-'/>
-      <target dev='sda' bus='virtio'/>
-      <boot order='1'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x0b' function='0x0'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native' iothread='1'/>
-      <source file='-img2-'/>
-      <target dev='sdb' bus='virtio'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x0a' function='0x0'/>
-    </disk>
-    <disk type='file' device='disk'>
-      <driver name='qemu' type='raw' cache='none' io='native' iothread='1'/>
-      <source file='-img1-'/>
-      <target dev='sde' bus='virtio'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x04' function='0x0'/>
-    </disk>
-    <controller type='pci' index='0' model='pci-root'/>
-    <controller type='ide' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x1'/>
+    <controller type="usb" index="0" model="ich9-ehci1"/>
+    <controller type="usb" index="0" model="ich9-uhci1">
+      <master startport="0"/>
     </controller>
-    <controller type='virtio-serial' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x05' function='0x0'/>
+    <controller type="usb" index="0" model="ich9-uhci2">
+      <master startport="2"/>
     </controller>
-    <controller type='sata' index='0'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x08' function='0x0'/>
+    <controller type="usb" index="0" model="ich9-uhci3">
+      <master startport="4"/>
     </controller>
-    <controller type='usb' index='0' model='ich9-ehci1'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x7'/>
-    </controller>
-    <controller type='usb' index='0' model='ich9-uhci1'>
-      <master startport='0'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x0' multifunction='on'/>
-    </controller>
-    <controller type='usb' index='0' model='ich9-uhci2'>
-      <master startport='2'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x1'/>
-    </controller>
-    <controller type='usb' index='0' model='ich9-uhci3'>
-      <master startport='4'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x06' function='0x2'/>
-    </controller>
-    <interface type='direct'>
-      <mac address='52:54:00:95:63:4c'/>
-      <source dev='enp0s25' mode='bridge'/>
-      <model type='rtl8139'/>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x03' function='0x0'/>
+    <interface type="bridge">
+      <source bridge="br0"/>
+      <mac address="52:54:00:a3:92:8f"/>
+      <model type="virtio"/>
     </interface>
-    <input type='mouse' bus='ps2'/>
-    <input type='keyboard' bus='ps2'/>
-    <sound model='ich9'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x09' function='0x0'/>
-    </sound>
-    <hostdev mode='subsystem' type='pci' managed='yes'>
-      <driver name='vfio'/>
+    <input type="tablet" bus="usb"/>
+    <console type="pty"/>
+    <hostdev mode="subsystem" type="pci" managed="yes">
       <source>
-        <address domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
+        <address domain="0" bus="0" slot="2" function="0"/>
       </source>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x02' function='0x0'/>
+      <driver name="vfio"/>
     </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
+    <hostdev mode="subsystem" type="usb" managed="yes">
       <source>
-        <vendor id='0x046d'/>
-        <product id='0xc246'/>
+        <vendor id="0x1267"/>
+        <product id="0x0103"/>
       </source>
-      <address type='usb' bus='0' port='1'/>
     </hostdev>
-    <hostdev mode='subsystem' type='pci' managed='yes'>
-      <driver name='vfio'/>
+    <hostdev mode="subsystem" type="usb" managed="yes">
       <source>
-        <address domain='0x0000' bus='0x00' slot='0x1b' function='0x0'/>
+        <vendor id="0x046d"/>
+        <product id="0xc077"/>
       </source>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x1b' function='0x0'/>
     </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source>
-        <vendor id='0xfeed'/>
-        <product id='0x1307'/>
-      </source>
-      <address type='usb' bus='0' port='2'/>
-    </hostdev>
-    <memballoon model='virtio'>
-      <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
-    </memballoon>
+    <memballoon model="none"/>
   </devices>
-  <qemu:commandline>
-    <qemu:arg value='-machine'/>
-    <qemu:arg value='pc-i440fx-2.7,accel=kvm,usb=off,vmport=off,dump-guest-core=off,kernel_irqchip=on'/>
-    <qemu:arg value='-cpu'/>
-    <qemu:arg value='host,migratable=no,+invtsc,hv_time,hv_relaxed,hv_vapic,hv_spinlocks=0x1fff'/>
-    <qemu:arg value='-set'/>
-    <qemu:arg value='device.hostdev0.x-igd-opregion=on'/>
-    <qemu:arg value='-set'/>
-    <qemu:arg value='device.hostdev0.x-igd-gms=5'/>
-    <qemu:arg value='-set'/>
-    <qemu:arg value='device.hostdev0.romfile=-path-/-rom-'/>
-    <qemu:env name='QEMU_AUDIO_DRV' value='alsa'/>
-    <qemu:env name='QEMU_DAC_FIXED_SETTINGS' value='1'/>
-    <qemu:env name='QEMU_DAC_TRY_POLL' value='0'/>
-    <qemu:env name='QEMU_DAC_FIXED_FMT' value='S16'/>
-    <qemu:env name='QEMU_DAC_FIXED_FREQ' value='96000'/>
-    <qemu:env name='QEMU_DAC_FIXED_BUFFER_SIZE' value='16384'/>
-    <qemu:env name='QEMU_DAC_FIXED_PERIOD_SIZE' value='512'/>
-    <qemu:env name='QEMU_DAC_DEV' value='-device-'/>
-  </qemu:commandline>
 </domain>

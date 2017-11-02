@@ -1,0 +1,22 @@
+sudo virt-install \
+	-n htpc \
+	--virt-type kvm \
+	--accelerate \
+	--memory 4096 \
+	--memballoon none \
+	--cpu host \
+	--vcpus 2 \
+	--import \
+	--disk path=/home/caphm/vdisks/htpc.qcow2,format=qcow2,bus=virtio,cache=none \
+	--disk path=/opt/virtio-win/virtio-win.iso,device=cdrom \
+	--network bridge=br0,model=virtio,mac=52:54:00:a3:92:8f \
+	--graphics none \
+	--noautoconsole \
+	--host-device 00:02.0,driver_name=vfio \
+	--host-device 0x1267:0x0103 \
+	--host-device 0x046d:c077 \
+	--os-variant windows \
+	--events on_crash=reboot \
+	--autostart \
+	--dry-run \
+	--print-xml
