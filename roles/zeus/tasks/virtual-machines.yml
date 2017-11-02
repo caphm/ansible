@@ -5,12 +5,12 @@
     command: define
     xml: "{{ lookup('template', 'vm.xml.j2') }}"
     autostart: true
-  with-items:
+  with_items:
     "{{ vms }}"
 
 - name: start virtual machines
   virt:
     name: "{{ item.name }}"
     state: running
-  with-items:
+  with_items:
     "{{ vms }}"
