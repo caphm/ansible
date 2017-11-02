@@ -1,26 +1,26 @@
 ---
 # zeus specific setup
 - name: configure base-os
-  include: base-os.yml
+  include_tasks: base-os.yml
   when: baseos
   tags: baseos
 
 - name: configure network file sharing
-  include: file-sharing.yml
+  include_tasks: file-sharing.yml
   when: file_sharing
   tags: file_sharing
 
 - name: configure backups
-  include: backups.yml
+  include_tasks: backups.yml
   when: backups
   tags: backups
 
 - name: configure docker apps
-  include: docker-apps.yml
+  include_tasks: docker-apps.yml
   when: docker_apps
   tags: docker_apps
 
 - name: setup virtual machines
-  include: virtual-machines.yml
+  include_tasks: virtual-machines.yml
   when: virtual_machines
   tags: virtual_machines
