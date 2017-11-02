@@ -54,3 +54,16 @@
       kvm
       kvm_intel
   notify: update-initramfs
+
+- name: apply apparmor workaround for libvirt USB passthrough
+  become: true
+  blockinfile:
+    dest: /etc/apparmor.d/abstractions/libvirt-qemu
+    backup: yes
+    create: yes
+    block: |
+      # Workaround for USB passthrough
+      /dev/bus/usb/ r,
+      /etc/udev/udev.conf r,
+      /sys/bus/ r,
+      /sys/class/ r,
