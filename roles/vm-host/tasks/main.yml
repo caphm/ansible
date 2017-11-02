@@ -11,7 +11,7 @@
     - bridge-utils
     - libvirt-bin
     - virtinst
-    - libvirt-python
+    - python-libvirt
     - python-virtinst
 
 - name: prepare system configuration for IGP passthrough
