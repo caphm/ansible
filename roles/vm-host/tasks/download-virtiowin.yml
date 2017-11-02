@@ -1,0 +1,24 @@
+---
+- name: Check if virtiowin drivers are present (changed=not)
+  stat:
+    path: /opt/virtio-win/virtio-win.iso
+  register: virtiowindrivers_present
+  changed_when: not virtiowindrivers_present.stat.exists
+
+- name: create folder for virtio-win drivers
+  file:
+    dest: /opt/virtio-win/
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  when: virtiowindrivers_present|changed
+
+- name: download virtio-win drivers
+  get_url:
+    url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
+    dest: /opt/virtio-win/virtio-win.iso
+    owner: root
+    group: root
+    mode: 0775
+  when: virtiowindrivers_present|changed

@@ -1,50 +1,26 @@
 ---
 - name: install required packages
-  apt: pkg={{ item }} state=present
+  apt:
+    pkg: "{{ item }}"
+    state: present
   with_items:
     - qemu-kvm
     - seabios
     - qemu-utils
     - hugepages
     - bridge-utils
+    - libvirt
+    - libvirt-python
+    - python-virtinst
 
 - name: prepare system configuration for IGP passthrough
   include: prepare-system.yml
-  when: not system_prepared
   tags: prepare_system
 
 - name: enable hugepages
   include: enable-hugepages.yml
   when: enable_hugepages
 
-- name: Check for virtiowin drivers
-  stat: path=/opt/virtio-win/virtio-win.iso
-  register: virtiowindrivers_present
-  changed_when: not virtiowindrivers_present.stat.exists
-
-- name: create folder for virtio-win drivers
-  file:
-    dest: /opt/virtio-win/
-    state: directory
-    owner: root
-    group: root
-    mode: 0775
-  when: virtiowindrivers_present|changed
-
-- name: download virtio-win drivers
-  get_url:
-    url: https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/stable-virtio/virtio-win.iso
-    dest: /opt/virtio-win/virtio-win.iso
-    owner: root
-    group: root
-    mode: 0775
-  when: virtiowindrivers_present|changed
-  tags: virtiodrivers
-
-- name: bring startup script in place
-  copy:
-    src: home/caphm/start-win10vm.sh
-    dest: /home/caphm/start-win10vm.sh
-    owner: caphm
-    group: caphm
-    mode: 0755
+- name: download virtio drivers for windows
+  include: download-virtiowin.yml
+  tags: download_virtiowin

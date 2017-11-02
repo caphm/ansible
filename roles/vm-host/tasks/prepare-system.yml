@@ -1,14 +1,13 @@
 ---
-- name: update /etc/default/grub
+- name: enable iommu and turn off efifb in GRUB_CMDLINE
   lineinfile:
     dest: /etc/default/grub
     regexp: "^GRUB_CMDLINE_LINUX_DEFAULT="
     line: 'GRUB_CMDLINE_LINUX_DEFAULT="quiet intel_iommu=on video=efifb:off"'
-    #line: 'GRUB_CMDLINE_LINUX_DEFAULT="rd.driver.pre=vfio-pci quiet splash intel_iommu=on iommu=pt video=efifb:off"'
   become: true
   notify: update-grub
 
-- name: blacklist default IGP drivers
+- name: blacklist default IGP driver kernel modules
   become: true
   blockinfile:
     dest: /etc/modprobe.d/blacklist.conf
@@ -20,7 +19,7 @@
       blacklist i915
   notify: update-initramfs
 
-- name: add placeholder vfio drivers
+- name: assign vfio driver to PCIe devices
   become: true
   blockinfile:
     dest: /etc/modprobe.d/vfio.conf
