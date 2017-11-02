@@ -7,7 +7,7 @@
 
 - name: install MergerFS
   include: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
-  when: pkg_check.rc|changed
+  when: pkg_check|changed
 
 - name: check if mergerfs-tools is installed (changed=not)
   stat: path=/usr/bin/mergerfs.balance
