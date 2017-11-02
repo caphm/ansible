@@ -69,3 +69,50 @@
       /sys/class/ r,
       /run/udev/data/ r,
   notify: update-initramfs
+
+- name: Setup network bridging
+  become: true
+  block:
+    - blockinfile:
+      dest: /etc/network/interfaces
+      backup: yes
+      create: yes
+      block: |
+        auto br0
+        iface br0 inet dhcp
+                bridge_ports enp2s0
+                bridge_stp on
+                bridge_fd 0
+                bridge_maxwait 0
+    - lineinfile:
+      path: /etc/network/interfaces
+      backrefs: yes
+      regexp: "^(auto enp2s0)"
+      line: "#\1"
+    - lineinfile:
+      path: /etc/network/interfaces
+      backrefs: yes
+      regexp: "^(iface enp2s0 inet dhcp)"
+      line: "#\1"
+
+- name: Disable arp/ip/ip6 bridging in sysctl
+  become: true
+  blockinfile:
+    dest: /etc/sysctl.conf
+    backup: yes
+    create: yes
+    block: |
+      net.bridge.bridge-nf-call-ip6tables = 0
+      net.bridge.bridge-nf-call-iptables = 0
+      net.bridge.bridge-nf-call-arptables = 0
+
+- name: Workaround for Ubuntu bug 50093
+  become: true
+  blockinfile:
+    dest: /etc/rc.local
+    backup: yes
+    create: yes
+    insertbefore: "*exit 0*"
+    block: |
+      /sbin/sysctl -p /etc/sysctl.conf
+      iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
