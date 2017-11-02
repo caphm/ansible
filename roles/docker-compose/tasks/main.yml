@@ -1,5 +1,4 @@
 ---
-
 - name: install packages required by docker-compose
   apt:
     name: "{{ item }}"
