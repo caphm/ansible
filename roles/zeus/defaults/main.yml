@@ -7,3 +7,4 @@ backups: false
 file_sharing: true
 docker_apps: true
 start_containers: true
+virtual_machines: false

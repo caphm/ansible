@@ -19,3 +19,8 @@
   include: docker-apps.yml
   when: docker_apps
   tags: docker_apps
+
+- name: setup virtual machines
+  include: virtual-machines.yml
+  when: virtual_machines
+  tags: virtual_machines

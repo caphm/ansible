@@ -1,0 +1,16 @@
+---
+- name: define virtual machines
+  virt:
+    name: "{{ item.name }}"
+    command: define
+    xml: "{{ lookup('template', 'vm.xml.j2') }}"
+    autostart: true
+  with-items:
+    "{{ vms }}"
+
+- name: start virtual machines
+  virt:
+    name: "{{ item.name }}"
+    state: running
+  with-items:
+    "{{ vms }}"
