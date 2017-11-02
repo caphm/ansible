@@ -110,7 +110,7 @@
     dest: /etc/rc.local
     backup: yes
     create: yes
-    insertbefore: "*exit 0*"
+    insertbefore: "^exit 0"
     block: |
       /sbin/sysctl -p /etc/sysctl.conf
       iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
