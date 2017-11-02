@@ -9,7 +9,8 @@
     - qemu-utils
     - hugepages
     - bridge-utils
-    - libvirt
+    - libvirt-bin
+    - virtinst
     - libvirt-python
     - python-virtinst
 
