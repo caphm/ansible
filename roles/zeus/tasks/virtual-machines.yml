@@ -12,7 +12,7 @@
     name: htpc
     command: define
     xml: "{{ lookup('template', 'vm.xml.j2') }}"
-    autostart: true
+    autostart: false
 
 - name: start virtual machines
   virt:
