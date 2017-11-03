@@ -76,6 +76,7 @@
 
     <console type="pty"/>
 
+    <!-- IGD with sound -->
     <hostdev mode="subsystem" type="pci" managed="yes">
       <driver name="vfio"/>
       <source>
@@ -86,17 +87,18 @@
     <hostdev mode="subsystem" type="pci" managed="yes">
       <driver name="vfio"/>
       <source>
-        <address domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
-    </hostdev>
-
-    <hostdev mode="subsystem" type="pci" managed="yes">
-      <driver name="vfio"/>
-      <source>
         <address domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
       </source>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
+    </hostdev>
+
+    <!-- Front panel USB3 controller -->
+    <hostdev mode="subsystem" type="pci" managed="yes">
+      <driver name="vfio"/>
+      <source>
+        <address domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
+      </source>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
     </hostdev>
     <!--
     <hostdev mode="subsystem" type="usb" managed="yes">
