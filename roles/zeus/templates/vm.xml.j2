@@ -5,7 +5,7 @@
   <memory unit="GiB">4</memory>
   <currentMemory unit="GiB">4</currentMemory>
 
-  <vcpu>2</vcpu>
+  <vcpu>3</vcpu>
 
   <os>
     <type arch="x86_64">hvm</type>
@@ -90,16 +90,10 @@
       </source>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
     </hostdev>
+
     <hostdev mode="subsystem" type="usb" managed="yes">
       <source>
-        <vendor id="0x1267"/>
-        <product id="0x0103"/>
-      </source>
-    </hostdev>
-    <hostdev mode="subsystem" type="usb" managed="yes">
-      <source>
-        <vendor id="0x046d"/>
-        <product id="0xc077"/>
+        <address type="usb" bus="0x03" port="0x01"/>
       </source>
     </hostdev>
 

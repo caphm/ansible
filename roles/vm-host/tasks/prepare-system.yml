@@ -96,18 +96,7 @@
         - "^(auto enp2s0)"
         - "^(iface enp2s0 inet dhcp)"
 
-- name: Disable arp/ip/ip6 bridging in sysctl
-  become: true
-  blockinfile:
-    dest: /etc/sysctl.conf
-    backup: yes
-    create: yes
-    block: |
-      net.bridge.bridge-nf-call-ip6tables = 0
-      net.bridge.bridge-nf-call-iptables = 0
-      net.bridge.bridge-nf-call-arptables = 0
-
-- name: Workaround for Ubuntu bug 50093
+- name: Workaround for bridge filtering and Ubuntu bug 50093
   become: true
   blockinfile:
     dest: /etc/rc.local
@@ -115,5 +104,5 @@
     create: yes
     insertbefore: "^exit 0"
     block: |
-      /sbin/sysctl -p /etc/sysctl.conf
+      iptables -A FORWARD -m physdev --physdev-is-bridged -j ACCEPT
       iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
