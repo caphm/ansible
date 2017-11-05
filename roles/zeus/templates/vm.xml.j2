@@ -5,7 +5,11 @@
   <memory unit="GiB">4</memory>
   <currentMemory unit="GiB">4</currentMemory>
 
-  <vcpu>3</vcpu>
+  <vcpu>2</vcpu>
+  <cputune>
+    <vcpupin vcpu="1" cpuset="1"/>
+    <vcpupin vcpu="2" cpuset="2"/>
+  </cputune>
 
   <os>
     <type arch="x86_64">hvm</type>
@@ -23,7 +27,9 @@
     </hyperv>
   </features>
 
-  <cpu mode="host-passthrough"/>
+  <cpu mode="host-passthrough">
+    <topology sockets="1" cores="2" threads="1"/>
+  </cpu>
 
   <clock offset="localtime">
     <timer name="rtc" tickpolicy="catchup"/>
