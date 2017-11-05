@@ -25,6 +25,9 @@
       <vapic state="on"/>
       <spinlocks state="on" retries="8191"/>
     </hyperv>
+    <kvm>
+      <hidden state="on"/>
+    </kvm>
   </features>
 
   <cpu mode="host-passthrough">
@@ -119,8 +122,7 @@
     <!-- air mouse receiver -->
     <hostdev mode="subsystem" type="usb">
       <source>
-        <vendor id="0x2319"/>
-        <product id="0x00b2"/>
+        <address bus="0x03" device="0x02"/>
       </source>
     </hostdev>
 
