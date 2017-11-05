@@ -109,13 +109,13 @@
       <address type="pci" domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
     </hostdev>
 
-    <!-- air mouse receiver -->
-    <hostdev mode="subsystem" type="usb">
-      <source startupPolicy="optional">
-        <address bus="0x03" device="0x02"/>
-      </source>
-    </hostdev>
-
     <memballoon model="none"/>
   </devices>
+
+  <qemu:commandline>
+    <qemu:arg value='-set'/>
+    <qemu:arg value='device.hostdev0.x-igd-opregion=on'/>
+    <qemu:arg value='-set'/>
+    <qemu:arg value='device.hostdev0.x-igd-gms=1'/>
+  </qemu:commandline>
 </domain>
