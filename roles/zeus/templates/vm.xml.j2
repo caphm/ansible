@@ -95,7 +95,16 @@
       <source>
         <address domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
       </source>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0" multifunction="on"/>
+    </hostdev>
+
+    <!-- Onboard sound card -->
+    <hostdev mode="subsystem" type="pci" managed="yes">
+      <driver name="vfio"/>
+      <source>
+        <address domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
+      </source>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
     </hostdev>
 
     <!-- Front panel USB3 controller -->
@@ -106,20 +115,14 @@
       </source>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
     </hostdev>
-    <!--
-    <hostdev mode="subsystem" type="usb" managed="yes">
+
+    <!-- air mouse receiver -->
+    <hostdev mode="subsystem" type="usb">
       <source>
-        <vendor id="0x1267"/>
-        <product id="0x0103"/>
+        <vendor id="0x2319"/>
+        <product id="0x00b2"/>
       </source>
     </hostdev>
-    <hostdev mode="subsystem" type="usb" managed="yes">
-      <source>
-        <vendor id="0x046d"/>
-        <product id="0xc077"/>
-      </source>
-    </hostdev>
-    !-->
 
     <memballoon model="none"/>
   </devices>
