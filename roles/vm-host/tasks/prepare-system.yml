@@ -67,12 +67,13 @@
           # Workaround for USB passthrough
           /dev/bus/usb/*/[0-9]* rw,
           /run/udev/** rw,
+          /dev/bus/usb/ rw,
       notify: update-initramfs
-    - lineinfile:
-        path: /etc/apparmor.d/abstractions/libvirt-qemu
-        regexp: "/dev/bus/usb/ r,"
-        line: "/dev/bus/usb/ rw,"
-      notify: update-initramfs
+    # - lineinfile:
+    #     path: /etc/apparmor.d/abstractions/libvirt-qemu
+    #     regexp: "/dev/bus/usb/ r,"
+    #     line: "/dev/bus/usb/ rw,"
+    #   notify: update-initramfs
 
 - name: Setup network bridging
   become: true
