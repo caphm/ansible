@@ -31,6 +31,7 @@
 
 - name: add ignore_msrs option to kvm.conf
   become: true
+  state: absent
   blockinfile:
     dest: /etc/modprobe.d/kvm.conf
     backup: yes
