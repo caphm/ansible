@@ -31,11 +31,11 @@
 
 - name: add ignore_msrs option to kvm.conf
   become: true
-  state: absent
   blockinfile:
     dest: /etc/modprobe.d/kvm.conf
     backup: yes
     create: yes
+    state: absent
     block: |
       options kvm ignore_msrs=1
   notify: update-initramfs
