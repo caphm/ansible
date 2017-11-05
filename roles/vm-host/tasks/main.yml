@@ -14,13 +14,13 @@
     - python-libvirt
 
 - name: prepare system configuration for IGP passthrough
-  include: prepare-system.yml
+  include_tasks: prepare-system.yml
   tags: prepare_system
 
 - name: enable hugepages
-  include: enable-hugepages.yml
+  include_tasks: enable-hugepages.yml
   when: enable_hugepages
 
 - name: download virtio drivers for windows
-  include: download-virtiowin.yml
+  include_tasks: download-virtiowin.yml
   tags: download_virtiowin

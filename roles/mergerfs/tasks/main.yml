@@ -6,7 +6,7 @@
   changed_when: pkg_check.rc == 1
 
 - name: install MergerFS
-  include: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
+  include_tasks: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
   when: pkg_check|changed
 
 - name: check if mergerfs-tools is installed (changed=not)
@@ -15,5 +15,5 @@
   changed_when: not mfst_installed.stat.exists
 
 - name: install mergerfs-tools
-  include: install-mergerfs-tools.yml
+  include_tasks: install-mergerfs-tools.yml
   when: mfst_installed|changed
