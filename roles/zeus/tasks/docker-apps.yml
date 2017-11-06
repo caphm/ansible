@@ -57,4 +57,5 @@
 
 - name: WORKAROUND plex docker /transcode permissions - update permissions
   delegate_to: plex
+  become: false
   raw: chown plex:plex /transcode
