@@ -4,6 +4,9 @@
 
   <memory unit="GiB">4</memory>
   <currentMemory unit="GiB">4</currentMemory>
+  <memoryBacking>
+    <hugepages/>
+  </memoryBacking>
 
   <vcpu placement="static">2</vcpu>
   <iothreads>1</iothreads>
@@ -121,5 +124,9 @@
     <qemu:arg value="device.hostdev0.x-igd-opregion=on"/>
     <qemu:arg value="-set"/>
     <qemu:arg value="device.hostdev0.x-igd-gms=1"/>
+    <qemu:arg value='-chardev'/>
+    <qemu:arg value='file,id=seabios,path=/var/log/libvirt/qemu/htpc-bios.log'/>
+    <qemu:arg value='-device'/>
+    <qemu:arg value='isa-debugcon,iobase=0x402,chardev=seabios'/>
   </qemu:commandline>
 </domain>
