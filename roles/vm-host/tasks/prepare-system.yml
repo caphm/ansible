@@ -67,7 +67,7 @@
       /dev/bus/usb/*/[0-9]* rw,
       /run/udev/** rw,
       /dev/bus/usb/ rw,
-      /var/log/libvirt/qemu/* rw,
+      /var/log/vms/** rw,
   notify: reload-apparmor
 
 - name: Setup network bridging
@@ -103,3 +103,11 @@
     block: |
       iptables -A FORWARD -m physdev --physdev-is-bridged -j ACCEPT
       iptables -A FORWARD -p tcp --tcp-flags SYN,RST SYN -j TCPMSS --clamp-mss-to-pmtu
+
+- name: create folder for logs
+  file:
+    dest: /var/log/vms
+    state: directory
+    owner: root
+    group: kvm
+    mode: 0755
