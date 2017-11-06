@@ -48,3 +48,13 @@
   shell: docker-compose -f /home/docker/docker-compose.yml up -d
   when: start_containers
   tags: start_containers
+
+- name: WORKAROUND plex docker /transcode permissions - add container to inventory
+  add_host:
+    name: plex
+    ansible_connection: docker
+  changed_when: false
+
+- name: WORKAROUND plex docker /transcode permissions - update permissions
+  delegate_to: plex
+  raw: chown plex:plex /transcode
