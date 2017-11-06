@@ -5,3 +5,11 @@
     regexp: "^KVM_HUGEPAGES="
     line: "KVM_HUGEPAGES=1"
   become: true
+
+- name: assign hugepages
+  become: true
+  blockinfile:
+    dest: /etc/sysctl.conf
+    block: |
+      # Set hugetables / hugepages for KVM single guest using 4GB RAM
+      vm.nr_hugepages = 2200
