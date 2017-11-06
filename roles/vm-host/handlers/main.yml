@@ -10,3 +10,7 @@
 - name: reload-apparmor
   command: systemctl reload apparmor.service
   become: true
+
+- name: reload-sysctl
+  command: sysctl --system
+  become: true
