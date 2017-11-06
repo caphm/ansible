@@ -11,5 +11,6 @@
   blockinfile:
     dest: /etc/sysctl.conf
     block: |
-      # Set hugetables / hugepages for KVM single guest using 4GB RAM
-      vm.nr_hugepages = 2200
+      vm.nr_hugepages=2200
+      kernel.shmmax=4613734400
+      vm.hugetlb_shm_group=0
