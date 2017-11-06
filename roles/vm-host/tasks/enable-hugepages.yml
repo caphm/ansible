@@ -13,5 +13,5 @@
     block: |
       vm.nr_hugepages=2200
       kernel.shmmax=4613734400
-      vm.hugetlb_shm_group=36
+      vm.hugetlb_shm_group=118
   notify: reload-sysctl
