@@ -6,3 +6,7 @@
 - name: update-initramfs
   command: update-initramfs -u
   become: true
+
+- name: reload-apparmor
+  command: systemctl reload apparmor.service
+  become: true

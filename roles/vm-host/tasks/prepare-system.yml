@@ -68,7 +68,7 @@
       /run/udev/** rw,
       /dev/bus/usb/ rw,
       /var/log/libvirt/qemu/* rw,
-  notify: update-initramfs
+  notify: reload-apparmor
 
 - name: Setup network bridging
   become: true
