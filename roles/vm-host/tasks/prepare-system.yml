@@ -26,7 +26,7 @@
     backup: yes
     create: yes
     block: |
-      options vfio-pci ids=8086:0412,8086:0c0c,8086:8c20,8086:8c31
+      options vfio-pci ids=8086:0412,8086:0c0c,8086:8c20,8086:8c31,8086:8c3a
   notify: update-initramfs
 
 - name: add ignore_msrs option to kvm.conf

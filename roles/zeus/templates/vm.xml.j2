@@ -116,6 +116,15 @@
       <address type="pci" domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
     </hostdev>
 
+    <!-- Intel MEI -->
+    <hostdev mode="subsystem" type="pci" managed="yes">
+      <driver name="vfio"/>
+      <source>
+        <address domain="0x0000" bus="0x00" slot="0x16" function="0x0"/>
+      </source>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x16" function="0x0"/>
+    </hostdev>
+
     <memballoon model="none"/>
   </devices>
 
