@@ -109,5 +109,5 @@
     dest: /var/log/vms
     state: directory
     owner: root
-    group: kvm
-    mode: 0755
+    group: root
+    mode: 0777
