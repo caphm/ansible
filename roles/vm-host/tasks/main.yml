@@ -19,7 +19,7 @@
 
 - name: enable hugepages
   include_tasks: enable-hugepages.yml
-  when: enable_hugepages
+  tags: enable_hugepages
 
 - name: download virtio drivers for windows
   include_tasks: download-virtiowin.yml
