@@ -26,8 +26,8 @@
     dest: /opt/snapraid-runner
 
 - name: install snapraid-runner configuration
-  copy:
-    src: "{{ lookup('template', 'snapraid-runner.conf.j2') }}"
+  template:
+    src: snapraid-runner.conf.j2
     dest: "{{ snap_run_conf }}"
     owner: root
     group: root
