@@ -67,7 +67,7 @@
       /dev/bus/usb/*/[0-9]* rw,
       /run/udev/** rw,
       /dev/bus/usb/ rw,
-      /var/log/libvirt/qemu/*.log rw,
+      /var/log/libvirt/qemu/* rw,
   notify: update-initramfs
 
 - name: Setup network bridging
