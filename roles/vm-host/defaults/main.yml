@@ -1,2 +1,2 @@
 ---
-enable_hugepages: false
+enable_hugepages: true
