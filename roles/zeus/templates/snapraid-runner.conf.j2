@@ -1,10 +1,10 @@
 [snapraid]
 ; path to the snapraid executable
-executable = /usr/bin/snapraid
+executable = /usr/local/bin/snapraid
 ; path to the snapraid config to be used
 config = /etc/snapraid.conf
 ; abort operation if there are more deletes than this, set to -1 to disable
-deletethreshold = 50
+deletethreshold = 250
 
 [logging]
 ; logfile to write to, leave empty to disable
@@ -14,12 +14,12 @@ maxsize = 5000
 
 [email]
 ; when to send an email, comma-separated list of [success, error]
-sendon = success,error
+sendon = 
 ; set to false to get full program output via email
 short = true
 subject = [SnapRAID] Status Report:
-from = myemail@gmail.com
-to = myemail@gmail.com
+from = {{ email_address }}
+to = {{ email_address }}
 
 [smtp]
 host = smtp.gmail.com
@@ -27,8 +27,8 @@ host = smtp.gmail.com
 port = 465
 ; set to "true" to activate
 ssl = true
-user = myemail@gmail.com
-password = supersecretpassword
+user = {{ email_address }}
+password = {{ gmail_pass }}
 
 [scrub]
 ; set to true to run scrub after sync

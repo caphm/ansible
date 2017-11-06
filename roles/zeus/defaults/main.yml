@@ -3,7 +3,7 @@
 baseos: true
 
 # set to 'no' or 'false' to disable item
-backups: false
+backups: true
 file_sharing: true
 docker_apps: true
 start_containers: true

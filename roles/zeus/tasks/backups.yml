@@ -27,13 +27,13 @@
     repo: https://github.com/Chronial/snapraid-runner.git
     dest: /opt/snapraid-runner
 
-# - name: install snapraid-runner configuration
-#   copy:
-#     src: opt/snapraid-runner/snapraid-runner.conf
-#     dest: "{{ snap_run_conf }}"
-#     owner: root
-#     group: root
-#     mode: 0775
+- name: install snapraid-runner configuration
+  copy:
+    src: "{{ lookup('template', 'snapraid-runner.conf.j2') }}"
+    dest: "{{ snap_run_conf }}"
+    owner: root
+    group: root
+    mode: 0775
 
 #- name: install rsnapshot config
 #  template:
@@ -50,6 +50,6 @@
     hour: "{{ item.hour }}"
     dom: "{{ item.dom|default('*') }}"
   with_items:
-    - { job: '{{ snap_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '08' }
+    - { job: '{{ snap_run_command }}', name: 'snapraid_runner', weekday: '3', hour: '01' }
   tags:
     - cron
