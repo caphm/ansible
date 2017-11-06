@@ -7,6 +7,11 @@
     name: smbd
     state: started
 
+- name: restart samba service
+  service:
+    name: smbd
+    state: restarted
+
 - name: restart docker service
   service:
     name: docker
