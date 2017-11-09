@@ -1,6 +1,7 @@
 ---
 # Users & groups
 caphmuid: 1000
+caphmgid: 1000
 storagegid: 1051
 
 # Filesystem & mergerfs
@@ -59,3 +60,8 @@ snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"
 # SMTP
 email_address: nope
 gmail_pass: nope
+
+# Onedrive
+onedrives:
+  - { name: "od_music", owner: "caphm", uid: "{{caphmuid}}", gid: "{{caphmgid}}", configdir: "/home/caphm/appdata/od_music", destdir: "/mnt/storage/media/music", config: "od_default.conf", synclist: "od_music.sync_list" }
+  - { name: "od_photos", owner: "caphm", uid: "{{caphmuid}}", gid: "{{caphmgid}}", configdir: "/home/caphm/appdata/od_photos", destdir: "/mnt/storage/media/photos", config: "od_default.conf", synclist: "od_photos.sync_list" }

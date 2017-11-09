@@ -54,8 +54,12 @@
     name: plex
     ansible_connection: docker
   changed_when: false
+  when: start_containers
+  tags: start_containers
 
 - name: WORKAROUND plex docker /transcode permissions - update permissions
   delegate_to: plex
   become: false
   raw: chown plex:plex /transcode
+  when: start_containers
+  tags: start_containers
