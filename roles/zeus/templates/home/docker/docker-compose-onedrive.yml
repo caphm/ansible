@@ -1,0 +1,18 @@
+---
+version: '3'
+services:
+{% for od in onedrives %}
+  {{od.name}}:
+    image: caphm/onedrive:latest
+    container_name: {{od.name}}
+    hostname: {{od.name}}
+    volumes:
+      - {{od.configdir}}:/config
+      - {{od.destdir}}:/onedrive
+    network_mode: host
+    restart: on-failure
+    environment:
+      - ONEDRIVE_UID={{od.uid}}
+      - ONEDRIVE_GID={{od.gid}}
+
+{% endfor %}
