@@ -73,4 +73,4 @@
   tags: start_containers
 
 - name: Define onedrive services with docker-compose, but don't start them
-  shell: docker-compose -f /home/docker/docker-compose-onedrive.yml up -d --no-start
+  shell: docker-compose -f /home/docker/docker-compose-onedrive.yml up --no-start
