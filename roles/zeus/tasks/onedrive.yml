@@ -13,7 +13,7 @@
 
 - name: Copy configuration
   copy:
-    src: "{{ item.synclist }}"
+    src: "{{ item.config }}"
     dest: "{{ item.configdir }}/config"
     owner: "{{item.owner}}"
     group: "{{item.owner}}"
