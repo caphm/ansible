@@ -1,0 +1,26 @@
+---
+- name: Create config directories
+  file:
+    dest: "{{ item.configdir }}"
+    state: directory
+    owner: "{{item.owner}}"
+    group: "{{item.owner}}"
+
+- name: Create output directory
+  file:
+    dest: "{{ item.destdir }}"
+    state: directory
+
+- name: Copy configuration
+  copy:
+    src: "{{ item.config }}"
+    dest: "{{ item.configdir }}/config"
+    owner: "{{item.owner}}"
+    group: "{{item.owner}}"
+
+- name: Copy sync_list
+  copy:
+    src: "{{ item.synclist }}"
+    dest: "{{ item.configdir }}/sync_list"
+    owner: "{{item.owner}}"
+    group: "{{item.owner}}"

@@ -44,6 +44,14 @@
     group: "{{dockergroup}}"
     mode: 0755
 
+- name: copy docker-compose-onedrive.yml into position
+  template:
+    src: "home/docker/docker-compose-onedrive.yml"
+    dest: "/home/docker/docker-compose-onedrive.yml"
+    owner: "{{dockeruser}}"
+    group: "{{dockergroup}}"
+    mode: 0755
+
 - name: use docker-compose to bring up apps
   shell: docker-compose -f /home/docker/docker-compose.yml up -d
   when: start_containers
@@ -54,8 +62,15 @@
     name: plex
     ansible_connection: docker
   changed_when: false
+  when: start_containers
+  tags: start_containers
 
 - name: WORKAROUND plex docker /transcode permissions - update permissions
   delegate_to: plex
   become: false
   raw: chown plex:plex /transcode
+  when: start_containers
+  tags: start_containers
+
+- name: Define onedrive services with docker-compose, but don't start them
+  shell: docker-compose -f /home/docker/docker-compose-onedrive.yml create
