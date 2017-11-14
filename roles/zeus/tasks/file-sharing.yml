@@ -11,6 +11,12 @@
   notify:
     - start samba service
 
+- name: create spool folder
+  file:
+    dest: /var/spool/samba/
+    state: directory
+    mode: 1777
+
   # TODO: Auto configuring smb.conf based on
   # https://github.com/debops/ansible-samba/blob/master/defaults/main.yml
 - name: install samba config
