@@ -15,7 +15,7 @@
   file:
     dest: /var/spool/samba/
     state: directory
-    mode: 1777
+    mode: 0777
 
   # TODO: Auto configuring smb.conf based on
   # https://github.com/debops/ansible-samba/blob/master/defaults/main.yml
