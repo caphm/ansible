@@ -9,14 +9,6 @@
   notify:
     - restart cups service
 
-- name: copy cups configuration into position
-  copy:
-    src: "cupsd.conf"
-    dest: "/etc/cups/cupsd.conf"
-    backup: yes
-  notify:
-    - restart cups service
-
 - name: Enable CUPS service on startup
   service:
     name: cups
