@@ -11,7 +11,7 @@
 
 - name: listen on all interfaces
   lineinfile:
-    dest: /etc/default/grub
+    dest: /etc/cups/cupsd.conf
     regexp: "^Listen localhost:631"
     line: "Listen 0.0.0.0:631"
   become: true
@@ -20,7 +20,7 @@
 - name: make configuration accessible over network
   become: true
   blockinfile:
-    dest: /etc/modprobe.d/blacklist.conf
+    dest: /etc/cups/cupsd.conf
     backup: yes
     block: |
       # Restrict access to the server...
