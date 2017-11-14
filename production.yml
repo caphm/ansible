@@ -3,10 +3,10 @@
 - hosts: production
   become: true
   roles:
-    - docker
-    - docker-compose
-    - mergerfs
-    - snapraid
-    - vm-host
-    - print-server
-    - zeus
+    - { role: "docker", tags: "docker" }
+    - { role: "docker-compose", tags: "docker_compose" }
+    - { role: "mergerfs", tags: "mergerfs" }
+    - { role: "snapraid", tags: "snapraid" }
+    - { role: "vm-host", tags: "vm_host" }
+    - { role: "print-server", tags: "print_server" }
+    - { role: "zeus", tags: "zeus" }
