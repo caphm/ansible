@@ -59,7 +59,8 @@
     name: caphm
     uid: "{{caphmuid}}"
     state: present
-    groups: sudo,docker,storage
+    groups: sudo,docker,storage,lpadmin
+    append: yes
 
 - name: create /mnt points
   file:
