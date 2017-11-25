@@ -38,7 +38,7 @@
 
 - name: Create kodi-alexa appdata directory
   file:
-    dest: home/docker/appdata/kodi-alexa
+    dest: /home/docker/appdata/kodi-alexa/
     state: directory
 
 - name: install kodi-alexa config
