@@ -53,7 +53,7 @@ services:
 
   kodi-alexa:
     image: caphm/kodi-alexa:snapshot
-    container_name: kodi-alex
+    container_name: kodi-alexa
     hostname: kodi-alexa
     volumes:
       - /home/docker/appdata/kodi-alexa:/config
