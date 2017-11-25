@@ -36,6 +36,13 @@
     group: root
     mode: 0777
 
+- name: install kodi-alexa config
+  copy:
+    src: kodi-alexa/kodi.config
+    dest: /home/docker/appdata/kodi-alexa/kodi.config
+    owner: "{{dockeruser}}"
+    group: "{{dockergroup}}"
+
 - name: copy docker-compose.yml into position
   template:
     src: "home/docker/docker-compose.yml"

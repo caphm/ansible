@@ -50,3 +50,18 @@ services:
       - TZ=Europe/Berlin
       - USER_ID={{dockeruid}}
       - GROUP_ID={{dockergid}}
+
+  kodi-alexa:
+    image: caphm/kodi-alexa:snapshot
+    container_name: kodi-alex
+    hostname: kodi-alexa
+    volumes:
+      - /home/docker/appdata/kodi-alexa:/config
+    network_mode: bridge
+    ports:
+      - "5454:8000"
+    restart: on-failure
+    environment:
+      - LOGLEVEL=info
+      - CERT_SUBJ="/C=DE/O=caphm.de/OU=caphm.de/CN=caphm.de"
+      - CERT_VALIDITY
