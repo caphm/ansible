@@ -64,4 +64,4 @@ services:
     environment:
       - LOGLEVEL=info
       - CERT_SUBJ="/C=DE/O=caphm.de/OU=caphm.de/CN=caphm.de"
-      - CERT_VALIDITY
+      - CERT_VALIDITY=365
