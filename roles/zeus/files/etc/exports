@@ -4,6 +4,8 @@
 # based on that assumption (primarily KODI).
 # http://kodi.wiki/view/NFS
 
-#/mnt/storage/movies       *(ro,sync,no_root_squash)
-#/mnt/storage/tv           *(ro,sync,no_root_squash)
-#/mnt/storage/tv_family    *(ro,sync,no_root_squash)
+/mnt/storage/media/photos       *(ro,sync,no_root_squash)
+/mnt/storage/media/Musik        *(ro,sync,no_root_squash)
+/mnt/storage/media/2d-movies    *(ro,sync,no_root_squash)
+/mnt/storage/media/3d-movies    *(ro,sync,no_root_squash)
+/mnt/storage/media/tv-shows     *(ro,sync,no_root_squash)
