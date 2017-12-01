@@ -9,20 +9,15 @@
   notify:
     - restart cups service
 
-- name: listen on all interfaces
-  lineinfile:
-    dest: /etc/cups/cupsd.conf
-    regexp: "^Listen localhost:631"
-    line: "Listen 0.0.0.0:631"
-  become: true
-  notify: restart cups service
-
 - name: make configuration accessible over network
   become: true
   blockinfile:
     dest: /etc/cups/cupsd.conf
     backup: yes
     block: |
+      # Listen on all interfaces
+      Listen 0.0.0.0:631
+
       # Restrict access to the server...
       <Location />
         Order allow,deny
