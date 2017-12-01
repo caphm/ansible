@@ -1,31 +1,17 @@
 ---
-- name: create group for docker appdata
-  group:
-    name: "{{dockergroup}}"
-    state: present
-    gid: "{{dockergid}}"
-
-- name: create user for docker appdata
-  user:
-    name: "{{dockeruser}}"
-    shell: /sbin/nologin
-    uid: "{{dockeruid}}"
-    groups: "{{dockergroup}},storage"
-
 - name: create docker appdata base directory
   file:
     dest: "{{ appdata }}"
     state: directory
-    #recurse: yes
-    owner: "{{dockeruser}}"
-    group: "{{dockergroup}}"
+    owner: caphm
+    group: caphm
 
 - name: create tmp folder for plex transcoder
   file:
     dest: /tmp/plex-transcode
     state: directory
-    owner: "{{dockeruser}}"
-    group: "{{dockergroup}}"
+    owner: caphm
+    group: caphm
     mode: 0777
 
 - name: add dtail
@@ -38,34 +24,30 @@
 
 - name: Create kodi-alexa appdata directory
   file:
-    dest: /home/docker/appdata/kodi-alexa/
+    dest: "{{appdata}}/kodi-alexa/"
     state: directory
 
 - name: install kodi-alexa config
   copy:
     src: kodi-alexa/kodi.config
-    dest: /home/docker/appdata/kodi-alexa/kodi.config
-    owner: "{{dockeruser}}"
-    group: "{{dockergroup}}"
+    dest: "{{appdata}}/kodi-alexa/kodi.config"
+    owner: "{{caphmuid}}"
+    group: "{{caphmgid}}"
 
 - name: copy docker-compose.yml into position
   template:
-    src: "home/docker/docker-compose.yml"
-    dest: "/home/docker/docker-compose.yml"
-    owner: "{{dockeruser}}"
-    group: "{{dockergroup}}"
+    src: "docker-compose.yml"
+    dest: "{{appdata}}/docker-compose.yml"
     mode: 0755
 
 - name: copy docker-compose-onedrive.yml into position
   template:
-    src: "home/docker/docker-compose-onedrive.yml"
-    dest: "/home/docker/docker-compose-onedrive.yml"
-    owner: "{{dockeruser}}"
-    group: "{{dockergroup}}"
+    src: "docker-compose-onedrive.yml"
+    dest: "{{appdata}}/docker-compose-onedrive.yml"
     mode: 0755
 
 - name: use docker-compose to bring up apps
-  shell: docker-compose -f /home/docker/docker-compose.yml up -d
+  shell: "docker-compose -f {{appdata}}/docker-compose.yml up -d"
   when: start_containers
   tags: start_containers
 
@@ -85,4 +67,4 @@
   tags: start_containers
 
 - name: Define onedrive services with docker-compose, but don't start them
-  shell: docker-compose -f /home/docker/docker-compose-onedrive.yml create
+  shell: "docker-compose -f {{appdata}}/docker-compose-onedrive.yml create"
