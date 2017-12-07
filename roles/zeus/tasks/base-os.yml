@@ -48,18 +48,12 @@
   tags:
     - packages
 
-- name: create group for storage
-  group:
-    name: storage
-    state: present
-    gid: "{{storagegid}}"
-
 - name: create user caphm
   user:
     name: caphm
     uid: "{{caphmuid}}"
     state: present
-    groups: sudo,docker,storage,lpadmin
+    groups: sudo,docker,lpadmin
     append: yes
 
 - name: create /mnt points
@@ -86,7 +80,7 @@
     dest: "/mnt/{{ item }}"
     state: directory
     owner: caphm
-    group: storage
+    group: caphm
     mode: 0775
   with_items: "{{ folders }}"
 

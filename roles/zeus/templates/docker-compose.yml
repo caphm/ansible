@@ -6,7 +6,7 @@ services:
     container_name: plex
     hostname: plex
     volumes:
-      - /home/docker/appdata/plex:/config
+      - {{appdata}}/plex:/config
       - /tmp/plex-transcode:/transcode
       - /mnt/storage/media:/library
       - /mnt/storage:/data
@@ -14,8 +14,8 @@ services:
     restart: always
     environment:
       - PLEX_CLAIM
-      - PLEX_UID={{dockeruid}}
-      - PLEX_GID={{dockergid}}
+      - PLEX_UID={{caphmuid}}
+      - PLEX_GID={{caphmgid}}
       - CHANGE_CONFIG_DIR_OWNERSHIP=false
       - TZ="Europe/Berlin"
       - ALLOWED_NETWORKS="192.168.1.0/24"
@@ -25,7 +25,7 @@ services:
     container_name: filebot
     hostname: filebot
     volumes:
-      - /home/docker/appdata/filebot:/data
+      - {{appdata}}/filebot:/data
       - /mnt/storage/downloads:/download
       - /mnt/storage/media:/out
     network_mode: bridge
@@ -38,7 +38,7 @@ services:
     container_name: jdownloader
     hostname: jdownloader
     volumes:
-      - /home/docker/appdata/jdownloader:/config
+      - {{appdata}}/jdownloader:/config
       - /mnt/storage/downloads:/download
     network_mode: bridge
     ports:
@@ -48,15 +48,15 @@ services:
       - WIDTH=1280
       - HEIGHT=720
       - TZ=Europe/Berlin
-      - USER_ID={{dockeruid}}
-      - GROUP_ID={{dockergid}}
+      - USER_ID={{caphmuid}}
+      - GROUP_ID={{caphmuid}}
 
   kodi-alexa:
     image: caphm/kodi-alexa:snapshot
     container_name: kodi-alexa
     hostname: kodi-alexa
     volumes:
-      - /home/docker/appdata/kodi-alexa:/config
+      - {{appdata}}/kodi-alexa:/config
     network_mode: bridge
     ports:
       - "5454:8000"
