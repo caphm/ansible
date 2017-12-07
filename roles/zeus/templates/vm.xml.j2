@@ -104,7 +104,7 @@
       <source>
         <address domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
       </source>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
+      <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0" multifunction="on"/>
     </hostdev>
 
     <!-- Front panel USB3 controller -->
@@ -125,10 +125,16 @@
       <address type="pci" domain="0x0000" bus="0x00" slot="0x16" function="0x0"/>
     </hostdev>
 
-    <hostdev mode="subsystem" type="usb">
+    <hostdev mode="subsystem" type="usb" startupPolicy="optional">
       <source>
         <vendor id="0x2319"/>
         <product id="0x00b2"/>
+      </source>
+    </hostdev>
+    <hostdev mode="subsystem" type="usb" startupPolicy="optional">
+      <source>
+        <vendor id="0x1d57"/>
+        <product id="0xad03"/>
       </source>
     </hostdev>
 
