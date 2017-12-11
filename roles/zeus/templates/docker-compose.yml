@@ -9,7 +9,6 @@ services:
       - {{appdata}}/plex:/config
       - /tmp/plex-transcode:/transcode
       - /mnt/storage/media:/library
-      - /mnt/storage:/data
     network_mode: host
     restart: always
     environment:
