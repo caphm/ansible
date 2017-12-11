@@ -65,3 +65,16 @@ services:
       - LOGLEVEL=info
       - CERT_SUBJ="/C=DE/O=caphm.de/OU=caphm.de/CN=caphm.de"
       - CERT_VALIDITY=365
+
+  teamspeak:
+    image: aheil/teamspeak3-server
+    container_name: teamspeak
+    hostname: teamspeak
+    volumes:
+      - {{appdata}}/teamspeak:/data
+    network_mode: bridge
+    ports:
+      - "9987:9987/udp"
+      - "10011:10011"
+      - "30033:30033"
+    restart: on-failure
