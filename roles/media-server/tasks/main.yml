@@ -108,3 +108,21 @@
   delegate_to: plex
   become: false
   raw: chown plex:plex /transcode
+
+- name: Put script to convert Letsencrypt certificate to PKCS12
+  template:
+    src: convert-certificate.sh
+    dest: "{{apphome_plex}}/certs"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
+
+- name: Add cronjob to convert new certificates automatically
+  cron:
+    user: "root"
+    job: "{{apphome_plex}}/certs/convert-certificate.sh"
+    name: "convert-plex-certificate"
+    weekday: "*"
+    minute: "00"
+    hour: "01"
+    dom: "*"
