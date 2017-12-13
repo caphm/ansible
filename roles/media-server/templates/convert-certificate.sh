@@ -7,7 +7,7 @@ pushd {{appdata}}/plex/certs > /dev/null
 openssl pkcs12 -export \
    -out {{appdata}}/plex/certs/${PLEX_HOSTNAME}.pfx \
    -inkey {{appdata}}/nginx-reverse-proxy/certs/${PLEX_HOSTNAME}.key \
-   -in {{appdata}}/nginx-reverse-proxy/certs/${PLEX_HOSTNAME}.cert \
+   -in {{appdata}}/nginx-reverse-proxy/certs/${PLEX_HOSTNAME}.crt \
    -certfile {{appdata}}/nginx-reverse-proxy/certs/${PLEX_HOSTNAME}.chain.pem \
    -name "${PLEX_HOSTNAME}" \
    -passout pass:${PLEX_CERT_ENCKEY}
