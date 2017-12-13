@@ -9,7 +9,7 @@
 - name: Template out onedrive compose file to host
   template:
     src: onedrive.yml
-    dest: "{{compose_dir}}"
+    dest: "{{compose_dir}}/docker-compose.yml"
 
 - name: Start docker app onedrive-client
   docker_service:
