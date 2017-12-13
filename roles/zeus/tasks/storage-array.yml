@@ -22,6 +22,6 @@
     dest: "{{mountroot}}/{{ item }}"
     state: directory
     owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.gid}}"
+    group: "{{defaultuser.maingid}}"
     mode: 0775
   with_items: "{{ folders }}"
