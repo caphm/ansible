@@ -11,6 +11,7 @@ services:
       - {{od.destdir}}:/onedrive
     network_mode: host
     restart: on-failure
+    pull: yes
     environment:
       - ONEDRIVE_UID={{od.uid}}
       - ONEDRIVE_GID={{od.gid}}

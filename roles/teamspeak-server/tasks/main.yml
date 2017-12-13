@@ -13,6 +13,7 @@
   docker_service:
     project_name: teamspeak-server
     state: present
+    pull: yes
     definition:
       version: '2'
       services:
