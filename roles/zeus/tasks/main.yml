@@ -2,26 +2,16 @@
 # zeus specific setup
 - name: configure base-os
   include_tasks: base-os.yml
-  when: baseos
   tags: baseos
+
+- name: configure storage array
+  include_tasks: storage-array.yml
+  tags: storage
 
 - name: configure network file sharing
   include_tasks: file-sharing.yml
-  when: file_sharing
   tags: file_sharing
 
 - name: configure backups
   include_tasks: backups.yml
-  when: backups
   tags: backups
-
-- name: configure onedrive instances
-  include_tasks: onedrive.yml
-  when: onedrive
-  tags: onedrive
-  with_items: "{{ onedrives }}"
-
-- name: configure docker apps
-  include_tasks: docker-apps.yml
-  when: docker_apps
-  tags: docker_apps

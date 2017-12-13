@@ -6,7 +6,7 @@
 
 - name: install snapraid configuration
   copy:
-    src: etc/{{ snapraidconf|basename }}
+    src: {{ snapraidconf|basename }}
     dest: "{{ snapraidconf }}"
     owner: root
     group: root
@@ -14,7 +14,7 @@
 
 #- name: install rsnapshot configuration
 #  copy:
-#    src: etc/{{ rsnapshotconf|basename }}
+#    src: {{ rsnapshotconf|basename }}
 #    dest: "{{ rsnapshotconf }}"
 #    owner: root
 #    group: root

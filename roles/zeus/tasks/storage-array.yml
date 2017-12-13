@@ -1,0 +1,27 @@
+---
+- name: create mount points
+  file:
+		dest: "{{mountroot}}/{{ item.name }}"
+		state: directory
+		owner: root
+		group: root
+		mode: 0775
+  with_items: "{{ mounts }}"
+
+- name: mount disks
+  mount:
+		name: "{{mountroot}}/{{ item.name }}"
+		src: "{{ item.src }}"
+		fstype: "{{ item.fs }}"
+		opts: "{{item.opts}}"
+		state: mounted
+  with_items: "{{ mounts }}"
+
+- name: create basic folder structure on storage array
+  file:
+		dest: "{{mountroot}}/{{ item }}"
+		state: directory
+		owner: "{{defaultuser.uid}}"
+		group: "{{defaultuser.gid}}"
+		mode: 0775
+  with_items: "{{ folders }}"

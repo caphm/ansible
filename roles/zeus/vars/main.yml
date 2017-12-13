@@ -1,47 +1,4 @@
 ---
-# Users & groups
-caphmuid: 1000
-caphmgid: 1000
-
-# Filesystem & mergerfs
-mntpoints:
-  - parity1
-  - disk1
-  - disk2
-  - disk3
-  - storage
-
-mounts:
-  - { name: /mnt/parity1, src: /dev/disk/by-label/8.0T-Seagate-P1, fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
-  - { name: /mnt/disk1, src: /dev/disk/by-label/8.0T-Seagate-D1, fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
-  - { name: /mnt/disk2, src: /dev/disk/by-label/3.0T-WD-D2, fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
-  - { name: /mnt/disk3, src: /dev/disk/by-label/3.0T-WD-D3, fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
-
-folders:
-  # on all drives
-  - disk1/media/2d-movies
-  - disk1/media/3d-movies
-  - disk1/media/tv-shows
-  - disk1/software
-  - disk2/media/2d-movies
-  - disk2/media/3d-movies
-  - disk2/media/tv-shows
-  - disk2/software
-  - disk3/media/2d-movies
-  - disk3/media/3d-movies
-  - disk3/media/tv-shows
-  - disk3/software
-  # only on disk2
-  - disk2/backups
-  - disk2/media/videos
-  - disk2/media/music
-  # only on disk3
-  - disk3/downloads
-  - disk3/media/audio-books
-  - disk3/media/photos
-
-appdata: /home/caphm/appdata
-
 # Backups
 snapraidconf: /etc/snapraid.conf
 
@@ -49,12 +6,3 @@ snap_run_path: /opt/snapraid-runner/snapraid-runner
 snap_run_conf: "{{ snap_run_path }}.conf"
 snap_run_bin: "{{ snap_run_path }}.py"
 snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"
-
-# SMTP
-email_address: nope
-gmail_pass: nope
-
-# Onedrive
-onedrives:
-  - { name: "od_music", owner: "caphm", uid: "{{caphmuid}}", gid: "{{caphmgid}}", configdir: "{{appdata}}/od_music", destdir: "/mnt/storage/media", config: "od_default.conf", synclist: "od_music.sync_list" }
-  - { name: "od_photos", owner: "caphm", uid: "{{caphmuid}}", gid: "{{caphmgid}}", configdir: "{{appdata}}/od_photos", destdir: "/mnt/storage/media/photos", config: "od_default.conf", synclist: "od_photos.sync_list" }

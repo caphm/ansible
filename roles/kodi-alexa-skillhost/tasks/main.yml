@@ -1,0 +1,37 @@
+---
+- name: Create kodi-alexa appdata directory
+  file:
+    dest: "{{appdata}}/kodi-alexa/"
+    state: directory
+
+- name: Install kodi-alexa config
+  copy:
+    src: kodi.config
+    dest: "{{appdata}}/kodi-alexa/kodi.config"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
+
+- name: Start docker app kodi-alexa-skillhost
+  docker_service:
+    project_name: kodi-alexa-skillhost
+    state: present
+    definition:
+      version: '3'
+      services:
+        kodi-alexa:
+          image: caphm/kodi-alexa:snapshot
+          container_name: kodi-alexa
+          hostname: kodi-alexa
+          restart: on-failure
+          volumes:
+            - "{{appdata}}/kodi-alexa:/config"
+          network_mode: bridge
+          ports:
+            - "5454:8000"
+          environment:
+            - LOGLEVEL=info
+    register: startup-output
+
+- debug:
+    var: startup-output

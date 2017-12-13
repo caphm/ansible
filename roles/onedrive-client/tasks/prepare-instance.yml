@@ -1,0 +1,30 @@
+---
+- set_fact:
+    instance: "{{item}}"
+
+- name: Create config and output directories
+  file:
+    dest: "{{item}}"
+    state: directory
+    owner: "{{instance.owner}}"
+    group: "{{instance.owner}}"
+  with_items:
+    - "{{ instance.configdir }}"
+    - "{{ instance.destdir }}"
+
+- name: Copy configuration
+  copy:
+    src: "{{ instance.config }}"
+    dest: "{{ instance.configdir }}/config"
+    owner: "{{instance.owner}}"
+    group: "{{instance.owner}}"
+    mode: 0755
+
+- name: Create sync_list
+  lineinfile:
+    line: "{{item}}"
+    dest: "{{ instance.configdir }}/sync_list"
+    owner: "{{instance.owner}}"
+    group: "{{instance.owner}}"
+    mode: 0755
+  with_items: "{{instance.synclist}}"

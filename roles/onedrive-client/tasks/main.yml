@@ -1,0 +1,22 @@
+---
+- name: Prepare onedrive instances
+  include_tasks: prepare-instance.yml
+  with_items: "{{onedrives}}"
+
+- set_fact:
+    compose_dir: /tmp/docker-compose/
+
+- name: Template out onedrive compose file to host
+  template:
+    src: onedrive.yml
+    dest: "{{compose_dir}}"
+
+- name: Start docker app onedrive-client
+  docker_service:
+    project_name: onedrive-client
+    state: present
+    project_src: "{{compose_dir}}"
+    register: startup-output
+
+- debug:
+    var: startup-output

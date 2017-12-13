@@ -1,0 +1,24 @@
+---
+- name: Start docker app teamspeak-server
+  docker_service:
+    project_name: teamspeak-server
+    state: present
+    definition:
+      version: '3'
+      services:
+        teamspeak:
+          image: aheil/teamspeak3-server
+          container_name: teamspeak
+          hostname: teamspeak
+          restart: on-failure
+          volumes:
+            - "{{appdata}}/teamspeak:/data"
+          network_mode: bridge
+          ports:
+            - "9987:9987/udp"
+            - "10011:10011"
+            - "30033:30033"
+    register: startup-output
+
+- debug:
+    var: startup-output

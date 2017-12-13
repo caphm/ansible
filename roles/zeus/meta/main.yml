@@ -1,6 +1,4 @@
 ---
 dependencies:
-  - { role: docker }
-  - { role: docker-compose }
   - { role: mergerfs }
   - { role: snapraid }

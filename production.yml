@@ -3,10 +3,10 @@
 - hosts: production
   become: true
   roles:
-    - { role: "docker", tags: "docker" }
-    - { role: "docker-compose", tags: "docker_compose" }
-    - { role: "mergerfs", tags: "mergerfs" }
-    - { role: "snapraid", tags: "snapraid" }
-    - { role: "vm-host", tags: "vm_host" }
     - { role: "print-server", tags: "print_server" }
-    - { role: "zeus", tags: "zeus" }
+    - { role: "htpc", tags: "htpc" }
+    - { role: "kodi-alexa-skillhost", tags: "kodi-alexa" }
+    - { role: "media-server", tags: "media-server" }
+    - { role: "teamspeak-server", tags: "teamspeak-server" }
+    - { role: "onedrive-client", tags: "onedrive-client" }
+    - { role: "nginx-reverse-proxy", tags: "nginx-reverse-proxy" }

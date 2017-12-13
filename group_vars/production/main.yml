@@ -1,0 +1,55 @@
+---
+# Mounts & storage array
+mountroot: "/mnt"
+arrayname: "storage"
+diskbasename: "disk"
+arraypath: "{{mountroot}}/{{arrayname}}"
+
+mounts:
+  - { name: "parity1", src: "/dev/disk/by-label/8.0T-Seagate-P1", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{diskbasename}}1", src: "/dev/disk/by-label/8.0T-Seagate-D1", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{diskbasename}}2", src: "/dev/disk/by-label/3.0T-WD-D2", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{diskbasename}}3", src: "/dev/disk/by-label/3.0T-WD-D3", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{arrayname}}", src: "{{mountroot}}/{{diskbasename}}*", fs: fuse.mergerfs, opts: "defaults,allow_other,direct_io,use_ino,minfreespace=50G,fsname=mergerfs"}
+
+folders:
+  # on all drives
+  - disk1/media/3d-movies
+  - disk2/media/3d-movies
+  - disk3/media/3d-movies
+  - disk1/media/2d-movies
+  - disk2/media/2d-movies
+  - disk3/media/2d-movies
+  - disk1/media/tv-shows
+  - disk2/media/tv-shows
+  - disk3/media/tv-shows
+  - disk1/software
+  - disk2/software
+  - disk3/software
+  # only on disk2
+  - disk2/backups
+  - disk2/media/videos
+  - disk2/media/Musik
+  # only on disk3
+  - disk3/downloads
+  - disk3/media/audio-books
+  - disk3/media/photos
+
+# Onedrive instances
+onedrives:
+  - { name: "od_music",
+      owner: "{{defaultuser.name}}", uid: "{{defaultuser.uid}}", gid: "{{defaultuser.gid}}",
+      configdir: "{{appdata}}/od_music",
+      destdir: "{{arraypath}}/media",
+      config: "od_default.conf",
+      synclist:
+        - Musik
+    }
+  - { name: "od_photos",
+      owner: "{{defaultuser.name}}", uid: "{{defaultuser.uid}}", gid: "{{defaultuser.gid}}", 
+      configdir: "{{appdata}}/od_photos",
+      destdir: "{{arraypath}}/media/photos",
+      config: "od_default.conf",
+      synclist: 
+        - Bilder/Fotos
+    }

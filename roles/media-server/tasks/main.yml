@@ -1,0 +1,90 @@
+---
+- name: Create folder for Plex transcoder
+  file:
+    dest: "{{transcode_dir}}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0777
+
+- name: Start docker app media-server
+  docker_service:
+    project_name: media-server
+    state: present
+    definition:
+      version: '3'
+      services:
+        plex:
+          image: plexinc/pms-docker:public
+          container_name: plex
+          hostname: plex
+          restart: on-failure
+          volumes:
+            - "{{appdata}}/plex:/config"
+            - "{{transcode_dir}}:/transcode"
+            - "{{arraypath}}/media:/library"
+          network_mode: bridge
+          ports:
+            - "32400:32400/tcp"
+            - "1900:1900/udp"
+            - "3005:3005/tcp"
+            - "5353:5353/udp"
+            - "8324:8324/tcp"
+            - "32410:32410/udp"
+            - "32412:32412/udp"
+            - "32413:32413/udp"
+            - "32414:32414/udp"
+            - "32469:32469/tcp"
+          environment:
+            - "PLEX_CLAIM={{PLEX_CLAIM}}"
+            - "PLEX_UID={{defaultuser.uid}}"
+            - "PLEX_GID={{defaultuser.maingid}}"
+            - CHANGE_CONFIG_DIR_OWNERSHIP=false
+            - TZ=Europe/Berlin
+            - ALLOWED_NETWORKS=192.168.1.0/24
+
+        filebot:
+          image: rednoah/filebot:node
+          container_name: filebot
+          hostname: filebot
+          restart: on-failure
+          volumes:
+            - "{{appdata}}/filebot:/data"
+            - "{{arraypath}}/downloads:/download"
+            - "{{arraypath}}/media:/out"
+          network_mode: bridge
+          ports:
+            - "5452:5452"
+
+        jdownloader:
+          image: aptalca/docker-jdownloader2
+          container_name: jdownloader
+          hostname: jdownloader
+          restart: on-failure
+          volumes:
+            - "{{appdata}}/jdownloader:/config"
+            - "{{arraypath}}/downloads:/download"
+          network_mode: bridge
+          ports:
+            - "5453:8080"
+          environment:
+            - WIDTH=1280
+            - HEIGHT=720
+            - TZ=Europe/Berlin
+            - "USER_ID={{defaultuser.uid}}"
+            - "GROUP_ID={{defaultuser.maingid}}"
+    register: startup-output
+
+- debug:
+    var: startup-output
+
+- name: WORKAROUND plex docker /transcode permissions - add container to inventory
+  add_host:
+    name: plex
+    ansible_connection: docker
+  changed_when: false
+
+- name: WORKAROUND plex docker /transcode permissions - update permissions
+  delegate_to: plex
+  become: false
+  raw: chown plex:plex /transcode

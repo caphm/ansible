@@ -21,7 +21,7 @@
   # https://github.com/debops/ansible-samba/blob/master/defaults/main.yml
 - name: install samba config
   copy:
-    src: etc/samba/smb.conf
+    src: smb.conf
     dest: /etc/samba/smb.conf
     owner: root
     group: root
@@ -40,18 +40,10 @@
 
 - name: install nfs config
   copy:
-    src: etc/exports
+    src: exports
     dest: /etc/exports
     owner: root
     group: root
   notify:
     - exportfs
     - restart nfs service
-
-################################################################################
-# afp
-################################################################################
-
-# Jessie seems not to include netatalk out the box, it needs to be compiled.
-# Screw that for something I hardly use. If / when support is added and I get
-# around to caring I'll add it here.

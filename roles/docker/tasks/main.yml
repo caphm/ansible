@@ -33,3 +33,28 @@
     name: docker
     state: started
     enabled: yes
+
+- name: "Add default user '{{defaultuser.name}}' to docker group"
+  user:
+    name: "{{defaultuser.name}}"
+    groups: docker
+    append: yes
+
+- name: "Create directory for docker appdata in home folder of user '{{defaultuser.name}}'"
+  file:
+    dest: "{{appdata}}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
+- name: Add useful docker scripts to /usr/bin
+  copy:
+    src: "{{item}}"
+    dest: "/usr/bin/{{item}}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - dtail
+    - dcreate
+    - dreplace
