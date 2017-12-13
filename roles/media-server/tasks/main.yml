@@ -109,6 +109,13 @@
   become: false
   raw: chown plex:plex /transcode
 
+- name: Create folder for plex certificates
+  file:
+    dest: "{{apphome_plex}}/certs"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
 - name: Put script to convert Letsencrypt certificate to PKCS12
   template:
     src: convert-certificate.sh
