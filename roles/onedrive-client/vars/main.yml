@@ -1,19 +1,19 @@
 ---
 # Onedrive instances
 onedrives:
-  - { name: "od_music",
-      owner: "{{defaultuser.name}}", uid: "{{defaultuser.uid}}", gid: "{{defaultuser.gid}}",
-      configdir: "{{appdata}}/od_music",
-      destdir: "{{arraypath}}/media",
-      config: "od_default.conf",
-      synclist:
+  - name: "od_music"
+    owner: "{{defaultuser.name}}"
+    uid: "{{defaultuser.uid}}"
+    gid: "{{defaultuser.gid}}"
+    configdir: "{{appdata}}/od_music",
+    destdir: "{{arraypath}}/media",
+    config: "od_default.conf",
+    synclist:
         - Musik
-    }
-  - { name: "od_photos",
-      owner: "{{defaultuser.name}}", uid: "{{defaultuser.uid}}", gid: "{{defaultuser.gid}}", 
-      configdir: "{{appdata}}/od_photos",
-      destdir: "{{arraypath}}/media/photos",
-      config: "od_default.conf",
-      synclist: 
-        - Bilder/Fotos
-    }
+  - name: "od_photos",
+    owner: "{{defaultuser.name}}", uid: "{{defaultuser.uid}}", gid: "{{defaultuser.gid}}", 
+    configdir: "{{appdata}}/od_photos",
+    destdir: "{{arraypath}}/media/photos",
+    config: "od_default.conf",
+    synclist: 
+      - Bilder/Fotos
