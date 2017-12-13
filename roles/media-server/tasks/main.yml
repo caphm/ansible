@@ -94,7 +94,7 @@
             - TZ=Europe/Berlin
             - "USER_ID={{defaultuser.uid}}"
             - "GROUP_ID={{defaultuser.maingid}}"
-    register: startup-output
+  register: startup-output
 
 - debug:
     var: startup-output

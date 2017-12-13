@@ -16,7 +16,7 @@
     project_name: onedrive-client
     state: present
     project_src: "{{compose_dir}}"
-    register: startup-output
+  register: startup-output
 
 - debug:
     var: startup-output
