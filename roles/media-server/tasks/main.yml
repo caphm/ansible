@@ -112,7 +112,7 @@
 - name: Put script to convert Letsencrypt certificate to PKCS12
   template:
     src: convert-certificate.sh
-    dest: "{{apphome_plex}}/certs"
+    dest: "{{apphome_plex}}/certs/convert-certificate.sh"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0755
