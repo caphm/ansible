@@ -1,0 +1,50 @@
+---
+- name: Create required folders for nginx-reverse-proxy
+  file:
+    dest: "{{item.host_path}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  with_items: "{{nginx_directories}}"
+
+- name: Start docker app nginx-reverse-proxy
+  docker_service:
+    project_name: nginx-reverse-proxy
+    state: present
+    definition:
+      version: '2'
+      services:
+        nginx-proxy:
+          image: jwilder/nginx-proxy
+          container_name: nginx-proxy
+          hostname: nginx-proxy
+          restart: on-failure
+          labels:
+            - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
+          volumes:
+            - "{{nginx_directories[0].host_path}}:{{nginx_directories[0].container_path}}:ro"
+            - "{{nginx_directories[1].host_path}}:{{nginx_directories[1].container_path}}"
+            - "{{nginx_directories[2].host_path}}:{{nginx_directories[2].container_path}}"
+            - /var/run/docker.sock:/tmp/docker.sock:ro
+          network_mode: bridge
+          ports:
+            - "80:80"
+            - "443:443"
+          environment:
+            - DEFAULT_HOST=caphm.de
+        nginx-proxy-companion:
+          image: jrcs/letsencrypt-nginx-proxy-companion
+          container_name: nginx-proxy-companion
+          hostname: nginx-proxy-companion
+          restart: on-failure
+          volumes:
+            - "{{nginx_directories[0].host_path}}:{{nginx_directories[0].container_path}}:rw"
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+          volumes_from:
+            - nginx-proxy
+          network_mode: bridge
+    register: startup-output
+
+- debug:
+    var: startup-output

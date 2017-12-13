@@ -1,0 +1,5 @@
+---
+nginx_directories:
+  - { host_path: "{{appdata}}/nginx-reverse-proxy/certs", container_path: /etc/nginx/certs }
+  - { host_path: "{{appdata}}/nginx-reverse-proxy/vhost.d",container_path: /etc/nginx/vhost.d }
+  - { host_path: "{{appdata}}/nginx-reverse-proxy/html",container_path: /usr/share/nginx/html }

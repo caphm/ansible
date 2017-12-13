@@ -1,2 +1,3 @@
 ---
 transcode_dir: /tmp/plex-transcode
+PLEX_CLAIM_TOKEN: pass_via_commandline

@@ -1,4 +1,20 @@
 ---
+- set_fact:
+    apphome_plex: "{{appdata}}/plex"
+    apphome_filebot: "{{appdata}}/filebot"
+    apphome_jdownloader: "{{appdata}}/jdownloader"
+
+- name: Create media-server appdata directory
+  file:
+    dest: "{{item}}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_items:
+    - "{{apphome_plex}}"
+    - "{{apphome_filebot}}"
+    - "{{apphome_jdownloader}}"
+
 - name: Create folder for Plex transcoder
   file:
     dest: "{{transcode_dir}}"
@@ -12,7 +28,7 @@
     project_name: media-server
     state: present
     definition:
-      version: '3'
+      version: '2'
       services:
         plex:
           image: plexinc/pms-docker:public
@@ -20,7 +36,7 @@
           hostname: plex
           restart: on-failure
           volumes:
-            - "{{appdata}}/plex:/config"
+            - "{{apphome_plex}}:/config"
             - "{{transcode_dir}}:/transcode"
             - "{{arraypath}}/media:/library"
           network_mode: bridge
@@ -36,12 +52,17 @@
             - "32414:32414/udp"
             - "32469:32469/tcp"
           environment:
-            - "PLEX_CLAIM={{PLEX_CLAIM}}"
+            - "PLEX_CLAIM='{{PLEX_CLAIM_TOKEN}}'"
             - "PLEX_UID={{defaultuser.uid}}"
             - "PLEX_GID={{defaultuser.maingid}}"
+            - "ADVERTISE_IP='http://{{ansible_default_ipv4.address}}:32400/'"
             - CHANGE_CONFIG_DIR_OWNERSHIP=false
             - TZ=Europe/Berlin
-            - ALLOWED_NETWORKS=192.168.1.0/24
+            - ALLOWED_NETWORKS="192.168.1.0/24"
+            - VIRTUAL_HOST=plex.caphm.de
+            - VIRTUAL_PORT=32400
+            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
+            - "LETSENCRYPT_EMAIL={{email_address}}"
 
         filebot:
           image: rednoah/filebot:node
@@ -49,7 +70,7 @@
           hostname: filebot
           restart: on-failure
           volumes:
-            - "{{appdata}}/filebot:/data"
+            - "{{apphome_filebot}}:/data"
             - "{{arraypath}}/downloads:/download"
             - "{{arraypath}}/media:/out"
           network_mode: bridge
@@ -62,7 +83,7 @@
           hostname: jdownloader
           restart: on-failure
           volumes:
-            - "{{appdata}}/jdownloader:/config"
+            - "{{apphome_jdownloader}}:/config"
             - "{{arraypath}}/downloads:/download"
           network_mode: bridge
           ports:

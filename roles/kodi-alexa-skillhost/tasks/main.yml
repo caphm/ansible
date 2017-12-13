@@ -1,13 +1,18 @@
 ---
+- set_fact:
+    apphome: "{{appdata}}/kodi-alexa"
+
 - name: Create kodi-alexa appdata directory
   file:
-    dest: "{{appdata}}/kodi-alexa/"
+    dest: "{{apphome}}"
     state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
 
 - name: Install kodi-alexa config
   copy:
     src: kodi.config
-    dest: "{{appdata}}/kodi-alexa/kodi.config"
+    dest: "{{apphome}}/kodi.config"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0755
@@ -17,7 +22,7 @@
     project_name: kodi-alexa-skillhost
     state: present
     definition:
-      version: '3'
+      version: '2'
       services:
         kodi-alexa:
           image: caphm/kodi-alexa:snapshot
@@ -25,12 +30,15 @@
           hostname: kodi-alexa
           restart: on-failure
           volumes:
-            - "{{appdata}}/kodi-alexa:/config"
+            - "{{apphome}}:/config"
           network_mode: bridge
           ports:
             - "5454:8000"
           environment:
             - LOGLEVEL=info
+            - VIRTUAL_HOST=kodi.caphm.de
+            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
+            - "LETSENCRYPT_EMAIL={{email_address}}"
     register: startup-output
 
 - debug:
