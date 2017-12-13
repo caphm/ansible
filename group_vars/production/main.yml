@@ -29,8 +29,8 @@ folders:
   # only on disk2
   - disk2/backups
   - disk2/media/videos
-  - disk2/media/Musik
   # only on disk3
   - disk3/downloads
   - disk3/media/audio-books
+  - disk3/media/Musik
   - disk3/media/photos
