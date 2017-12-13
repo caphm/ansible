@@ -51,13 +51,13 @@
             - "32414:32414/udp"
             - "32469:32469/tcp"
           environment:
-            - "PLEX_CLAIM='{{PLEX_CLAIM_TOKEN}}'"
+            - "PLEX_CLAIM={{PLEX_CLAIM_TOKEN}}"
             - "PLEX_UID={{defaultuser.uid}}"
             - "PLEX_GID={{defaultuser.maingid}}"
-            - "ADVERTISE_IP='http://{{ansible_default_ipv4.address}}:32400/'"
+            - "ADVERTISE_IP=http://{{ansible_default_ipv4.address}}:32400"
             - CHANGE_CONFIG_DIR_OWNERSHIP=false
             - TZ=Europe/Berlin
-            - ALLOWED_NETWORKS="192.168.1.0/24"
+            - ALLOWED_NETWORKS=192.168.1.0/24
             - VIRTUAL_HOST=plex.caphm.de
             - VIRTUAL_PORT=32400
             - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
