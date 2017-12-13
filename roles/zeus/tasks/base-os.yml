@@ -1,68 +1,68 @@
 ---
 - name: "FIX: Ubuntu 16.04 LTS doesn't come with certain modules, required by ansible"
   apt:
-		pkg: "{{ item }}"
-		state: present
+    pkg: "{{ item }}"
+    state: present
   with_items:
-		- python-minimal
-		- aptitude
+    - python-minimal
+    - aptitude
 
 - name: Add Ansible repository and update apt cache
   apt_repository:
-		repo: "ppa:ansible/ansible"
-		update_cache: yes
-		state: present
+    repo: "ppa:ansible/ansible"
+    update_cache: yes
+    state: present
 
 - name: ensure os is up to date
   apt:
-		update_cache: yes
-		upgrade: full
-		cache_valid_time: 300
+    update_cache: yes
+    upgrade: full
+    cache_valid_time: 300
 
 - name: install packages
   apt:
-  	pkg: "{{ item }}"
-  	state: present
+    pkg: "{{ item }}"
+    state: present
   with_items:
-		- bash-completion
-		- curl
-		- exiftool
-		- fuse
-		- glances
-		- git
-		- htop
-		- iftop
-		- iotop
-		- jq
-		- lynx
-		- mc
-		- ncdu
-		- nmap
-		- openssh-server
-		- python
-		- reptyr
-		- screen
-		- smartmontools
-		- sudo
-		- tmux
-		- tree
-		- wget
+    - bash-completion
+    - curl
+    - exiftool
+    - fuse
+    - glances
+    - git
+    - htop
+    - iftop
+    - iotop
+    - jq
+    - lynx
+    - mc
+    - ncdu
+    - nmap
+    - openssh-server
+    - python
+    - reptyr
+    - screen
+    - smartmontools
+    - sudo
+    - tmux
+    - tree
+    - wget
   tags:
-		- packages
+    - packages
 
 - name: create main group for default user
-	group:
-		name: "{{defaultuser.maingroup}}"
-		gid: "{{defaultuser.maingid}}"
-		state: present
-		system: no
+  group:
+    name: "{{defaultuser.maingroup}}"
+    gid: "{{defaultuser.maingid}}"
+    state: present
+    system: no
 
 - name: create default user
   user:
-		uid: "{{defaultuser.uid}}"
-		name: "{{defaultuser.name}}"
-		group: "{{defaultuser.maingroup}}"
-		groups: "{{defaultuser.groups}}"
-		state: present
-		system: no
-		append: yes
+    uid: "{{defaultuser.uid}}"
+    name: "{{defaultuser.name}}"
+    group: "{{defaultuser.maingroup}}"
+    groups: "{{defaultuser.groups}}"
+    state: present
+    system: no
+    append: yes
