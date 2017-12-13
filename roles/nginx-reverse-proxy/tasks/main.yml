@@ -20,7 +20,6 @@
           container_name: nginx-proxy
           hostname: nginx-proxy
           restart: on-failure
-          pull: yes
           labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
           volumes:
@@ -39,7 +38,6 @@
           container_name: nginx-proxy-companion
           hostname: nginx-proxy-companion
           restart: on-failure
-          pull: yes
           volumes:
             - "{{nginx_directories[0].host_path}}:{{nginx_directories[0].container_path}}:rw"
             - /var/run/docker.sock:/var/run/docker.sock:ro

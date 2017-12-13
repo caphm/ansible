@@ -29,7 +29,6 @@
           container_name: kodi-alexa
           hostname: kodi-alexa
           restart: on-failure
-          pull: yes
           volumes:
             - "{{apphome}}:/config"
           network_mode: bridge

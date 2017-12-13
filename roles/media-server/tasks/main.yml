@@ -31,11 +31,10 @@
       version: '2'
       services:
         plex:
-          image: plexinc/pms-docker:latest
+          image: plexinc/pms-docker:public
           container_name: plex
           hostname: plex
           restart: on-failure
-          pull: yes
           volumes:
             - "{{apphome_plex}}:/config"
             - "{{transcode_dir}}:/transcode"
@@ -69,7 +68,6 @@
           container_name: filebot
           hostname: filebot
           restart: on-failure
-          pull: yes
           volumes:
             - "{{apphome_filebot}}:/data"
             - "{{arraypath}}/downloads:/download"
@@ -83,7 +81,6 @@
           container_name: jdownloader
           hostname: jdownloader
           restart: on-failure
-          pull: yes
           volumes:
             - "{{apphome_jdownloader}}:/config"
             - "{{arraypath}}/downloads:/download"
