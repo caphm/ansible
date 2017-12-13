@@ -3,15 +3,15 @@
   file:
     dest: "{{ appdata }}"
     state: directory
-    owner: caphm
-    group: caphm
+    owner: "{{caphmuid}}"
+    group: "{{caphmgid}}"
 
 - name: create tmp folder for plex transcoder
   file:
     dest: /tmp/plex-transcode
     state: directory
-    owner: caphm
-    group: caphm
+    owner: "{{caphmuid}}"
+    group: "{{caphmgid}}"
     mode: 0777
 
 - name: add dtail
@@ -39,12 +39,16 @@
     src: "docker-compose.yml"
     dest: "{{appdata}}/docker-compose.yml"
     mode: 0755
+    owner: "{{caphmuid}}"
+    group: "{{caphmgid}}"
 
 - name: copy docker-compose-onedrive.yml into position
   template:
     src: "docker-compose-onedrive.yml"
     dest: "{{appdata}}/docker-compose-onedrive.yml"
     mode: 0755
+    owner: "{{caphmuid}}"
+    group: "{{caphmgid}}"
 
 - name: use docker-compose to bring up apps
   shell: "docker-compose -f {{appdata}}/docker-compose.yml up -d"
