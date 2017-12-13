@@ -6,7 +6,7 @@
 
 - name: install snapraid configuration
   copy:
-    src: {{ snapraidconf|basename }}
+    src: "{{ snapraidconf|basename }}"
     dest: "{{ snapraidconf }}"
     owner: root
     group: root
