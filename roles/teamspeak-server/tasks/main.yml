@@ -29,7 +29,7 @@
             - "9987:9987/udp"
             - "10011:10011"
             - "30033:30033"
-  register: startup-output
+  register: startup_output
 
 - debug:
-    var: startup-output
+    var: startup_output

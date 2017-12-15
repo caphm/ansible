@@ -94,10 +94,10 @@
             - TZ=Europe/Berlin
             - "USER_ID={{defaultuser.uid}}"
             - "GROUP_ID={{defaultuser.maingid}}"
-  register: startup-output
+  register: startup_output
 
 - debug:
-    var: startup-output
+    var: startup_output
 
 - name: WORKAROUND plex docker /transcode permissions - add container to inventory
   add_host:

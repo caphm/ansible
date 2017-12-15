@@ -6,6 +6,11 @@
 - set_fact:
     compose_dir: /tmp/docker-compose/
 
+- name: Create temp dir for compose file
+  file:
+    dest: "{{compose_dir}}"
+    state: directory
+
 - name: Template out onedrive compose file to host
   template:
     src: onedrive.yml
@@ -17,7 +22,12 @@
     state: present
     pull: "{{update_dockers}}"
     project_src: "{{compose_dir}}"
-  register: startup-output
+  register: startup_output
 
 - debug:
-    var: startup-output
+    var: startup_output
+
+- name: Cleanup temp dir
+  file:
+    dest: "{{compose_dir}}"
+    state: absent

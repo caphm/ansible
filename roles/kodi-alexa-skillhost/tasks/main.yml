@@ -40,7 +40,7 @@
             - VIRTUAL_HOST=kodi.caphm.de
             - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
             - "LETSENCRYPT_EMAIL={{email_address}}"
-  register: startup-output
+  register: startup_output
 
 - debug:
-    var: startup-output
+    var: startup_output

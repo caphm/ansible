@@ -45,7 +45,7 @@
           volumes_from:
             - nginx-proxy
           network_mode: bridge
-  register: startup-output
+  register: startup_output
 
 - debug:
-    var: startup-output
+    var: startup_output
