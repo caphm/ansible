@@ -21,7 +21,7 @@
   docker_service:
     project_name: kodi-alexa-skillhost
     state: present
-    pull: "{{update-dockers}}"
+    pull: "{{update_dockers}}"
     definition:
       version: '2'
       services:
