@@ -4,9 +4,9 @@
   become: true
   roles:
     - { role: "print-server", tags: "print_server" }
-    - { role: "htpc", tags: "htpc" }
-    - { role: "kodi-alexa-skillhost", tags: "kodi-alexa" }
-    - { role: "media-server", tags: "media-server" }
-    - { role: "teamspeak-server", tags: "teamspeak-server" }
-    - { role: "onedrive-client", tags: "onedrive-client" }
-    - { role: "nginx-reverse-proxy", tags: "nginx-reverse-proxy" }
+    - { role: "htpc", tags: ["htpc", "virtual_machines"] }
+    - { role: "kodi-alexa-skillhost", tags: ["kodi-alexa", "docker_apps"] }
+    - { role: "media-server", tags: ["media-server", "docker_apps"] }
+    - { role: "teamspeak-server", tags: ["teamspeak-server", "docker_apps"] }
+    - { role: "onedrive-client", tags: ["onedrive-client", "docker_apps"] }
+    - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker_apps"] }
