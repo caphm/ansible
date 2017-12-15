@@ -34,7 +34,7 @@
           image: plexinc/pms-docker:latest
           container_name: plex
           hostname: plex
-          restart: on-failure
+          restart: always
           volumes:
             - "{{apphome_plex}}:/config"
             - "{{transcode_dir}}:/transcode"
@@ -67,7 +67,7 @@
           image: rednoah/filebot:node
           container_name: filebot
           hostname: filebot
-          restart: on-failure
+          restart: always
           volumes:
             - "{{apphome_filebot}}:/data"
             - "{{arraypath}}/downloads:/download"
@@ -80,7 +80,7 @@
           image: aptalca/docker-jdownloader2
           container_name: jdownloader
           hostname: jdownloader
-          restart: on-failure
+          restart: always
           volumes:
             - "{{apphome_jdownloader}}:/config"
             - "{{arraypath}}/downloads:/download"

@@ -20,7 +20,7 @@
           image: aheil/teamspeak3-server
           container_name: teamspeak
           hostname: teamspeak
-          restart: on-failure
+          restart: always
           volumes:
             - "{{apphome}}:/data"
           network_mode: bridge

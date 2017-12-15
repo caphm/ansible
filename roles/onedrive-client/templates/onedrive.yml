@@ -10,7 +10,7 @@ services:
       - {{od.configdir}}:/config
       - {{od.destdir}}:/onedrive
     network_mode: host
-    restart: on-failure
+    restart: always
     environment:
       - ONEDRIVE_UID={{od.uid}}
       - ONEDRIVE_GID={{od.gid}}

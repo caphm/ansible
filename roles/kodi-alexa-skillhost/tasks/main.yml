@@ -28,7 +28,7 @@
           image: caphm/kodi-alexa:snapshot
           container_name: kodi-alexa
           hostname: kodi-alexa
-          restart: on-failure
+          restart: always
           volumes:
             - "{{apphome}}:/config"
           network_mode: bridge

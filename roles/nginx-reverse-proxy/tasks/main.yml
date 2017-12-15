@@ -19,7 +19,7 @@
           image: jwilder/nginx-proxy
           container_name: nginx-proxy
           hostname: nginx-proxy
-          restart: on-failure
+          restart: always
           labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
           volumes:
@@ -37,7 +37,7 @@
           image: jrcs/letsencrypt-nginx-proxy-companion
           container_name: nginx-proxy-companion
           hostname: nginx-proxy-companion
-          restart: on-failure
+          restart: always
           volumes:
             - "{{nginx_directories[0].host_path}}:{{nginx_directories[0].container_path}}:rw"
             - /var/run/docker.sock:/var/run/docker.sock:ro
