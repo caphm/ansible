@@ -15,6 +15,7 @@
   docker_service:
     project_name: onedrive-client
     state: present
+    pull: "{{update-dockers}}"
     project_src: "{{compose_dir}}"
   register: startup-output
 

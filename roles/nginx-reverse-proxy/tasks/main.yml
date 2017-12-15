@@ -12,6 +12,7 @@
   docker_service:
     project_name: nginx-reverse-proxy
     state: present
+    pull: "{{update-dockers}}"
     definition:
       version: '2'
       services:

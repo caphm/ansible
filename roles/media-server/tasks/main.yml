@@ -27,6 +27,7 @@
   docker_service:
     project_name: media-server
     state: present
+    pull: "{{update-dockers}}"
     definition:
       version: '2'
       services:
