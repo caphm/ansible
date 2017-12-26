@@ -1,0 +1,21 @@
+---
+- set_fact:
+    apphome: "{{appdata}}/kodi-repo"
+
+- name: Install pip dependencies
+  pip:
+    name: gitpython
+    state: present
+
+- name: Create directory for repository
+  file:
+    dest: "{{apphome}}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
+- name: Download create_repo script from github
+  get_url:
+    url: https://raw.githubusercontent.com/chadparry/kodi-repository.chad.parry.org/master/tools/create_repository.py
+    dest: "{{apphome}}"
+    mode: 0755

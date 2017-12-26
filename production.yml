@@ -10,3 +10,4 @@
     - { role: "teamspeak-server", tags: ["teamspeak-server", "docker_apps"] }
     - { role: "onedrive-client", tags: ["onedrive-client", "docker_apps"] }
     - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker_apps"] }
+    - { role: "kodi-repo", tags: "kodi_repo" }

@@ -50,11 +50,6 @@
   tags:
     - packages
 
-- name: Install pip packages
-  pip:
-    name: gitpython
-    state: present
-
 - name: create main group for default user
   group:
     name: "{{defaultuser.maingroup}}"
