@@ -1,0 +1,22 @@
+---
+- name: install packages
+  apt:
+    pkg: "{{ item }}"
+    state: present
+  with_items:
+    - lirc
+    - lirc-x
+
+- name: Put lirc configuration files into place
+  file:
+    src: "{{item}}"
+    dest: /etc/lirc/
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - lircd.conf
+    #- lirc_options.conf
+    - hardware.conf
+  notify:
+    - restart lircd

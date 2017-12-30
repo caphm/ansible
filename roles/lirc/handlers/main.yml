@@ -1,0 +1,5 @@
+---
+- name: restart lircd service
+  service:
+    name: lircd
+    state: restarted
