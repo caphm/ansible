@@ -6,6 +6,8 @@
   with_items:
     - lirc
     - lirc-x
+    - alsa-base
+    - alsa-utils
 
 - name: Put configuration files into place
   copy:
