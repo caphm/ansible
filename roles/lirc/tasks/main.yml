@@ -21,9 +21,9 @@
     - restart lircd
 
 - name: Put remote configurations into place
-  file:
+  copy:
     src: "{{item}}"
-    dest: /etc/lirc/lircd.conf.d/
+    dest: /etc/lirc/lircd.conf
     owner: root
     group: root
     mode: 0644
