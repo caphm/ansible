@@ -8,14 +8,14 @@
     - lirc-x
 
 - name: Put configuration files into place
-  file:
+  copy:
     src: "{{item}}"
     dest: /etc/lirc/
     owner: root
     group: root
     mode: 0644
   with_items:
-    #- lirc_options.conf
+    - lirc_options.conf
     - hardware.conf
   notify:
     - restart lircd
