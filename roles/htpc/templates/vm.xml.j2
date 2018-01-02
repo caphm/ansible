@@ -73,11 +73,6 @@
       <target dev="sda" bus="virtio"/>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x0b" function="0x0"/>
     </disk>
-    <disk type="dir" device="disk">
-      <driver name="qemu" type="fat"/>
-      <source dir="/home/caphm/appdata/htpc"/>
-      <target dev="sdc" bus="scsi"/>
-    </disk>
 
     <interface type="bridge">
       <source bridge="br0"/>
