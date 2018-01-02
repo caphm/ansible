@@ -73,6 +73,11 @@
       <target dev="sda" bus="virtio"/>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x0b" function="0x0"/>
     </disk>
+    <disk type="dir" device="disk">
+      <driver name="qemu" type="fat"/>
+      <source dir="/home/caphm/appdata/htpc"/>
+      <target dev="sdc" bus="scsi"/>
+    </disk>
 
     <interface type="bridge">
       <source bridge="br0"/>
@@ -98,39 +103,6 @@
       <address type="pci" domain="0x0000" bus="0x00" slot="0x03" function="0x0" multifunction="on"/>
     </hostdev>
 
-    <!-- Onboard sound card -->
-<!--     <hostdev mode="subsystem" type="pci" managed="yes">
-      <driver name="vfio"/>
-      <source>
-        <address domain="0x0000" bus="0x00" slot="0x1b" function="0x0"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x1b" function="0x0" multifunction="on"/>
-    </hostdev> -->
-
-    <!-- Front panel USB3 controller -->
-<!--     <hostdev mode="subsystem" type="pci" managed="yes">
-      <driver name="vfio"/>
-      <source>
-        <address domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x14" function="0x0"/>
-    </hostdev> -->
-
-    <!-- Intel MEI -->
-<!--     <hostdev mode="subsystem" type="pci" managed="yes">
-      <driver name="vfio"/>
-      <source>
-        <address domain="0x0000" bus="0x00" slot="0x16" function="0x0"/>
-      </source>
-      <address type="pci" domain="0x0000" bus="0x00" slot="0x16" function="0x0"/>
-    </hostdev> -->
-
-<!--     <hostdev mode="subsystem" type="usb" startupPolicy="optional">
-      <source>
-        <vendor id="0x2319"/>
-        <product id="0x00b2"/>
-      </source>
-    </hostdev> -->
     <hostdev mode="subsystem" type="usb" startupPolicy="optional">
       <source>
         <vendor id="0x1d57"/>
