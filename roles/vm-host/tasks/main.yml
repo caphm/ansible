@@ -12,6 +12,7 @@
     - libvirt-bin
     - virtinst
     - python-libvirt
+    - libguestfs-tools
 
 - name: prepare system configuration for IGP passthrough
   include_tasks: prepare-system.yml

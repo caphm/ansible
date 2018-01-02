@@ -18,3 +18,4 @@
   virt:
     name: htpc
     state: running
+  when: start_vms
