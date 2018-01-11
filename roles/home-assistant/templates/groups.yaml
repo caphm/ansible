@@ -10,9 +10,8 @@ default_view:
   view: yes
   icon: mdi:home 
   entities:
-    - group.wohnzimmer
+    - group.wohnzimmer_licht
     - switch.flux
-    - group.all_lights
 
 wohnzimmer:
   name: Wohnzimmer

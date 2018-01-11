@@ -68,6 +68,7 @@ tradfri:
 
 switch:
   - platform: flux
+    name: Lichtfarbe automatisch anpassen
     disable_brightness_adjust: true
     lights:
       - light.deckenleuchte
