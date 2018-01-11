@@ -1,0 +1,5 @@
+group:
+  Wohnzimmer:
+    view: yes
+    entities:
+      - light.deckenleuchte
