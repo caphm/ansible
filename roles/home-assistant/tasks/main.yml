@@ -1,0 +1,38 @@
+---
+- set_fact:
+    apphome: "{{appdata}}/home-assistant"
+
+- name: Create appdata directory
+  file:
+    dest: "{{apphome}}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
+- name: Start docker app home-assistant
+  docker_service:
+    project_name: home-assistant
+    state: present
+    pull: "{{update_dockers}}"
+    definition:
+      version: '2'
+      services:
+        plex:
+          image: homeassistant/home-assistant
+          container_name: home-assistant
+          hostname: home-assistant
+          restart: always
+          volumes:
+            - "{{apphome}}:/config"
+          network_mode: bridge
+          ports:
+            - "8123:8123"
+          environment:
+            - TZ=Europe/Berlin
+            - VIRTUAL_HOST=smarthome.caphm.de
+            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
+            - "LETSENCRYPT_EMAIL={{email_address}}"
+  register: startup_output
+
+- debug:
+    var: startup_output
