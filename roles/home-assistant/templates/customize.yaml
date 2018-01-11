@@ -3,6 +3,7 @@ light.deckenleuchte:
 switch.zauberkugel:
   icon: mdi:lamp
 switch.flux:
+  friendly_name: Lichtfarbe automatisch anpassen
   icon: mdi:weather-sunset-down
 sensor.tradfri_remote_control:
   friendly_name: Lichtschalter

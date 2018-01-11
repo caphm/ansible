@@ -68,8 +68,9 @@ tradfri:
 
 switch:
   - platform: flux
-    name: Lichtfarbe automatisch anpassen
-    disable_brightness_adjust: true
+    disable_brightness_adjust: True
+    brightness: 254
+    mode: mired
     lights:
       - light.deckenleuchte
   - platform: tplink
