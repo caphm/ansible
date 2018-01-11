@@ -5,13 +5,14 @@ default_view:
     - switch.flux
     - group.wohnzimmer
 
-Wohnzimmer:
-  view: no
+wohnzimmer:
+  name: Wohnzimmer
   entities:
-    - group.wohnzimmerlicht
+    - group.wohnzimmer_licht
     - sensor.tradfri_remote_control
 
-Wohnzimmerlicht:
+wohnzimmer_licht:
+  name: Licht
   entities:
     - light.deckenleuchte
     - switch.zauberkugel
