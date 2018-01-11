@@ -2,14 +2,16 @@ default_view:
   view: yes
   icon: mdi:home 
   entities:
-    - group.wohnzimmer
     - switch.flux
+    - group.wohnzimmer
+
+Wohnzimmer:
+  view: no
+  entities:
+    - group.wohnzimmerlicht
+    - sensor.tradfri_remote_control
+
 Wohnzimmerlicht:
   entities:
     - light.deckenleuchte
     - switch.zauberkugel
-Wohnzimmer:
-  view: yes
-  entities:
-    - group.wohnzimmerlicht
-    - sensor.tradfri_remote_control
