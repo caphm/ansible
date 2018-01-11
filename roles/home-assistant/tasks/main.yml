@@ -9,6 +9,14 @@
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
 
+- name: Install configuration
+  template:
+    src: configuration.yaml
+    dest: "{{apphome}}/configuration.yaml"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0644
+
 - name: Start docker app home-assistant
   docker_service:
     project_name: home-assistant
