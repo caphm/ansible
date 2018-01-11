@@ -8,3 +8,6 @@ switch.flux:
 sensor.tradfri_remote_control:
   friendly_name: Lichtschalter
   icon: mdi:remote
+group.all_switches:
+  friendly_name: Schalter
+  icon: mdi:toggle-switch
