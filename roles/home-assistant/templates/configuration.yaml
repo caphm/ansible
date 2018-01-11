@@ -70,8 +70,6 @@ switch:
   - platform: flux
     lights:
       - light.deckenleuchte
-
-switch:
   - platform: tplink
     host: 192.168.1.198
 

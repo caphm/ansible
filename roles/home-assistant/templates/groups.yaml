@@ -1,5 +1,22 @@
-group:
-  Wohnzimmer:
-    view: yes
-    entities:
-      - light.deckenleuchte
+wohnzimmer_licht:
+  name: Wohnzimmerlicht
+  entities:
+    - light.deckenleuchte
+    - switch.zauberkugel
+
+# views
+
+default_view:
+  view: yes
+  icon: mdi:home 
+  entities:
+    - group.wohnzimmer
+    - switch.flux
+    - group.all_lights
+
+wohnzimmer:
+  name: Wohnzimmer
+  view: yes
+  entities:
+    - group.wohnzimmer_licht
+    - sensor.tradfri_remote_control

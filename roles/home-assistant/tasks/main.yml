@@ -9,13 +9,17 @@
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
 
-- name: Install configuration
+- name: Install configuration files
   template:
-    src: configuration.yaml
-    dest: "{{apphome}}/configuration.yaml"
+    src: "{{item}}"
+    dest: "{{apphome}}/{{item}}"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0644
+  with_items:
+    - configuration.yaml
+    - groups.yaml
+    - customize.yaml
 
 - name: Start docker app home-assistant
   docker_service:

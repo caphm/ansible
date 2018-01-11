@@ -1,0 +1,9 @@
+light.deckenleuchte:
+  icon: mdi:ceiling-light
+switch.zauberkugel:
+  icon: mdi:lamp
+switch.flux:
+  friendly_name: Lichtfarbe anpassen
+  icon: mdi:weather-sunset-down
+sensor.tradfri_remote_control:
+  friendly_name: Lichtschalter
