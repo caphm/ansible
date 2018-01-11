@@ -7,6 +7,7 @@ default_view:
 
 wohnzimmer:
   name: Wohnzimmer
+  view: yes
   entities:
     - group.wohnzimmer_licht
     - sensor.tradfri_remote_control
