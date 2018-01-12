@@ -39,9 +39,11 @@
           network_mode: bridge
           ports:
             - "8123:8123"
+            - "8300:8300"
           environment:
             - TZ=Europe/Berlin
             - VIRTUAL_HOST=smarthome.caphm.de
+            - VIRTUAL_PORT=8123
             - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
             - "LETSENCRYPT_EMAIL={{email_address}}"
   register: startup_output
