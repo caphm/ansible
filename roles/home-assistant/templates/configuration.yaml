@@ -73,6 +73,9 @@ switch:
   - platform: tplink
     host: 192.168.1.198
 
+emulated_hue:
+  expose_by_default: false
+
 group: !include groups.yaml
 automation: !include automations.yaml
 script: !include scripts.yaml

@@ -1,5 +1,6 @@
 light.deckenleuchte:
   icon: mdi:ceiling-light
+  emulated_hue_hidden: false
 switch.zauberkugel:
   icon: mdi:lamp
 switch.flux:
