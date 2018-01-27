@@ -47,6 +47,7 @@
     - tmux
     - tree
     - wget
+    - bluez
   tags:
     - packages
 
