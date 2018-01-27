@@ -29,23 +29,31 @@
     definition:
       version: '2'
       services:
-        plex:
+        hass-relay:
+          image: tynor88/socat
+          container_name: hass-relay
+          hostname: hass-relay
+          restart: always
+          network_mode: bridge
+          ports:
+            - "18123:18123"
+          environment:
+            - LISTEN_PORT=18123
+            - FORWARD_PORT=8123
+            - VIRTUAL_HOST=smarthome.caphm.de
+            - VIRTUAL_PORT=18123
+            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
+            - "LETSENCRYPT_EMAIL={{email_address}}"
+        home-assistant:
           image: homeassistant/home-assistant
           container_name: home-assistant
           hostname: home-assistant
           restart: always
           volumes:
             - "{{apphome}}:/config"
-          network_mode: bridge
-          ports:
-            - "8123:8123"
-            - "8300:8300"
+          network_mode: host
           environment:
             - TZ=Europe/Berlin
-            - VIRTUAL_HOST=smarthome.caphm.de
-            - VIRTUAL_PORT=8123
-            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
-            - "LETSENCRYPT_EMAIL={{email_address}}"
   register: startup_output
 
 - debug:
