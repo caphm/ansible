@@ -33,6 +33,7 @@
           image: tynor88/socat
           container_name: hass-relay
           hostname: hass-relay
+          user: "{{defaultuser.uid}}"
           restart: always
           network_mode: bridge
           ports:
@@ -48,13 +49,10 @@
           image: homeassistant/home-assistant
           container_name: home-assistant
           hostname: home-assistant
+          user: "{{defaultuser.uid}}"
           restart: always
           volumes:
             - "{{apphome}}:/config"
           network_mode: host
           environment:
             - TZ=Europe/Berlin
-  register: startup_output
-
-- debug:
-    var: startup_output

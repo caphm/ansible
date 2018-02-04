@@ -20,6 +20,7 @@
           image: jwilder/nginx-proxy
           container_name: nginx-proxy
           hostname: nginx-proxy
+          user: "{{defaultuser.uid}}"
           restart: always
           labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
@@ -38,6 +39,7 @@
           image: jrcs/letsencrypt-nginx-proxy-companion
           container_name: nginx-proxy-companion
           hostname: nginx-proxy-companion
+          user: "{{defaultuser.uid}}"
           restart: always
           volumes:
             - "{{nginx_directories[0].host_path}}:{{nginx_directories[0].container_path}}:rw"
@@ -45,7 +47,3 @@
           volumes_from:
             - nginx-proxy
           network_mode: bridge
-  register: startup_output
-
-- debug:
-    var: startup_output

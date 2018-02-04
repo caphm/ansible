@@ -21,6 +21,7 @@
           image: aheil/teamspeak3-server
           container_name: teamspeak
           hostname: teamspeak
+          user: "{{defaultuser.uid}}"
           restart: always
           volumes:
             - "{{apphome}}:/data"
@@ -29,7 +30,3 @@
             - "9987:9987/udp"
             - "10011:10011"
             - "30033:30033"
-  register: startup_output
-
-- debug:
-    var: startup_output
