@@ -51,7 +51,7 @@
           hostname: www-hello-world
           restart: always
           ports:
-            - "80:8080"
+            - "8080:80"
           environment:
             - GUNICORN_LOGLEVEL=debug
             - VIRTUAL_HOST=caphm.de
