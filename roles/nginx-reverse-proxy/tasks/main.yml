@@ -50,6 +50,7 @@
           container_name: www-hello-world
           hostname: www-hello-world
           restart: always
+          network_mode: bridge
           ports:
             - "8080:80"
           environment:
