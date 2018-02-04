@@ -61,7 +61,7 @@
             - ALLOWED_NETWORKS=192.168.1.0/24
             - VIRTUAL_HOST=plex.caphm.de
             - VIRTUAL_PORT=32400
-            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
+            - "LETSENCRYPT_HOST={{letsencrypt_domains}}"
             - "LETSENCRYPT_EMAIL={{email_address}}"
 
         filebot:

@@ -39,5 +39,5 @@
           environment:
             - GUNICORN_LOGLEVEL=debug
             - VIRTUAL_HOST=kodi.caphm.de
-            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
+            - "LETSENCRYPT_HOST={{letsencrypt_domains}}"
             - "LETSENCRYPT_EMAIL={{email_address}}"

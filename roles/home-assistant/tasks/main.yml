@@ -43,7 +43,7 @@
             - FORWARD_PORT=8123
             - VIRTUAL_HOST=smarthome.caphm.de
             - VIRTUAL_PORT=18123
-            - LETSENCRYPT_HOST=caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de
+            - "LETSENCRYPT_HOST={{letsencrypt_domains}}"
             - "LETSENCRYPT_EMAIL={{email_address}}"
         home-assistant:
           image: homeassistant/home-assistant
