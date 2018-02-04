@@ -1,0 +1,44 @@
+---
+- set_fact:
+    apphome: "{{appdata}}/mosquitto"
+
+- name: Create appdata directory
+  file:
+    dest: "{{apphome}}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
+- name: Install configuration files
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/{{item}}"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0644
+  with_items:
+    - mosquitto.conf
+
+- name: Start docker app mosquitto
+  docker_service:
+    project_name: mosquitto
+    state: present
+    pull: "{{update_dockers}}"
+    definition:
+      version: '2'
+      services:
+        hass-relay:
+          image: eclipse-mosquitto
+          container_name: mosquitto
+          hostname: mosquitto
+          restart: always
+          volumes:
+            - "{{apphome}}/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+            - "{{apphome}}/data:/mosquitto/data"
+            - "{{apphome}}/log:/mosquitto/log"
+          network_mode: bridge
+          ports:
+            - "1883:1883"
+            - "9001:9001"
+          environment:
+            - TZ=Europe/Berlin
