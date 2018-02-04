@@ -68,7 +68,6 @@
           image: rednoah/filebot:node
           container_name: filebot
           hostname: filebot
-          user: "{{defaultuser.uid}}"
           restart: always
           volumes:
             - "{{apphome_filebot}}:/data"
