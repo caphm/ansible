@@ -1,0 +1,33 @@
+global_fluxes:
+  entities:
+    - switch.wz_flux
+
+wz_main:
+  name: Wohnzimmer
+  entities:
+    - switch.wz_flux
+    - group.wz_lights
+    - group.wz_media_players 
+
+wz_lights:
+  name: Licht
+  entities:
+    - light.deckenleuchte
+    - switch.zauberkugel
+
+wz_media_players:
+  name: Mediengeräte
+  entities:
+    - media_player.wz_tv
+    - media_player.wohnzimmer
+
+household_members:
+  name: "Personen im Haushalt"
+  entities:
+    - group.person_cpm
+
+person_cpm:
+  name: Philipp
+  entities:
+    - device_tracker.cpm_motog4_wifi
+    - device_tracker.cpm_motog4_bt

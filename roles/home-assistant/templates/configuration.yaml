@@ -2,10 +2,10 @@ homeassistant:
   # Name of the location where Home Assistant is running
   name: Home
   # Location required to calculate the time the sun rises and sets
-  latitude: 53.576
-  longitude: 10.0467
+  latitude: 53.5921
+  longitude: 10.00315
   # Impacts weather/sunrise data (altitude above sea level in meters)
-  elevation: 0
+  elevation: 10
   # metric for Metric, imperial for Imperial
   unit_system: metric
   # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
@@ -65,20 +65,37 @@ tradfri:
 
 device_tracker:
   - platform: bluetooth_tracker
+  - platform: luci
+    host: 192.168.1.1
+    username: !secret luci_user
+    password: !secret luci_password
+
+sensor:
+  - platform: plex
+    host: 192.168.1.100
+
+media_player:
+  - platform: samsungtv
+    host: 192.168.1.171
+    name: wz_tv
+    timeout: 5
+    mac: f4:7b:5e:1e:9b:81
+  - platform: cast
+    host: Chromecast
+  - platform: plex
+    entity_namespace: plex
+    use_custom_entity_ids: true
 
 switch:
   - platform: flux
+    name: wz_flux 
     disable_brightness_adjust: True
-    #brightness: 254
     mode: mired
     lights:
       - light.deckenleuchte
   - platform: tplink
     host: 192.168.1.198
 
-    #emulated_hue:
-    #  expose_by_default: false
-
-group: !include groups.yaml
+group: !include_dir_merge_named groups/
 automation: !include automations.yaml
 script: !include scripts.yaml
