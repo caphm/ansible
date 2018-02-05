@@ -10,7 +10,7 @@
     group: "{{defaultuser.maingid}}"
 
 - name: Install configuration files
-  template:
+  copy:
     src: "{{item}}"
     dest: "{{apphome}}/{{item}}"
     owner: "{{defaultuser.uid}}"
@@ -31,6 +31,7 @@
           image: eclipse-mosquitto
           container_name: mosquitto
           hostname: mosquitto
+          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           volumes:
             - "{{apphome}}/mosquitto.conf:/mosquitto/config/mosquitto.conf"
