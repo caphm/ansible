@@ -12,4 +12,5 @@
     - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker_apps"] }
     - { role: "kodi-repo", tags: "kodi_repo" }
     - { role: "lirc", tags: "lirc" }
+    - { role: "mosquitto", tags: "mosquitto" }
     - { role: "home-assistant", tags: "home-assistant" }
