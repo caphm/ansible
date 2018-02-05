@@ -1,6 +1,7 @@
 ---
 - set_fact:
     apphome: "{{appdata}}/mosquitto"
+    certs_root: "{{appdata}}/nginx-reverse-proxy/certs"
 
 - name: Create appdata directory
   file:
@@ -8,6 +9,16 @@
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
+
+- name: Create symlinks to certificates
+  file:
+    src: "{{certs_root}}/{{item.src}}"
+    dest: "{{apphome}}/secure/{{item.dest}}"
+    state: link
+  with_items:
+    - { src: caphm.de.chain.pem, dest: ca.pem }
+    - { src: caphm.de.crt, dest: cert.pem }
+    - { src: caphm.de.key, dest: key.pem }
 
 - name: Install configuration files
   copy:
@@ -37,6 +48,7 @@
             - "{{apphome}}/mosquitto.conf:/mosquitto/config/mosquitto.conf"
             - "{{apphome}}/data:/mosquitto/data"
             - "{{apphome}}/log:/mosquitto/log"
+            - "{{apphome}}/secure:/mosquitto/secure"
           network_mode: bridge
           ports:
             - "1883:1883"
