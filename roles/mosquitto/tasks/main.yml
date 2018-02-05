@@ -1,19 +1,23 @@
 ---
 - set_fact:
     apphome: "{{appdata}}/mosquitto"
+    certs: "{{apphome}}/certs"
     certs_root: "{{appdata}}/nginx-reverse-proxy/certs"
 
 - name: Create appdata directory
   file:
-    dest: "{{apphome}}"
+    dest: "{{item}}"
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
+  with_items:
+    - "{{apphome}}"
+    - "{{certs}}"
 
 - name: Create symlinks to certificates
   file:
-    src: "/home/caphm/appdata/nginx-reverse-proxy/certs/{{item.target}}"
-    dest: "{{apphome}}/certs/{{item.link}}"
+    src: "{{certs_root}}/{{item.target}}"
+    dest: "{{certs}}/{{item.link}}"
     state: link
   with_items:
     - { target: "caphm.de.chain.pem", link: "ca.pem" }
@@ -53,6 +57,7 @@
           network_mode: bridge
           ports:
             - "1883:1883"
+            - "8883:8883"
             - "9001:9001"
           environment:
             - TZ=Europe/Berlin
