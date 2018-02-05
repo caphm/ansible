@@ -1,7 +1,6 @@
 ---
 - set_fact:
     apphome: "{{appdata}}/mosquitto"
-    certs: "{{apphome}}/certs"
     certs_root: "{{appdata}}/nginx-reverse-proxy/certs"
 
 - name: Create appdata directory
@@ -12,12 +11,12 @@
     group: "{{defaultuser.maingid}}"
   with_items:
     - "{{apphome}}"
-    - "{{certs}}"
+    - "{{apphome}}/certs"
 
 - name: Create symlinks to certificates
   file:
     src: "{{certs_root}}/{{item.target}}"
-    dest: "{{certs}}/{{item.link}}"
+    dest: "{{apphome}}/certs/{{item.link}}"
     state: link
   with_items:
     - { target: "caphm.de.chain.pem", link: "ca.pem" }
