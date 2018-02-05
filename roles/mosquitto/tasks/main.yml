@@ -12,13 +12,13 @@
 
 - name: Create symlinks to certificates
   file:
-    src: "{{certs_root}}/{{item.src}}"
-    dest: "{{apphome}}/secure/{{item.dest}}"
+    src: "{{apphome}}/secure/{{item.link}}"
+    dest: "{{certs_root}}/{{item.target}}"
     state: link
   with_items:
-    - { src: caphm.de.chain.pem, dest: ca.pem }
-    - { src: caphm.de.crt, dest: cert.pem }
-    - { src: caphm.de.key, dest: key.pem }
+    - { target: caphm.de.chain.pem, link: ca.pem }
+    - { target: caphm.de.crt, link: cert.pem }
+    - { target: caphm.de.key, link: key.pem }
 
 - name: Install configuration files
   copy:
