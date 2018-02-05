@@ -10,7 +10,7 @@
     group: "{{defaultuser.maingid}}"
 
 - name: Install configuration files
-  copy:
+  template:
     src: "{{item}}"
     dest: "{{apphome}}/{{item}}"
     owner: "{{defaultuser.uid}}"
