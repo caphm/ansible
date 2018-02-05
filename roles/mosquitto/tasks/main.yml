@@ -19,9 +19,13 @@
     dest: "{{apphome}}/certs/{{item.link}}"
     state: link
   with_items:
-    - { target: "caphm.de.chain.pem", link: "ca.pem" }
     - { target: "caphm.de.crt", link: "cert.pem" }
     - { target: "caphm.de.key", link: "key.pem" }
+
+- name: Put root CA certificate in place
+  get_url:
+    url: https://letsencrypt.org/certs/isrgrootx1.pem.txt
+    dest: "{{apphome}}/certs/cacert.pem"
 
 - name: Install configuration files
   copy:
