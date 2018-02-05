@@ -33,7 +33,6 @@
           image: tynor88/socat
           container_name: hass-relay
           hostname: hass-relay
-          user: "{{defaultuser.uid}}"
           restart: always
           network_mode: bridge
           ports:
