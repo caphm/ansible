@@ -12,13 +12,13 @@
 
 - name: Create symlinks to certificates
   file:
-    src: "{{certs_root}}/{{item.target}}"
-    dest: "{{apphome}}/secure/{{item.link}}"
+    src: "/home/caphm/appdata/nginx-reverse-proxy/certs/{{item.target}}"
+    dest: "{{apphome}}/certs/{{item.link}}"
     state: link
   with_items:
-    - { target: caphm.de.chain.pem, link: ca.pem }
-    - { target: caphm.de.crt, link: cert.pem }
-    - { target: caphm.de.key, link: key.pem }
+    - { target: "caphm.de.chain.pem", link: "ca.pem" }
+    - { target: "caphm.de.crt", link: "cert.pem" }
+    - { target: "caphm.de.key", link: "key.pem" }
 
 - name: Install configuration files
   copy:
@@ -45,10 +45,11 @@
           user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           volumes:
-            - "{{apphome}}/mosquitto.conf:/mosquitto/config/mosquitto.conf"
+            - "{{apphome}}/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
+            - "{{apphome}}/passwd:/mosquitto/passwd:ro"
             - "{{apphome}}/data:/mosquitto/data"
             - "{{apphome}}/log:/mosquitto/log"
-            - "{{apphome}}/secure:/mosquitto/secure"
+            - "{{apphome}}/certs:/mosquitto/certs"
           network_mode: bridge
           ports:
             - "1883:1883"
