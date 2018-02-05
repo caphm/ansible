@@ -13,15 +13,6 @@
     - "{{apphome}}"
     - "{{apphome}}/certs"
 
-- name: Create symlinks to certificates
-  file:
-    src: "{{certs_root}}/{{item.target}}"
-    dest: "{{apphome}}/certs/{{item.link}}"
-    state: link
-  with_items:
-    - { target: "caphm.de.crt", link: "cert.pem" }
-    - { target: "caphm.de.key", link: "key.pem" }
-
 - name: Put root CA certificate in place
   get_url:
     url: https://letsencrypt.org/certs/isrgrootx1.pem.txt
@@ -56,7 +47,9 @@
             - "{{apphome}}/passwd:/mosquitto/passwd:ro"
             - "{{apphome}}/data:/mosquitto/data"
             - "{{apphome}}/log:/mosquitto/log"
-            - "{{apphome}}/certs:/mosquitto/certs"
+            - "{{apphome}}/certs/cacert.pem:/mosquitto/certs/cacert.pem:ro"
+            - "{{certs_root}}/caphm.de.crt:/mosquitto/certs/cert.pem:ro"
+            - "{{certs_root}}/caphm.de.key:/mosquitto/certs/key.pem:ro"
           network_mode: bridge
           ports:
             - "1883:1883"
