@@ -9,11 +9,19 @@
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
 
-- name: Install configuration files from github repo
+- name: Download configuration files from github
   git:
     repo: https://github.com/caphm/hass-config.git
-    dest: "{{apphome}}"
-    force: yes
+    dest: /tmp/hass-config
+
+- name: Install configuration files
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_fileglob:
+    - /tmp/hass-config/*
 
 - name: Install secrets
   copy:
