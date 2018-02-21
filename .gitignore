@@ -1,2 +1,4 @@
 .DS_Store
 .vagrant
+roles/home-assistant/files/secrets_clear.yaml
+roles/home-assistant/files/known_devices_clear.yaml
