@@ -33,6 +33,16 @@
     - secrets.yaml
     - known_devices.yaml
 
+- name: Install images
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/www/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_items:
+    - anna.jpg
+    - cpm.jpg
+
 - name: Start docker app home-assistant
   docker_service:
     project_name: home-assistant
