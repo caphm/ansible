@@ -1,0 +1,53 @@
+---
+- name: Create appdata directory
+  file:
+    dest: "{{apphome}}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
+- name: Download configuration files from github
+  git:
+    repo: https://github.com/caphm/hass-config.git
+    dest: /tmp/hass-config
+
+- name: Install configuration files
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_fileglob:
+    - /tmp/hass-config/*
+  notify: docker restart home-assistant
+
+- name: Install package configuration files
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/packages"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_fileglob:
+    - /tmp/hass-config/packages/*
+  notify: docker restart home-assistant
+
+- name: Install secrets
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_items:
+    - secrets.yaml
+    - known_devices.yaml
+  notify: docker restart home-assistant
+
+- name: Install images
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/www/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_items:
+    - anna.jpg
+    - cpm.jpg
