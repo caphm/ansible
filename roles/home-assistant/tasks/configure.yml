@@ -52,13 +52,28 @@
     - anna.jpg
     - cpm.jpg
 
-- name: Install customUI update script
-  get_url:
-    url: https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/update.sh?raw=true
-    dest: "{{apphome}}/update.sh"
+# - name: Install customUI update script
+#   get_url:
+#     url: https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/update.sh?raw=true
+#     dest: "{{apphome}}/update.sh"
+#     owner: "{{defaultuser.uid}}"
+#     group: "{{defaultuser.maingid}}"
+#     mode: 0755
+
+# - name: Install/Update customUI
+#   shell: "{{apphome}}/update.sh"
+
+- name: Download customizer component files from github
+  git:
+    repo: https://github.com/andrey-git/home-assistant-customizer.git
+    dest: /tmp/hass-customizer-component
+
+- name: Install customizer component
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/custom_components/customizer"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
-    mode: 0755
-
-- name: Install/Update customUI
-  shell: "{{apphome}}/update.sh"
+  with_fileglob:
+    - /tmp/hass-customizer-component/customizer/*
+  notify: docker restart home-assistant
