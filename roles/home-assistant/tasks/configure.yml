@@ -31,6 +31,16 @@
     - /tmp/hass-config/packages/*
   notify: docker restart home-assistant
 
+- name: Install custom components for switch platform
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/custom_components/switch/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_fileglob:
+    - /tmp/hass-config/custom_components/switch/*
+  notify: docker restart home-assistant
+
 - name: Install secrets
   copy:
     src: "{{item}}"
