@@ -51,3 +51,14 @@
   with_items:
     - anna.jpg
     - cpm.jpg
+
+- name: Install customUI update script
+  get_url:
+    url: https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/update.sh?raw=true
+    dest: "{{apphome}}/update.sh"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
+
+- name: Install/Update customUI
+  shell: "{{apphome}}/update.sh"
