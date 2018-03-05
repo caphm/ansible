@@ -41,6 +41,16 @@
     - /tmp/hass-config/custom_components/switch/*
   notify: docker restart home-assistant
 
+- name: Install custom components for sensor platform
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/custom_components/sensor/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_fileglob:
+    - /tmp/hass-config/custom_components/sensor/*
+  notify: docker restart home-assistant
+
 - name: Install secrets
   copy:
     src: "{{item}}"
