@@ -51,6 +51,16 @@
     - /tmp/hass-config/custom_components/sensor/*
   notify: docker restart home-assistant
 
+- name: Install custom ui components
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/www/custom_ui/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_fileglob:
+    - /tmp/hass-config/www/custom_ui/*
+  notify: docker restart home-assistant
+
 - name: Install secrets
   copy:
     src: "{{item}}"
