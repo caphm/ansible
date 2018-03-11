@@ -40,6 +40,19 @@
           restart: always
           volumes:
             - "{{apphome}}:/config"
+            - "{{apphome}}/uhttpd.crt:/usr/share/ca-certificates/gateway.residenz.caphm.de.crt"
           network_mode: host
           environment:
             - TZ=Europe/Berlin
+            - REQUESTS_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt
+
+- name: update ca-certificates in container - add container to inventory
+  add_host:
+    name: home-assistant
+    ansible_connection: docker
+  changed_when: false
+
+- name: update ca-certificates in container
+  delegate_to: home-assistant
+  become: true
+  raw: update-ca-certificates
