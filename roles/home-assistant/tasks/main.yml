@@ -28,18 +28,19 @@
           environment:
             - LISTEN_PORT=18123
             - FORWARD_PORT=8123
-            - VIRTUAL_HOST=smarthome.caphm.de
-            - VIRTUAL_PORT=18123
-            - "LETSENCRYPT_HOST={{letsencrypt_domains}}"
-            - "LETSENCRYPT_EMAIL={{email_address}}"
         home-assistant:
           image: homeassistant/home-assistant
           container_name: home-assistant
           hostname: home-assistant
-          user: "{{defaultuser.uid}}"
           restart: always
           volumes:
             - "{{apphome}}:/config"
-          network_mode: host
+          network_mode: bridge
+          ports:
+            - 8123:8123
           environment:
             - TZ=Europe/Berlin
+            - VIRTUAL_HOST=smarthome.caphm.de
+            - VIRTUAL_PORT=8123
+            - "LETSENCRYPT_HOST={{letsencrypt_domains}}"
+            - "LETSENCRYPT_EMAIL={{email_address}}"
