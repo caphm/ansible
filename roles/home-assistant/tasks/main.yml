@@ -2,12 +2,12 @@
 - set_fact:
     apphome: "{{appdata}}/home-assistant"
   tags:
-    - configure_home_assistant
+    - conf_hass
 
 - name: Configure home-assistant
   include_tasks: configure.yml
   tags:
-    - configure_home_assistant
+    - conf_hass
 
 - name: Start docker app home-assistant
   docker_service:

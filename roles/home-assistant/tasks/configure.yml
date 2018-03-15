@@ -13,52 +13,10 @@
 
 - name: Install configuration files
   copy:
-    src: "{{item}}"
+    src: "/tmp/hass-config"
     dest: "{{apphome}}/"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
-  with_fileglob:
-    - /tmp/hass-config/*
-  notify: docker restart home-assistant
-
-- name: Install package configuration files
-  copy:
-    src: "{{item}}"
-    dest: "{{apphome}}/packages"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_fileglob:
-    - /tmp/hass-config/packages/*
-  notify: docker restart home-assistant
-
-- name: Install custom components for switch platform
-  copy:
-    src: "{{item}}"
-    dest: "{{apphome}}/custom_components/switch/"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_fileglob:
-    - /tmp/hass-config/custom_components/switch/*
-  notify: docker restart home-assistant
-
-- name: Install custom components for sensor platform
-  copy:
-    src: "{{item}}"
-    dest: "{{apphome}}/custom_components/sensor/"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_fileglob:
-    - /tmp/hass-config/custom_components/sensor/*
-  notify: docker restart home-assistant
-
-- name: Install custom ui components
-  copy:
-    src: "{{item}}"
-    dest: "{{apphome}}/www/custom_ui/"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_fileglob:
-    - /tmp/hass-config/www/custom_ui/*
   notify: docker restart home-assistant
 
 - name: Install secrets
@@ -72,7 +30,7 @@
     - known_devices.yaml
   notify: docker restart home-assistant
 
-- name: Install images
+- name: Install secret images
   copy:
     src: "{{item}}"
     dest: "{{apphome}}/www/"
@@ -81,17 +39,6 @@
   with_items:
     - anna.jpg
     - cpm.jpg
-
-# - name: Install customUI update script
-#   get_url:
-#     url: https://raw.githubusercontent.com/andrey-git/home-assistant-custom-ui/master/update.sh?raw=true
-#     dest: "{{apphome}}/update.sh"
-#     owner: "{{defaultuser.uid}}"
-#     group: "{{defaultuser.maingid}}"
-#     mode: 0755
-
-# - name: Install/Update customUI
-#   shell: "{{apphome}}/update.sh"
 
 - name: Download customizer component files from github
   git:
