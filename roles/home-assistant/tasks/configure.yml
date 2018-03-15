@@ -16,8 +16,6 @@
     src: "/tmp/hass-config"
     dest: "{{apphome}}/"
     recursive: yes
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
   notify: docker restart home-assistant
 
 - name: Install secrets
