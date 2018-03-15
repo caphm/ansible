@@ -9,12 +9,12 @@
 - name: Download configuration files from github
   git:
     repo: https://github.com/caphm/hass-config.git
-    dest: /tmp/hass-config
+    dest: /tmp/home-assistant
 
 - name: Install configuration files
   synchronize:
-    src: "/tmp/hass-config"
-    dest: "{{apphome}}/"
+    src: "/tmp/home-assistant"
+    dest: "{{appdata}}/"
     recursive: yes
   notify: docker restart home-assistant
 
