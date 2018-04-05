@@ -69,6 +69,6 @@
 - name: Install floorplan panel files
   synchronize:
     src: "/tmp/hass-floorplan/panels"
-    dest: "{{apphome}}/panels"
+    dest: "{{apphome}}/"
     recursive: yes
   notify: docker restart home-assistant
