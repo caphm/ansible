@@ -62,13 +62,13 @@
 - name: Install floorplan custom_ui files
   synchronize:
     src: "/tmp/hass-floorplan/www/custom_ui"
-    dest: "{{appdata}}/www/custom_ui"
+    dest: "{{apphome}}/www/custom_ui"
     recursive: yes
   notify: docker restart home-assistant
 
 - name: Install floorplan panel files
   synchronize:
     src: "/tmp/hass-floorplan/panels"
-    dest: "{{appdata}}/panels"
+    dest: "{{apphome}}/panels"
     recursive: yes
   notify: docker restart home-assistant
