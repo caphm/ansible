@@ -5,7 +5,7 @@
     - conf_hass
 
 - name: Configure home-assistant
-  include_tasks: configure.yml
+  import_tasks: configure.yml
   tags:
     - conf_hass
 

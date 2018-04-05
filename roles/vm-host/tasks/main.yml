@@ -15,13 +15,13 @@
     - libguestfs-tools
 
 - name: prepare system configuration for IGP passthrough
-  include_tasks: prepare-system.yml
+  import_tasks: prepare-system.yml
   tags: prepare_system
 
 - name: enable hugepages
-  include_tasks: enable-hugepages.yml
+  import_tasks: enable-hugepages.yml
   tags: enable_hugepages
 
 - name: download virtio drivers for windows
-  include_tasks: download-virtiowin.yml
+  import_tasks: download-virtiowin.yml
   tags: download_virtiowin

@@ -15,5 +15,5 @@
   changed_when: not mfst_installed.stat.exists
 
 - name: install mergerfs-tools
-  include_tasks: install-mergerfs-tools.yml
+  import_tasks: install-mergerfs-tools.yml
   when: mfst_installed|changed

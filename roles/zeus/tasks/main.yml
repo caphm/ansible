@@ -1,17 +1,17 @@
 ---
 # zeus specific setup
 - name: configure base-os
-  include_tasks: base-os.yml
+  import_tasks: base-os.yml
   tags: baseos
 
 - name: configure storage array
-  include_tasks: storage-array.yml
+  import_tasks: storage-array.yml
   tags: storage
 
 - name: configure network file sharing
-  include_tasks: file-sharing.yml
+  import_tasks: file-sharing.yml
   tags: file_sharing
 
 - name: configure backups
-  include_tasks: backups.yml
+  import_tasks: backups.yml
   tags: backups
