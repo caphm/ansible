@@ -53,3 +53,22 @@
   with_fileglob:
     - /tmp/hass-customizer-component/customizer/*
   notify: docker restart home-assistant
+
+- name: Download floorplan files from github
+  git:
+    repo: https://github.com/pkozul/ha-floorplan.git
+    dest: /tmp/hass-floorplan
+
+- name: Install floorplan custom_ui files
+  synchronize:
+    src: "/tmp/hass-floorplan/www/custom_ui"
+    dest: "{{appdata}}/www/custom_ui"
+    recursive: yes
+  notify: docker restart home-assistant
+
+- name: Install floorplan panel files
+  synchronize:
+    src: "/tmp/hass-floorplan/panels"
+    dest: "{{appdata}}/panels"
+    recursive: yes
+  notify: docker restart home-assistant
