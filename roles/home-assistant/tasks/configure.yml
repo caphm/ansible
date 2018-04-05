@@ -6,39 +6,6 @@
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
 
-- name: Download configuration files from github
-  git:
-    repo: https://github.com/caphm/hass-config.git
-    dest: /tmp/home-assistant
-
-- name: Install configuration files
-  synchronize:
-    src: "/tmp/home-assistant"
-    dest: "{{appdata}}/"
-    recursive: yes
-  notify: docker restart home-assistant
-
-- name: Install secrets
-  copy:
-    src: "{{item}}"
-    dest: "{{apphome}}/"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_items:
-    - secrets.yaml
-    - known_devices.yaml
-  notify: docker restart home-assistant
-
-- name: Install secret images
-  copy:
-    src: "{{item}}"
-    dest: "{{apphome}}/www/"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_items:
-    - anna.jpg
-    - cpm.jpg
-
 - name: Download customizer component files from github
   git:
     repo: https://github.com/andrey-git/home-assistant-customizer.git
@@ -72,3 +39,36 @@
     dest: "{{apphome}}/"
     recursive: yes
   notify: docker restart home-assistant
+
+- name: Download configuration files from github
+  git:
+    repo: https://github.com/caphm/hass-config.git
+    dest: /tmp/home-assistant
+
+- name: Install configuration files
+  synchronize:
+    src: "/tmp/home-assistant"
+    dest: "{{appdata}}/"
+    recursive: yes
+  notify: docker restart home-assistant
+
+- name: Install secrets
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_items:
+    - secrets.yaml
+    - known_devices.yaml
+  notify: docker restart home-assistant
+
+- name: Install secret images
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/www/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+  with_items:
+    - anna.jpg
+    - cpm.jpg
