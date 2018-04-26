@@ -1,6 +1,7 @@
 ---
 - set_fact:
     apphome: "{{appdata}}/home-assistant"
+    appdaemon_apphome: "{{appdata}}/appdaemon"
   tags:
     - conf_hass
 
@@ -42,3 +43,17 @@
           network_mode: host
           environment:
             - TZ=Europe/Berlin
+        appdaemon:
+          image: acockburn/appdaemon:latest
+          container_name: appdaemon
+          hostname: appdaemon
+          restart: always
+          volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - "{{appdaemon_apphome}}:/conf"
+          network_mode: bridge
+          ports:
+            - "5050:5050"
+          environment:
+            - "HA_URL={{hass_url}}"
+            - "HA_KEY={{hass_key}}"

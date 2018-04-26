@@ -1,10 +1,13 @@
 ---
 - name: Create appdata directory
   file:
-    dest: "{{apphome}}"
+    dest: "{{item}}"
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
+  with_items:
+    - "{{apphome}}"
+    - "{{appdaemon_apphome}}"
 
 - name: Download customizer component files from github
   git:
