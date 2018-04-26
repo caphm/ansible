@@ -38,17 +38,6 @@
     dest: "{{apphome}}/"
     recursive: yes
 
-- name: Download mini media player files from github
-  git:
-    repo: https://github.com/caphm/home-assistant-mini-media-player.git
-    dest: /tmp/hass-mini-media-player
-
-- name: Install mini media player custom_ui files
-  synchronize:
-    src: "/tmp/hass-mini-media-player/www/custom_ui"
-    dest: "{{apphome}}/www/"
-    recursive: yes
-
 - name: Download configuration files from github
   git:
     repo: https://github.com/caphm/hass-config.git
