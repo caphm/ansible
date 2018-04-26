@@ -1,7 +1,7 @@
 ---
 - set_fact:
     apphome: "{{appdata}}/home-assistant"
-    appdaemon_apphome: "{{appdata}}/appdaemon"
+    appdaemon_apphome: "{{appdata}}/home-assistant/appdaemon"
   tags:
     - conf_hass
 
