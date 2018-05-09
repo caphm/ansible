@@ -13,6 +13,8 @@
 
 - name: Build SnapRAID .deb
   command: /tmp/snapraid-build/build-container
+  args:
+    SNAPRAID_VERSION: "{{snparaid_latest}}"
   become: true
   when: pkg_check.rc == 1
 

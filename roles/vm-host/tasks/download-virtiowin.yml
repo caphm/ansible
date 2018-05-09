@@ -12,7 +12,7 @@
     owner: root
     group: root
     mode: 0775
-  when: virtiowindrivers_present|changed
+  when: virtiowindrivers_present is changed
 
 - name: download virtio-win drivers
   get_url:
@@ -21,4 +21,4 @@
     owner: root
     group: root
     mode: 0775
-  when: virtiowindrivers_present|changed
+  when: virtiowindrivers_present is changed

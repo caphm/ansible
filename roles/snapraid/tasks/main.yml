@@ -1,14 +1,25 @@
 ---
 # SnapRAID from source, built in a Docker container
 
+- name: determine latest snapraid release URL
+  shell: "curl -s https://api.github.com/repos/amadvance/snapraid/releases | grep browser_download_url | grep tar.gz | head -n 1 | cut -d '\"' -f 4"
+  register: release_url
+  failed_when: release_url.rc > 0
+  changed_when: false
+
+- set_fact: Set latest snapraid version
+  snapraid_latest: "{{ release_url.stdout | regex_replace('.*snapraid-(\\d+\\.\\d+)\\.tar\\.gz$, '\\1') }}"
+
 - name: check if snapraid is installed (changed=not)
   command: dpkg-query -W snapraid
-  register: pkg_check
-  failed_when: pkg_check.rc > 1
-  changed_when: pkg_check.rc == 1
+  register: snapraid_pkg
+  failed_when: snapraid_pkg.rc > 1
+  changed_when: snapraid_pkg.rc == 1
+
+- set_fact: Set installed snapraid version
+  snapraid_installed: "{{ snapraid_pkg.stdout | regex_replace('snapraid\\s+(\\d+\\.\\d+).*', '\\1') }}"
+  when: not(snapraid_pkg is changed)
 
 - name: build snapraid from source in a container
   import_tasks: build-src.yml
-  when: pkg_check|changed
-
-# TODO: configure runner
+  when: (snapraid_pkg is changed) or (snapraid_installed is version(snapraid_latest, '<'))

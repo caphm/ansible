@@ -1,13 +1,26 @@
 ---
-- name: check if MergerFS is installed (changed=not)
+- name: determine latest mergerfs release
+  shell: "curl -s https://api.github.com/repos/trapexit/mergerfs/releases | grep browser_download_url | grep '{{ ansible_distribution_release }}_amd64[.]deb' | head -n 1 | cut -d '\"' -f 4"
+  register: mergerfs_release_url
+  failed_when: mergerfs_release_url.rc > 0
+  changed_when: false
+
+- set_fact: Set latest mergerfs version
+  mergerfs_latest: "{{ mergerfs_release_url.stdout | regex_replace('.*mergerfs_(\\d+\\.\\d+\\.\\d+).*$, '\\1') }}"
+
+- name: check if mergerfs is installed (changed=not)
   command: dpkg-query -W mergerfs
-  register: pkg_check
-  failed_when: pkg_check.rc > 1
-  changed_when: pkg_check.rc == 1
+  register: mergerfs_pkg
+  failed_when: mergerfs_pkg.rc > 1
+  changed_when: mergerfs_pkg.rc == 1
+
+- set_fact: Set installed snapraid version
+  mergerfs_installed: "{{ mergerfs_pkg.stdout | regex_replace('mergerfs\\s+(\\d+\\.\\d+).*', '\\1') }}"
+  when: not(mergerfs_pkg is changed)
 
 - name: install MergerFS
   include_tasks: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
-  when: pkg_check|changed
+  when: (mergerfs_pkg is changed) or (mergerfs_installed | version(mergerfs_latest, '<'))
 
 - name: check if mergerfs-tools is installed (changed=not)
   stat: path=/usr/bin/mergerfs.balance
@@ -16,4 +29,4 @@
 
 - name: install mergerfs-tools
   import_tasks: install-mergerfs-tools.yml
-  when: mfst_installed|changed
+  when: mfst_installed is changed
