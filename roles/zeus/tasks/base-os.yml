@@ -1,11 +1,11 @@
 ---
-- name: "FIX: Ubuntu 16.04 LTS doesn't come with certain modules, required by ansible"
-  apt:
-    pkg: "{{ item }}"
-    state: present
-  with_items:
-    - python-minimal
-    - aptitude
+# - name: "FIX: Ubuntu 16.04 LTS doesn't come with certain modules, required by ansible"
+#   apt:
+#     pkg: "{{ item }}"
+#     state: present
+#   with_items:
+#     - python-minimal
+#     - aptitude
 
 - name: Add Ansible repository and update apt cache
   apt_repository:
@@ -13,11 +13,11 @@
     update_cache: yes
     state: present
 
-- name: ensure os is up to date
-  apt:
-    update_cache: yes
-    upgrade: full
-    cache_valid_time: 300
+# - name: ensure os is up to date
+#   apt:
+#     update_cache: yes
+#     upgrade: full
+#     cache_valid_time: 300
 
 - name: install packages
   apt:

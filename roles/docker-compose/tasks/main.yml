@@ -8,8 +8,7 @@
     - python-setuptools
 
 - name: Installing dependencies
-  easy_install:
-    name: pip
+  command: python get-pip.py
 
 - name: Installing docker compose
   pip:
