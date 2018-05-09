@@ -7,7 +7,7 @@
   failed_when: release_url.rc > 0
   changed_when: false
 
-- set_fact: Set latest snapraid version
+- set_fact:
     snapraid_latest: "{{ release_url.stdout | regex_replace('.*snapraid-(\\d+\\.\\d+)\\.tar\\.gz$, '\\1') }}"
 
 - name: check if snapraid is installed (changed=not)
@@ -16,7 +16,7 @@
   failed_when: snapraid_pkg.rc > 1
   changed_when: snapraid_pkg.rc == 1
 
-- set_fact: Set installed snapraid version
+- set_fact:
     snapraid_installed: "{{ snapraid_pkg.stdout | regex_replace('snapraid\\s+(\\d+\\.\\d+).*', '\\1') }}"
   when: not(snapraid_pkg is changed)
 

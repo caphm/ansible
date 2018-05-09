@@ -5,7 +5,7 @@
   failed_when: mergerfs_release_url.rc > 0
   changed_when: false
 
-- set_fact: Set latest mergerfs version
+- set_fact:
     mergerfs_latest: "{{ mergerfs_release_url.stdout | regex_replace('.*mergerfs_(\\d+\\.\\d+\\.\\d+).*$, '\\1') }}"
 
 - name: check if mergerfs is installed (changed=not)
@@ -14,7 +14,7 @@
   failed_when: mergerfs_pkg.rc > 1
   changed_when: mergerfs_pkg.rc == 1
 
-- set_fact: Set installed snapraid version
+- set_fact:
     mergerfs_installed: "{{ mergerfs_pkg.stdout | regex_replace('mergerfs\\s+(\\d+\\.\\d+).*', '\\1') }}"
   when: not(mergerfs_pkg is changed)
 
