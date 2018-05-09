@@ -8,7 +8,7 @@
   changed_when: false
 
 - set_fact: Set latest snapraid version
-  snapraid_latest: "{{ release_url.stdout | regex_replace('.*snapraid-(\\d+\\.\\d+)\\.tar\\.gz$, '\\1') }}"
+    snapraid_latest: "{{ release_url.stdout | regex_replace('.*snapraid-(\\d+\\.\\d+)\\.tar\\.gz$, '\\1') }}"
 
 - name: check if snapraid is installed (changed=not)
   command: dpkg-query -W snapraid
@@ -17,7 +17,7 @@
   changed_when: snapraid_pkg.rc == 1
 
 - set_fact: Set installed snapraid version
-  snapraid_installed: "{{ snapraid_pkg.stdout | regex_replace('snapraid\\s+(\\d+\\.\\d+).*', '\\1') }}"
+    snapraid_installed: "{{ snapraid_pkg.stdout | regex_replace('snapraid\\s+(\\d+\\.\\d+).*', '\\1') }}"
   when: not(snapraid_pkg is changed)
 
 - name: build snapraid from source in a container
