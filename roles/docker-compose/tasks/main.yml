@@ -7,8 +7,16 @@
   with_items:
     - python-setuptools
 
-- name: Installing dependencies
-  command: python get-pip.py
+- name: Download pip install script
+  get_url:
+    url: https://bootstrap.pypa.io/get-pip.py
+    dest: /tmp/get-pip.py
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Install pip
+  command: python /tmp/get-pip.py
 
 - name: Installing docker compose
   pip:
