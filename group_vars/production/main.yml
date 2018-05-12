@@ -6,6 +6,7 @@ diskbasename: "disk"
 arraypath: "{{mountroot}}/{{arrayname}}"
 
 mounts:
+  - { name: "cache1", src: "/dev/disk/by-label/110G-Kingston-C1", fs: ext4, opts: "defaults,relatime,nofail,errors=remount-ro"}
   - { name: "parity1", src: "/dev/disk/by-label/8.0T-Seagate-P1", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
   - { name: "{{diskbasename}}1", src: "/dev/disk/by-label/8.0T-Seagate-D1", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
   - { name: "{{diskbasename}}2", src: "/dev/disk/by-label/3.0T-WD-D2", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
