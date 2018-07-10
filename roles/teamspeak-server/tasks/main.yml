@@ -21,6 +21,7 @@
           image: aheil/teamspeak3-server
           container_name: teamspeak
           hostname: teamspeak
+          stdin_open: true
           user: "{{defaultuser.uid}}"
           restart: always
           volumes:

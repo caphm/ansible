@@ -37,6 +37,7 @@
           image: homeassistant/home-assistant
           container_name: home-assistant
           hostname: home-assistant
+          stdin_open: true
           restart: always
           volumes:
             - "{{apphome}}:/config"
@@ -47,6 +48,7 @@
           image: acockburn/appdaemon:latest
           container_name: appdaemon
           hostname: appdaemon
+          stdin_open: true
           restart: always
           volumes:
             - /etc/localtime:/etc/localtime:ro

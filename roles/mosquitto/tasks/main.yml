@@ -40,6 +40,7 @@
           image: eclipse-mosquitto
           container_name: mosquitto
           hostname: mosquitto
+          stdin_open: true
           user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           volumes:

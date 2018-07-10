@@ -11,6 +11,7 @@ services:
       - {{od.destdir}}:/onedrive
     network_mode: host
     restart: always
+    stdin_open: true
     environment:
       - ONEDRIVE_UID={{od.uid}}
       - ONEDRIVE_GID={{od.gid}}
