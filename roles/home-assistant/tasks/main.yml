@@ -38,6 +38,7 @@
           container_name: home-assistant
           hostname: home-assistant
           stdin_open: true
+          tty: true
           restart: always
           volumes:
             - "{{apphome}}:/config"

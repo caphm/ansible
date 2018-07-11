@@ -28,6 +28,7 @@
           container_name: plex
           hostname: plex
           stdin_open: true
+          tty: true
           restart: always
           volumes:
             - "{{apphome_plex}}:/config"
@@ -61,6 +62,7 @@
           container_name: filebot
           hostname: filebot
           stdin_open: true
+          tty: true
           restart: always
           volumes:
             - "{{apphome_filebot}}:/data"
@@ -75,6 +77,7 @@
           container_name: jdownloader
           hostname: jdownloader
           stdin_open: true
+          tty: true
           restart: always
           volumes:
             - "{{apphome_jdownloader}}:/config"

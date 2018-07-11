@@ -29,6 +29,8 @@
           image: caphm/kodi-alexa:snapshot
           container_name: kodi-alexa
           hostname: kodi-alexa
+          stdin_open: true
+          tty: true
           user: "{{defaultuser.uid}}"
           restart: always
           volumes:

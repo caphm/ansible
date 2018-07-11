@@ -21,6 +21,7 @@
           container_name: nginx-proxy
           hostname: nginx-proxy
           stdin_open: true
+          tty: true
           restart: always
           labels:
             - com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy
@@ -39,6 +40,8 @@
           image: jrcs/letsencrypt-nginx-proxy-companion
           container_name: nginx-proxy-companion
           hostname: nginx-proxy-companion
+          stdin_open: true
+          tty: true
           restart: always
           volumes:
             - "{{nginx_directories[0].host_path}}:{{nginx_directories[0].container_path}}:rw"
@@ -51,6 +54,7 @@
           container_name: www-hello-world
           hostname: www-hello-world
           stdin_open: true
+          tty: true
           restart: always
           network_mode: bridge
           ports:
