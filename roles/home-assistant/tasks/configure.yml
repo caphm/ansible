@@ -44,6 +44,7 @@
 - name: Download configuration files from github
   git:
     repo: https://github.com/caphm/hass-config.git
+    version: "{{hass_variant}}"
     dest: /tmp/home-assistant
 
 - name: Install configuration files
