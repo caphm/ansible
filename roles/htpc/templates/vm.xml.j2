@@ -10,14 +10,6 @@
 
   <vcpu placement="static">2</vcpu>
   <iothreads>2</iothreads>
-<!--
-  <cputune>
-    <vcpupin vcpu="0" cpuset="2"/>
-    <vcpupin vcpu="1" cpuset="3"/>
-    <emulatorpin cpuset="1"/>
-    <iothreadpin iothread="1" cpuset="1"/>
-  </cputune>
--->
 
   <cpu mode="host-passthrough">
     <topology sockets="1" cores="4" threads="1"/>
