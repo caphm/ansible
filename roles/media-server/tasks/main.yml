@@ -33,6 +33,7 @@
           volumes:
             - "{{apphome_plex}}:/config"
             - "{{arraypath}}/media:/library"
+            - "{{arraypath}}/media:{{arraypath}}/media"
           network_mode: bridge
           ports:
             - "32400:32400/tcp"
