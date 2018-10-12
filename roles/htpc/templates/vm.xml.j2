@@ -9,7 +9,7 @@
   </memoryBacking>
 
   <vcpu placement="static">4</vcpu>
-  <iothreads>2</iothreads>
+  <iothreads>1</iothreads>
 <!--
   <cputune>
     <vcpupin vcpu="0" cpuset="2"/>
@@ -73,7 +73,6 @@
       <driver name="qemu" type="qcow2" cache="none" io="native" iothread="1"/>
       <source file="/mnt/cache1/vdisks/htpc.qcow2"/>
       <target dev="sda" bus="virtio"/>
-      <alias name='virtio-disk0'/>
       <address type="pci" domain="0x0000" bus="0x00" slot="0x0b" function="0x0"/>
     </disk>
 <!--     <disk type="file" device="disk">
@@ -131,11 +130,5 @@
     <qemu:arg value="file,id=seabios,path=/var/log/vms/htpc-bios.log"/>
     <qemu:arg value="-device"/>
     <qemu:arg value="isa-debugcon,iobase=0x402,chardev=seabios"/>
-    <qemu:arg value='-set'/>
-    <qemu:arg value='device.virtio-disk0.scsi=off'/>
-    <qemu:arg value='-set'/>
-    <qemu:arg value='device.virtio-disk0.config-wce=off'/>
-    <qemu:arg value='-set'/>
-    <qemu:arg value='device.virtio-disk0.x-data-plane=on'/>
   </qemu:commandline>
 </domain>
