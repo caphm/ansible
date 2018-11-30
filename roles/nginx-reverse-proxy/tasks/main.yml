@@ -8,6 +8,13 @@
     mode: 0755
   with_items: "{{nginx_directories}}"
 
+- name: Install proxy config
+  copy:
+    src: "proxy.conf"
+    dest: "{{appdata}}/nginx-reverse-proxy/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
 - name: Start docker app nginx-reverse-proxy
   docker_service:
     project_name: nginx-reverse-proxy
@@ -30,6 +37,7 @@
             - "{{nginx_directories[1].host_path}}:{{nginx_directories[1].container_path}}"
             - "{{nginx_directories[2].host_path}}:{{nginx_directories[2].container_path}}"
             - /var/run/docker.sock:/tmp/docker.sock:ro
+            - "{{appdata}}/nginx-reverse-proxy/proxy.conf:/etc/nginx/conf.d/proxy.conf:ro"
           network_mode: bridge
           ports:
             - "80:80"
