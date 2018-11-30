@@ -9,38 +9,6 @@
     - "{{apphome}}"
     - "{{appdaemon_apphome}}"
 
-- name: Download customizer component files from github
-  git:
-    repo: https://github.com/andrey-git/home-assistant-customizer.git
-    dest: /tmp/hass-customizer-component
-
-- name: Install customizer component
-  copy:
-    src: "{{item}}"
-    dest: "{{apphome}}/custom_components/customizer"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_fileglob:
-    - /tmp/hass-customizer-component/customizer/*
-  notify: docker restart home-assistant
-
-- name: Download floorplan files from github
-  git:
-    repo: https://github.com/pkozul/ha-floorplan.git
-    dest: /tmp/hass-floorplan
-
-- name: Install floorplan custom_ui files
-  synchronize:
-    src: "/tmp/hass-floorplan/www/custom_ui"
-    dest: "{{apphome}}/www/"
-    recursive: yes
-
-- name: Install floorplan panel files
-  synchronize:
-    src: "/tmp/hass-floorplan/panels"
-    dest: "{{apphome}}/"
-    recursive: yes
-
 - name: Download configuration files from github
   git:
     repo: https://github.com/caphm/hass-config.git
