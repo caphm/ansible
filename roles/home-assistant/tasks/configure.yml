@@ -30,7 +30,7 @@
     group: "{{defaultuser.maingid}}"
   with_items:
     - secrets.yaml
-    - known_devices.yaml
+    # - known_devices.yaml
   notify: docker restart home-assistant
 
 - name: Install secret images
