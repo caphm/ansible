@@ -5,10 +5,10 @@
   tags:
     - conf_hass
 
-- name: Configure home-assistant
-  import_tasks: configure.yml
-  tags:
-    - conf_hass
+# - name: Configure home-assistant
+#   import_tasks: configure.yml
+#   tags:
+#     - conf_hass
 
 - name: Start docker app home-assistant
   docker_service:
@@ -59,4 +59,6 @@
             - "5050:5050"
           environment:
             - "HA_URL={{hass_url}}"
-            - "HA_KEY={{hass_key}}"
+            # - "HA_KEY={{hass_key}}"
+            - "TOKEN={{appdaemon_token}}"
+            - DASH_URL=http://zeus.residenz.caphm.de:5050
