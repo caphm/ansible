@@ -23,10 +23,10 @@
     group: "{{defaultuser.maingid}}"
 
 - name: build filebot node image
-  docker_image: >
-    name=filebot:node
-    path=/tmp/filebot
-    state=present
+  docker_image:
+    name: filebot:node
+    path: "{{apphome_filebot}}/Dockerfile"
+    state: present
 
 - name: Start docker app media-server
   docker_service:
