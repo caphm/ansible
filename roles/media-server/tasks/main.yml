@@ -30,6 +30,7 @@
     project_name: media-server
     state: present
     build: "{{update_dockers}}"
+    pull: "{{update_dockers}}"
     definition:
       version: '2'
       services:
