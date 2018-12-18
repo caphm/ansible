@@ -25,12 +25,6 @@
     - Dockerfile
     - filebot-node
 
-- name: build filebot node image
-  docker_image:
-    name: filebot:node
-    path: "{{apphome_filebot}}"
-    state: present
-
 - name: Start docker app media-server
   docker_service:
     project_name: media-server
