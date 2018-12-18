@@ -17,10 +17,13 @@
 
 - name: upload the filebot Dockerfile to the docker host
   copy:
-    src: Dockerfile.filebot
-    dest: "{{apphome_filebot}}/Dockerfile"
+    src: "{{item}}"
+    dest: "{{apphome_filebot}}/"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
+  with_items:
+    - Dockerfile
+    - filebot-node
 
 - name: build filebot node image
   docker_image:
