@@ -15,6 +15,19 @@
     - "{{apphome_filebot}}"
     - "{{apphome_jdownloader}}"
 
+- name: upload the filebot Dockerfile to the docker host
+  copy:
+    src: Dockerfile.filebot
+    dest: "/tmp/filebot/Dockerfile"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+
+- name: build filebot node image
+  docker_image: >
+    name=filebot:node
+    path=/tmp/filebot
+    state=present
+
 - name: Start docker app media-server
   docker_service:
     project_name: media-server
@@ -59,7 +72,7 @@
             - "LETSENCRYPT_EMAIL={{email_address}}"
 
         filebot:
-          image: rednoah/filebot:node
+          image: filebot:node
           container_name: filebot
           hostname: filebot
           stdin_open: true
