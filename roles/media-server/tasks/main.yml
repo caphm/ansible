@@ -21,6 +21,7 @@
     dest: "{{apphome_filebot}}/"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
+    mode: 0755
   with_items:
     - Dockerfile
     - filebot-node
