@@ -35,7 +35,7 @@
   docker_service:
     project_name: media-server
     state: present
-    pull: "{{update_dockers}}"
+    build: "{{update_dockers}}"
     definition:
       version: '2'
       services:
@@ -75,7 +75,7 @@
             - "LETSENCRYPT_EMAIL={{email_address}}"
 
         filebot:
-          image: filebot:node
+          build: "{{apphome_filebot}}"
           container_name: filebot
           hostname: filebot
           stdin_open: true
