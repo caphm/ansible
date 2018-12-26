@@ -1,22 +1,17 @@
 ---
 - name: create build directory
   file: dest=/tmp/snapraid-build/ state=directory
-  when: pkg_check.rc == 1
 
 - name: copy build script
   copy: src=build-container dest=/tmp/snapraid-build/ mode=0775
-  when: pkg_check.rc == 1
 
 - name: copy Dockerfile
   copy: src=Dockerfile dest=/tmp/snapraid-build/
-  when: pkg_check.rc == 1
 
 - name: Build SnapRAID .deb
   command: /tmp/snapraid-build/build-container
   become: true
-  when: pkg_check.rc == 1
 
 - name: Install built .deb file
   apt: deb=/tmp/snapraid-build/artifact/snapraid-from-source.deb
   become: true
-  when: pkg_check.rc == 1

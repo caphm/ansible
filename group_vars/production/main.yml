@@ -15,9 +15,6 @@ mounts:
 
 folders:
   # on all drives
-  - disk1/media/3d-movies
-  - disk2/media/3d-movies
-  - disk3/media/3d-movies
   - disk1/media/2d-movies
   - disk2/media/2d-movies
   - disk3/media/2d-movies
@@ -29,9 +26,9 @@ folders:
   - disk3/software
   # only on disk2
   - disk2/backups
-  - disk2/media/videos
+  - disk2/media/Videos
   # only on disk3
   - disk3/downloads
   - disk3/media/audio-books
   - disk3/media/Musik
-  - disk3/media/photos
+  - disk3/media/Bilder
