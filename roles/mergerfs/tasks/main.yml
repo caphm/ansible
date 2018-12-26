@@ -7,7 +7,8 @@
 
 - name: install MergerFS
   include_tasks: "{{ 'build-src.yml' if install_from_source else 'download-latest.yml' }}"
-  when: pkg_check|changed
+  when: (pkg_check|changed) or
+        (update_mergerfs)
 
 - name: check if mergerfs-tools is installed (changed=not)
   stat: path=/usr/bin/mergerfs.balance
@@ -16,4 +17,5 @@
 
 - name: install mergerfs-tools
   import_tasks: install-mergerfs-tools.yml
-  when: mfst_installed|changed
+  when: (mfst_installed|changed) or
+        (update_mergerfs)

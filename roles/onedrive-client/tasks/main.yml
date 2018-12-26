@@ -1,33 +1,66 @@
 ---
-- name: Prepare onedrive instances
-  include_tasks: prepare-instance.yml
-  with_items: "{{onedrives}}"
-
 - set_fact:
-    compose_dir: /tmp/docker-compose/
+    apphome: "{{appdata}}/onedrive"
 
-- name: Create temp dir for compose file
+- name: Create apphome directory
   file:
-    dest: "{{compose_dir}}"
+    dest: "{{apphome}}"
     state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
 
-- name: Template out onedrive compose file to host
-  template:
-    src: onedrive.yml
-    dest: "{{compose_dir}}/docker-compose.yml"
+- name: Copy configuration
+  copy:
+    src: "onedrive.conf"
+    dest: "{{apphome}}/config"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
 
-- name: Start docker app onedrive-client
+- name: Create sync_list
+  blockinfile:
+    create: yes
+    marker: ""
+    path: "{{apphome}}/sync_list"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
+    block: |
+      Bilder/Alben
+      Musik
+      Videos
+
+- name: upload the onedrive Dockerfile to the docker host
+  copy:
+    src: "{{item}}"
+    dest: "{{apphome}}/build/"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
+  with_items:
+    - Dockerfile
+    - entrypoint.sh
+
+- name: Start docker app onedrive
   docker_service:
-    project_name: onedrive-client
+    project_name: onedrive
     state: present
+    build: "{{update_dockers}}"
     pull: "{{update_dockers}}"
-    project_src: "{{compose_dir}}"
-  register: startup_output
-
-- debug:
-    var: startup_output
-
-- name: Cleanup temp dir
-  file:
-    dest: "{{compose_dir}}"
-    state: absent
+    definition:
+      version: '2'
+      services:
+        onedrive:
+          build: "{{apphome}}/build"
+          container_name: onedrive
+          hostname: onedrive
+          stdin_open: true
+          tty: true
+          restart: always
+          volumes:
+            - "{{apphome}}:/config"
+            - "{{arraypath}}/media:/onedrive"
+          environment:
+            - ONEDRIVE_UID={{defaultuser.uid}}
+            - ONEDRIVE_GID={{defaultuser.maingid}}
