@@ -11,7 +11,3 @@
 - name: configure network file sharing
   import_tasks: file-sharing.yml
   tags: file_sharing
-
-- name: configure backups
-  import_tasks: backups.yml
-  tags: backups

@@ -1,6 +1,0 @@
----
-dependencies:
-  - { role: docker }
-  - { role: docker-compose }
-  - { role: zeus }
-  - { role: mosquitto }
