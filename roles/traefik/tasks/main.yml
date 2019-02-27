@@ -27,7 +27,7 @@
     state: present
     pull: "{{force_update}}"
     definition:
-      version: "3"
+      version: "3.5"
       services:
         traefik:
           image: traefik
@@ -64,7 +64,7 @@
     state: present
     pull: "{{force_update}}"
     definition:
-      version: "3"
+      version: "3.5"
       services:
         home-assistant:
           image: homeassistant/home-assistant
@@ -75,8 +75,8 @@
           restart: always
           volumes:
             - "{{hass_home}}:/config"
-          network_mode: host
           networks:
+            - hostnet
             - web
             - iot
           environment:
@@ -103,4 +103,8 @@
             subnet: 192.168.3.0/24
             ip-range: 192.168.3.0/24
         web:
-          external: true
+          external:
+            name: web
+        hostnet:
+          external:
+            name: host
