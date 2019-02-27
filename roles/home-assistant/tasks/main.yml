@@ -2,6 +2,7 @@
 - set_fact:
     apphome: "{{appdata}}/home-assistant"
     appdaemon_apphome: "{{appdata}}/home-assistant/appdaemon"
+    hadockermon_apphome: "{{appdata}}/home-assistant/ha-dockermon"
   tags:
     - conf_hass
 
@@ -64,6 +65,20 @@
           environment:
             - "HA_URL=http://home-assistant:8123"
             - "TOKEN={{appdaemon_token}}"
+        ha-dockermon:
+          image: philhawthorne/ha-dockermon
+          container_name: ha-dockermon
+          hostname: ha-dockermon
+          stdin_open: true
+          tty: true
+          restart: always
+          volumes:
+            - "{{hadockermon_home}}:/config"
+            - /var/run/docker.sock:/var/run/docker.sock
+          networks:
+            - iot
+          ports:
+            - "8126:8126"
       networks:
         iot:
           name: iot
