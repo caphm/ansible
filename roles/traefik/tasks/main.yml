@@ -35,7 +35,7 @@
           hostname: traefik
           stdin_open: true
           tty: true
-          restart_policy: always
+          restart: always
           networks:
             - web
           ports:
