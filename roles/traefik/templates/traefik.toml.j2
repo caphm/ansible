@@ -149,8 +149,9 @@ onDemand = false
 caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
   [acme.dnsChallenge]
   provider = "cloudflare"
-  delayBeforeCheck = 0
-  resolvers = ["1.1.1.1:53", "8.8.8.8:53"]
+  delayBeforeCheck = 5
+  disablePropagationCheck = true
+  resolvers = ["1.1.1.1:53", "1.0.0.1:53"]
 
 [[acme.domains]]
   main = "*.caphm.de"
