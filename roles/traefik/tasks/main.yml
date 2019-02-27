@@ -58,7 +58,7 @@
           ipam:
             driver: default
             config:
-              subnet: 172.18.0.0/24
+              - subnet: 172.18.0.0/24
 
 - name: Start docker app home-assistant
   docker_service:
@@ -82,7 +82,7 @@
             - TZ=Europe/Berlin
         hass-relay:
           image: tynor88/socat
-          container_name: hass-relay
+          container_name: hass-relay-test
           hostname: home-assistant
           restart: always
           networks:
@@ -117,7 +117,7 @@
           ipam:
             driver: default
             config:
-              subnet: 172.18.1.0/24
+              - subnet: 172.18.1.0/24
         traefik_proxy:
           external:
             name: traefik_proxy
