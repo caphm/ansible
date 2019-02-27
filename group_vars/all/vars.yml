@@ -32,8 +32,6 @@ email_pass: nope
 
 docker_host: zeus.residenz.caphm.de
 
-letsencrypt_domains: "caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de"
-
 cf_api_key: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           66306665343837613366353431373434613539373630623961353733313565663936396535346136

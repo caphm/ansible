@@ -107,6 +107,10 @@
             traefik.docker.network: "web"
             traefik.port: "8080"
             traefik.enable: "true"
+      networks:
+        web:
+          external:
+            name: web
 
 - name: Create folder for plex certificates
   file:

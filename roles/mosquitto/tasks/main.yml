@@ -56,3 +56,7 @@
             - "8884:8884"
           environment:
             - TZ=Europe/Berlin
+      networks:
+        iot:
+          external:
+            name: iot
