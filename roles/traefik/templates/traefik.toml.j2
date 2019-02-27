@@ -3,7 +3,7 @@
 ################################################################
 
 InsecureSkipVerify = true
-debug = {{traefik_debug}}
+debug = {{'true' if traefik_debug else 'false'}}
 logLevel = "{{traefik_loglevel}}"
 defaultEntryPoints = ["http", "https"]
 
