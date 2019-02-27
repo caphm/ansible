@@ -2,41 +2,20 @@
 # Global configuration
 ################################################################
 
-# Enable debug mode
-#
-# Optional
-# Default: false
-#
-# debug = true
-
-# Log level
-#
-# Optional
-# Default: "ERROR"
-#
-# logLevel = "DEBUG"
-
-# Entrypoints to be used by frontends that do not specify any entrypoint.
-# Each frontend can specify its own entrypoints.
-#
-# Optional
-# Default: ["http"]
-#
+InsecureSkipVerify = true
+debug = {{traefik_debug}}
+logLevel = "{{traefik_loglevel}}"
 defaultEntryPoints = ["http", "https"]
 
 ################################################################
 # Entrypoints configuration
 ################################################################
 
-# Entrypoints definition
-#
-# Optional
-# Default:
 [entryPoints]
   [entryPoints.http]
     address = ":80"
-#    [entryPoints.http.redirect]
-#    entryPoint = "https"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
   [entryPoints.https]
     address = ":443"
   [entryPoints.https.tls]
@@ -102,21 +81,8 @@ defaultEntryPoints = ["http", "https"]
 # API and dashboard configuration
 ################################################################
 
-# Enable API and dashboard
 [api]
-
-  # Name of the related entry point
-  #
-  # Optional
-  # Default: "traefik"
-  #
   entryPoint = "traefik"
-
-  # Enabled Dashboard
-  #
-  # Optional
-  # Default: true
-  #
   dashboard = true
 
 ################################################################
@@ -159,17 +125,9 @@ defaultEntryPoints = ["http", "https"]
 # Docker configuration backend
 ################################################################
 
-# Enable Docker configuration backend
 [docker]
-
 watch = true
-
-# Docker server endpoint. Can be a tcp or a unix socket endpoint.
-#
-# Required
-# Default: "unix:///var/run/docker.sock"
-#
-# endpoint = "tcp://10.10.10.10:2375"
+exposedbydefault = false
 
 # Default domain used.
 # Can be overridden by setting the "traefik.domain" label on a container.
@@ -179,22 +137,21 @@ watch = true
 #
 # domain = "docker.localhost"
 
-# Expose containers by default in traefik
-#
-# Optional
-# Default: true
-#
-exposedbydefault = false
-
+################################################################
+# Let's Encrypt configuration
+################################################################
 [acme]
 email = "{{ email_address }}"
 storage = "acme.json"
-caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
 entryPoint = "https"
+acmeLogging = true
+onDemand = false
+caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
   [acme.dnsChallenge]
   provider = "cloudflare"
   delayBeforeCheck = 0
 
 [[acme.domains]]
+  main = "caphm.de"
+[[acme.domains]]
   main = "*.caphm.de"
-  sans = ["caphm.de"]

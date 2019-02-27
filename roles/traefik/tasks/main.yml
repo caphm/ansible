@@ -42,13 +42,17 @@
           ports:
             - "80:80"
             - "443:443"
+            - "8888:8888"
           dns:
-            - 8.8.8.8
+            - 1.1.1.1
           volumes:
             - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
             - "{{ traefik_home }}/acme.json:/acme.json"
             - /var/run/docker.sock:/var/run/docker.sock
           environment:
+            - "PUID=1000"
+            - "PGID=140"
+            - "TZ=Europe/Berlin"
             - "CF_API_EMAIL={{email_address}}"
             - "CF_API_KEY={{cf_api_key}}"
           labels:
@@ -56,6 +60,15 @@
             traefik.docker.network: "web"
             traefik.port: "8888"
             traefik.enable: "true"
+            traefik.frontend.headers.SSLRedirect: "true"
+            traefik.frontend.headers.STSSeconds: 315360000"
+            traefik.frontend.headers.browserXSSFilter: "true"
+            traefik.frontend.headers.contentTypeNosniff: "true"
+            traefik.frontend.headers.forceSTSHeader: "true"
+            traefik.frontend.headers.SSLHost: "caphm.de"
+            traefik.frontend.headers.STSIncludeSubdomains: "true"
+            traefik.frontend.headers.STSPreload: "true"
+            traefik.frontend.headers.frameDeny: "true"
       networks:
         web:
           name: web
