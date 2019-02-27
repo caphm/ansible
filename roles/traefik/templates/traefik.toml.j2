@@ -110,7 +110,7 @@ defaultEntryPoints = ["http", "https"]
   # Optional
   # Default: "traefik"
   #
-  entrypoints = ["http", "https"]
+  entryPoint = "traefik"
 
   # Enabled Dashboard
   #
@@ -118,6 +118,19 @@ defaultEntryPoints = ["http", "https"]
   # Default: true
   #
   dashboard = true
+
+[file]
+  [backends]
+    [backends.dashboard]
+      [backends.dashboard.servers.lo]
+      url = "http://127.0.0.1:8888"
+
+  [frontends]
+    [frontends.dashboard]
+    entryPoints = ["traefik"]
+    backend = "dashboard"
+      [frontends.dashboard.routes.traefik]
+      rule = "PathPrefixStrip:/traefik"
 
 ################################################################
 # Metrics definition
