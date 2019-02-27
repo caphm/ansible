@@ -27,7 +27,7 @@
     state: present
     pull: "{{force_update}}"
     definition:
-      version: '3.5'
+      version: "3"
       services:
         traefik:
           image: traefik
@@ -64,7 +64,7 @@
     state: present
     pull: "{{force_update}}"
     definition:
-      version: '3.5'
+      version: "3"
       services:
         home-assistant:
           image: homeassistant/home-assistant
