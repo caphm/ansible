@@ -27,7 +27,7 @@
     state: present
     pull: "{{force_update}}"
     definition:
-      version: '3'
+      version: '3.5'
       services:
         traefik:
           image: traefik
@@ -52,6 +52,7 @@
             traefik.enable: "false"
       networks:
         web:
+          name: web
           driver: bridge
           driver_opts:
             subnet: 192.168.2.0/24
@@ -63,7 +64,7 @@
     state: present
     pull: "{{force_update}}"
     definition:
-      version: '3'
+      version: '3.5'
       services:
         home-assistant:
           image: homeassistant/home-assistant
@@ -96,6 +97,7 @@
             - "TOKEN={{appdaemon_token}}"
       networks:
         iot:
+          name: iot
           driver: bridge
           driver_opts:
             subnet: 192.168.3.0/24
