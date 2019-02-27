@@ -34,7 +34,7 @@
           container_name: traefik
           hostname: traefik
           stdin_open: true
-           tty: true
+          tty: true
           restart_policy: always
           networks:
             - web
