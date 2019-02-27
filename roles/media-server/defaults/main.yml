@@ -1,4 +1,9 @@
 ---
-transcode_dir: /tmp/plex-transcode
-PLEX_CLAIM_TOKEN: pass_via_commandline
-update_dockers: no
+force_update: no
+appdata: /root
+apphome_plex: "{{appdata}}/plex"
+apphome_filebot: "{{appdata}}/filebot"
+apphome_jdownloader: "{{appdata}}/jdownloader"
+plex_url: plex.local
+plex_claim_token:
+plex_cert_enc_key:

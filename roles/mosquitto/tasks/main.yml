@@ -1,27 +1,23 @@
 ---
-- set_fact:
-    apphome: "{{appdata}}/mosquitto"
-    certs_root: "{{appdata}}/nginx-reverse-proxy/certs"
-
 - name: Create appdata directory
   file:
     dest: "{{item}}"
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
-  with_items:
-    - "{{apphome}}"
-    - "{{apphome}}/certs"
+  loop:
+    - "{{mosquitto_home}}"
+    - "{{mosquitto_home}}/certs"
 
 - name: Put root CA certificate in place
   get_url:
     url: https://letsencrypt.org/certs/isrgrootx1.pem.txt
-    dest: "{{apphome}}/certs/cacert.pem"
+    dest: "{{mosquitto_home}}/certs/cacert.pem"
 
 - name: Install configuration files
   copy:
     src: "{{item}}"
-    dest: "{{apphome}}/{{item}}"
+    dest: "{{mosquitto_home}}/{{item}}"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0644
@@ -32,9 +28,9 @@
   docker_service:
     project_name: mosquitto
     state: present
-    pull: "{{update_dockers}}"
+    pull: "{{force_update}}"
     definition:
-      version: '2'
+      version: '3.5'
       services:
         hass-relay:
           image: eclipse-mosquitto
@@ -45,14 +41,15 @@
           user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           volumes:
-            - "{{apphome}}/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
-            - "{{apphome}}/passwd:/mosquitto/passwd:ro"
-            - "{{apphome}}/data:/mosquitto/data"
-            - "{{apphome}}/log:/mosquitto/log"
-            - "{{apphome}}/certs/cacert.pem:/mosquitto/certs/cacert.pem:ro"
+            - "{{mosquitto_home}}/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
+            - "{{mosquitto_home}}/passwd:/mosquitto/passwd:ro"
+            - "{{mosquitto_home}}/data:/mosquitto/data"
+            - "{{mosquitto_home}}/log:/mosquitto/log"
+            - "{{mosquitto_home}}/certs/cacert.pem:/mosquitto/certs/cacert.pem:ro"
             - "{{certs_root}}/caphm.de.crt:/mosquitto/certs/cert.pem:ro"
             - "{{certs_root}}/caphm.de.key:/mosquitto/certs/key.pem:ro"
-          network_mode: bridge
+          networks:
+            - iot
           ports:
             - "1883:1883"
             - "8883:8883"

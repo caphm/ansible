@@ -12,12 +12,12 @@
     # - { role: "print-server", tags: ["print-server", "init2"] }
     # - { role: "lirc", tags: ["lirc", "init2"] }
     # - { role: "htpc", tags: ["htpc", "virtual-machines", "init3"] }
+    # - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker-apps", "init3"] }
     - { role: "traefik", tags: ["traefik", "docker-apps", "init3"] }
     - { role: "media-server", tags: ["media-server", "docker-apps", "init3"] }
-    - { role: "teamspeak-server", tags: ["teamspeak-server", "docker-apps"] }
-    - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker-apps"] }
     - { role: "mosquitto", tags: ["mosquitto", "docker-apps"] }
     - { role: "home-assistant", tags: ["home-assistant", "docker-apps"] }
+    - { role: "teamspeak-server", tags: ["teamspeak-server", "docker-apps", "init3"] }
     # - { role: "kodi-alexa-skillhost", tags: ["kodi-alexa", "docker-apps"] }
     # - { role: "onedrive-client", tags: ["onedrive-client", "docker-apps"] }
     # - { role: "kodi-repo", tags: ["kodi-repo", "init3"] }

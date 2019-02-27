@@ -1,16 +1,11 @@
 ---
-- set_fact:
-    apphome_plex: "{{appdata}}/plex"
-    apphome_filebot: "{{appdata}}/filebot"
-    apphome_jdownloader: "{{appdata}}/jdownloader"
-
 - name: Create media-server appdata directory
   file:
     dest: "{{item}}"
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
-  with_items:
+  loop:
     - "{{apphome_plex}}"
     - "{{apphome_filebot}}"
     - "{{apphome_jdownloader}}"
@@ -22,7 +17,7 @@
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0755
-  with_items:
+  loop:
     - Dockerfile
     - filebot-node
 
@@ -30,10 +25,10 @@
   docker_service:
     project_name: media-server
     state: present
-    build: "{{update_dockers}}"
-    pull: "{{update_dockers}}"
+    build: "{{force_update}}"
+    pull: "{{force_update}}"
     definition:
-      version: '2'
+      version: '3.5'
       services:
         plex:
           image: plexinc/pms-docker:latest
@@ -46,9 +41,9 @@
             - "{{apphome_plex}}:/config"
             - "{{arraypath}}/media:/library"
             - "{{arraypath}}/media:{{arraypath}}/media"
-          network_mode: bridge
+          networks:
+            - web
           ports:
-            - "32400:32400/tcp"
             - "1900:1900/udp"
             - "3005:3005/tcp"
             - "8324:8324/tcp"
@@ -58,18 +53,18 @@
             - "32414:32414/udp"
             - "32469:32469/tcp"
           environment:
-            - "PLEX_CLAIM={{PLEX_CLAIM_TOKEN}}"
+            - "PLEX_CLAIM={{plex_claim_token}}"
             - "PLEX_UID={{defaultuser.uid}}"
             - "PLEX_GID={{defaultuser.maingid}}"
             - "ADVERTISE_IP=http://{{ansible_default_ipv4.address}}:32400"
             - CHANGE_CONFIG_DIR_OWNERSHIP=false
             - TZ=Europe/Berlin
             - ALLOWED_NETWORKS=192.168.1.0/24
-            - VIRTUAL_HOST=plex.caphm.de
-            - VIRTUAL_PORT=32400
-            - "LETSENCRYPT_HOST={{letsencrypt_domains}}"
-            - "LETSENCRYPT_EMAIL={{email_address}}"
-
+          labels:
+            traefik.enable: "true"
+            traefik.frontend.rule: "Host:{{ plex_url }}"
+            traefik.docker.network: "web"
+            traefik.port: "32400"
         filebot:
           build: "{{apphome_filebot}}"
           container_name: filebot
@@ -81,9 +76,13 @@
             - "{{apphome_filebot}}:/data"
             - "{{arraypath}}/downloads:/download"
             - "{{arraypath}}/media:/out"
-          network_mode: bridge
-          ports:
-            - "5452:5452"
+          networks:
+            - web
+          labels:
+            traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/filebot"
+            traefik.docker.network: "web"
+            traefik.port: "5452"
+            traefik.enable: "true"
 
         jdownloader:
           image: aptalca/docker-jdownloader2
@@ -95,15 +94,19 @@
           volumes:
             - "{{apphome_jdownloader}}:/config"
             - "{{arraypath}}/downloads:/download"
-          network_mode: bridge
-          ports:
-            - "5453:8080"
+          networks:
+            - web
           environment:
             - WIDTH=1280
             - HEIGHT=720
             - TZ=Europe/Berlin
             - "USER_ID={{defaultuser.uid}}"
             - "GROUP_ID={{defaultuser.maingid}}"
+          labels:
+            traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/jdownloader"
+            traefik.docker.network: "web"
+            traefik.port: "8080"
+            traefik.enable: "true"
 
 - name: Create folder for plex certificates
   file:
