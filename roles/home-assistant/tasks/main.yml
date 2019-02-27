@@ -2,7 +2,7 @@
 - set_fact:
     apphome: "{{appdata}}/home-assistant"
     appdaemon_apphome: "{{appdata}}/home-assistant/appdaemon"
-    hadockermon_apphome: "{{appdata}}/home-assistant/ha-dockermon"
+    hadockermon_home: "{{appdata}}/home-assistant/ha-dockermon"
   tags:
     - conf_hass
 
