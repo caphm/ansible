@@ -186,4 +186,15 @@ watch = true
 #
 exposedbydefault = false
 
+[acme]
+email = {{ email_address }}
+storage = "acme.json"
+caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+entryPoint = "https"
+  [acme.dnsChallenge]
+  provider = "cloudflare"
+  delayBeforeCheck = 0
 
+[[acme.domains]]
+  main = "*.caphm.de"
+  sans = ["caphm.de"]
