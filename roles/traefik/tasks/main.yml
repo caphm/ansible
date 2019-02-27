@@ -17,9 +17,9 @@
     dest: "{{ traefik_home }}/traefik.toml"
     mode: 0600
 
-# - name: Create the traefik_proxy network
+# - name: Create the web network
 #   docker_network:
-#     name: traefik_proxy
+#     name: web
 
 - name: Create the traefik service
   docker_service:
@@ -37,7 +37,7 @@
           tty: true
           restart: always
           networks:
-            traefik_proxy:
+            web:
               ipv4_address: 172.18.0.2
           ports:
             - "80:80"
@@ -48,12 +48,12 @@
             - /var/run/docker.sock:/var/run/docker.sock
           labels:
             traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/traefik"
-            traefik.docker.network: "traefik_proxy"
+            traefik.docker.network: "web"
             traefik.port: "8888"
             traefik.enable: "false"
       networks:
-        traefik_proxy:
-          name: traefik_proxy
+        web:
+          name: web
           driver: bridge
           ipam:
             driver: default
@@ -86,15 +86,19 @@
           hostname: home-assistant
           restart: always
           networks:
-            - traefik_proxy
-            - iot
+            web:
+              aliases:
+                - home-assistant
+            iot:
+              aliases:
+                - home-assistant
           environment:
             - LISTEN_PORT=8123
             - FORWARD_PORT=8123
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ home_assistant_url }}"
-            traefik.docker.network: "traefik_proxy"
+            traefik.docker.network: "web"
             traefik.port: "8123"
         appdaemon:
           image: acockburn/appdaemon:latest
@@ -118,6 +122,6 @@
             driver: default
             config:
               - subnet: 172.18.1.0/24
-        traefik_proxy:
+        web:
           external:
-            name: traefik_proxy
+            name: web
