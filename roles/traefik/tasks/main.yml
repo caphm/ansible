@@ -50,7 +50,7 @@
             traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/traefik"
             traefik.docker.network: "web"
             traefik.port: "8888"
-            traefik.enable: "false"
+            traefik.enable: "true"
       networks:
         web:
           name: web
