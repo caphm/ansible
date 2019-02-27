@@ -17,9 +17,9 @@
     dest: "{{ traefik_home }}/traefik.toml"
     mode: 0600
 
-# - name: Create the web network
+# - name: Create the traefik_proxy network
 #   docker_network:
-#     name: web
+#     name: traefik_proxy
 
 - name: Create the traefik service
   docker_service:
@@ -37,7 +37,8 @@
           tty: true
           restart: always
           networks:
-            - web
+            traefik_proxy:
+              ipv4_address: 172.18.0.2
           ports:
             - "80:80"
             - "443:443"
@@ -46,17 +47,18 @@
             - "{{ traefik_home }}/acme.json:/acme.json"
             - /var/run/docker.sock:/var/run/docker.sock
           labels:
-            traefik.frontend.rule: "Host:{{ traefik_api_url }}"
-            traefik.docker.network: "web"
+            traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/traefik"
+            traefik.docker.network: "traefik_proxy"
             traefik.port: "8888"
             traefik.enable: "false"
       networks:
-        web:
-          name: web
+        traefik_proxy:
+          name: traefik_proxy
           driver: bridge
-          driver_opts:
-            subnet: 192.168.2.0/24
-            ip-range: 192.168.2.0/24
+          ipam:
+            driver: default
+            config:
+              subnet: 172.18.0.0/24
 
 - name: Start docker app home-assistant
   docker_service:
@@ -75,12 +77,25 @@
           restart: always
           volumes:
             - "{{hass_home}}:/config"
-          networks:
-            - hostnet
-            - web
-            - iot
+          network_mode: host
           environment:
             - TZ=Europe/Berlin
+        hass-relay:
+          image: tynor88/socat
+          container_name: hass-relay
+          hostname: home-assistant
+          restart: always
+          networks:
+            - traefik_proxy
+            - iot
+          environment:
+            - LISTEN_PORT=8123
+            - FORWARD_PORT=8123
+          labels:
+            traefik.enable: "true"
+            traefik.frontend.rule: "Host:{{ home_assistant_url }}"
+            traefik.docker.network: "traefik_proxy"
+            traefik.port: "8123"
         appdaemon:
           image: acockburn/appdaemon:latest
           container_name: appdaemon-test
@@ -99,12 +114,10 @@
         iot:
           name: iot
           driver: bridge
-          driver_opts:
-            subnet: 192.168.3.0/24
-            ip-range: 192.168.3.0/24
-        web:
+          ipam:
+            driver: default
+            config:
+              subnet: 172.18.1.0/24
+        traefik_proxy:
           external:
-            name: web
-        hostnet:
-          external:
-            name: host
+            name: traefik_proxy

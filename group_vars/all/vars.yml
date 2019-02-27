@@ -30,6 +30,8 @@ email_address: !vault |
           6636316162303065303433633362643665616334663031623636
 email_pass: nope
 
+docker_host: zeus.residenz.caphm.de
+
 letsencrypt_domains: "caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de"
 
 ##########################################################################################
@@ -102,7 +104,7 @@ folders:
 ##########################################################################################
 # TRAEFIK
 ##########################################################################################
-traefik_api_url: traefik.residenz.caphm.de
+home_assistant_url: smarthome.caphm.de
 
 appdaemon_token: !vault |
           $ANSIBLE_VAULT;1.1;AES256
