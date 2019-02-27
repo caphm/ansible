@@ -2,36 +2,36 @@
 ; path to the snapraid executable
 executable = /usr/local/bin/snapraid
 ; path to the snapraid config to be used
-config = /etc/snapraid.conf
+config = {{ snapraidconf }}
 ; abort operation if there are more deletes than this, set to -1 to disable
-deletethreshold = 250
+deletethreshold = {{ snapraid_delete_threshold }}
 
 [logging]
 ; logfile to write to, leave empty to disable
-file = snapraid.log
+file = {{ snapraid_log }}
 ; maximum logfile size in KiB, leave empty for infinite
-maxsize = 5000
+maxsize = {{ snapraid_log_maxsize }}
 
 [email]
 ; when to send an email, comma-separated list of [success, error]
-sendon = 
+sendon = {{ snapraid_mail_events }}
 ; set to false to get full program output via email
 short = true
-subject = [SnapRAID] Status Report:
+subject = {{ snapraid_report_subject }}
 from = {{ email_address }}
 to = {{ email_address }}
 
 [smtp]
-host = smtp.gmail.com
+host = {{ smtp_host }}
 ; leave empty for default port
-port = 465
+port = {{ smtp_port }}
 ; set to "true" to activate
-ssl = true
+ssl = {{ smtp_over_tls }}
 user = {{ email_address }}
-password = {{ gmail_pass }}
+password = {{ email_pass }}
 
 [scrub]
 ; set to true to run scrub after sync
-enabled = true
-percentage = 22
-older-than = 12
+enabled = {{ snapraid_enable_scrub }}
+percentage = {{ snapraid_scrub_percentage }}
+older-than = {{ snapraid_scrub_olderthan }}

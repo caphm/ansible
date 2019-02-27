@@ -1,1 +1,22 @@
-update_snapraid: no
+force_update: false
+
+smtp_host: example.com
+smtp_port: 465
+smtp_over_tls: true
+email_address: dummy@example.com
+email_pass: dummy@example.com
+
+snapraidconf: /etc/snapraid.conf
+snapraid_log: snapraid.log
+snapraid_log_maxsize: 5000
+snap_run_path: /opt/snapraid-runner/snapraid-runner
+snap_run_conf: "{{ snap_run_path }}.conf"
+snap_run_bin: "{{ snap_run_path }}.py"
+snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"
+
+snapraid_mail_events: 
+snapraid_delete_threshold: 250
+snapraid_report_subject: "[SnapRAID] Status Report:"
+snapraid_enable_scrub: true
+snapraid_scrub_percentage: 22
+snapraid_scrub_olderthan: 12

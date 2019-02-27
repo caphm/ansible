@@ -1,10 +1,10 @@
 ---
 - name: create_domain | template
+  template:
+    src: vm.xml.j2
+    dest: /tmp/htpc.xml
   tags:
     - define_htpc
-  template:
-    dest: "/tmp/htpc.xml"
-    src: "vm.xml.j2"
 
 - name: create_domain | define
   command: "virsh define /tmp/htpc.xml"
@@ -12,13 +12,13 @@
     - define_htpc
 
 - name: define virtual machines
-  tags:
-    - define_htpc
   virt:
     name: htpc
     command: define
     xml: "{{ lookup('template', 'vm.xml.j2') }}"
     autostart: true
+  tags:
+    - define_htpc
 
 - name: start virtual machines
   virt:

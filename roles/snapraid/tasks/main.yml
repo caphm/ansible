@@ -1,21 +1,20 @@
 ---
 # SnapRAID from source, built in a Docker container
 
-- name: install packages required for backup
-  apt: pkg={{ item }} state=present
-  with_items:
-    - rsync
+- name: install packages required for snapraid
+  apt:
+    name: rsync
+    state: "{{ 'latest' if force_update else 'present' }}"
 
 - name: check if snapraid is installed (changed=not)
   command: dpkg-query -W snapraid
-  register: pkg_check
-  failed_when: pkg_check.rc > 1
-  changed_when: pkg_check.rc == 1
+  register: snapraid_installed
+  failed_when: snapraid_installed.rc > 1
+  changed_when: snapraid_installed.rc == 1
 
 - name: build snapraid from source in a container
   import_tasks: build-src.yml
-  when: (pkg_check|changed) or
-        (update_snapraid)
+  when: force_update or snapraid_installed is changed
 
 - name: install snapraid configuration
   copy:
@@ -24,14 +23,6 @@
     owner: root
     group: root
     mode: 0775
-
-#- name: install rsnapshot configuration
-#  copy:
-#    src: {{ rsnapshotconf|basename }}
-#    dest: "{{ rsnapshotconf }}"
-#    owner: root
-#    group: root
-#    mode: 0775
 
 - name: clone snapraid-runner
   git:
@@ -46,12 +37,7 @@
     group: root
     mode: 0775
 
-#- name: install rsnapshot config
-#  template:
-#    src: "opt/snapraid-runner.j2"
-#    dest: "{{ snap_run_conf }}"
-
-- name: setup cron for rsnapshot and snapraid
+- name: setup cron for snapraid
   cron:
     user: "root"
     job: "{{ item.job }}"
@@ -60,7 +46,7 @@
     minute: "00"
     hour: "{{ item.hour }}"
     dom: "{{ item.dom|default('*') }}"
-  with_items:
+  loop:
     - { job: '{{ snap_run_command }}', name: 'snapraid_runner', weekday: '3', hour: '01' }
   tags:
     - cron

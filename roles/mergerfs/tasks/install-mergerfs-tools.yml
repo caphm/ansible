@@ -1,8 +1,10 @@
 ---
 - name: create download directory
-  file: dest=/tmp/mergerfs-tools/ state=directory
+  file:
+    dest: /tmp/mergerfs-tools/
+    state: directory
 
-- name: download from github
+- name: download mergerfs-tools from github
   git:
     repo: 'https://github.com/trapexit/mergerfs-tools.git'
     dest: /tmp/mergerfs-tools
@@ -18,4 +20,6 @@
     - /tmp/mergerfs-tools/src/*
 
 - name: cleanup download directory
-  file: dest=/tmp/mergerfs-tools/ state=absent
+  file:
+    dest: /tmp/mergerfs-tools/
+    state: absent

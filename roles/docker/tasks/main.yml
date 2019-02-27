@@ -1,9 +1,17 @@
 ---
 - name: Install prerequisite packages
   apt:
-    name: "{{ item.package }}"
-    state: present
-  with_items: "{{ docker_prerequisite_packages_Ubuntu }}"
+    name: "{{ packages }}"
+    state: "{{ 'latest' if force_update else 'present' }}"
+  vars:
+    packages:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+      - python-docker
+      - python-setuptools
+      - python-pip
 
 - name: Import Docker CE repository gpg key
   apt_key:
@@ -22,7 +30,7 @@
 - name: Install Docker CE
   apt:
     name: docker-ce
-    state: "{{ 'latest' if update_docker_package else 'present' }}"
+    state: "{{ 'latest' if force_update else 'present' }}"
     update_cache: yes
   notify:
     - systemd daemon-reload
@@ -33,6 +41,11 @@
     name: docker
     state: started
     enabled: yes
+
+- name: Install docker compose
+  pip:
+    name: docker-compose
+    state: "{{ 'latest' if force_update else 'present' }}"
 
 - name: "Add default user '{{defaultuser.name}}' to docker group"
   user:
@@ -54,7 +67,7 @@
     owner: root
     group: root
     mode: 0755
-  with_items:
+  loop:
     - dtail
     - dcreate
     - dreplace

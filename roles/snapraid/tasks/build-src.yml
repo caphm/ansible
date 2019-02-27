@@ -1,17 +1,25 @@
 ---
 - name: create build directory
-  file: dest=/tmp/snapraid-build/ state=directory
+  file:
+    dest: /tmp/snapraid-build/
+    state: directory
 
 - name: copy build script
-  copy: src=build-container dest=/tmp/snapraid-build/ mode=0775
+  copy:
+    src: build-container
+    dest: /tmp/snapraid-build/
+    mode: 0775
 
 - name: copy Dockerfile
-  copy: src=Dockerfile dest=/tmp/snapraid-build/
+  copy:
+    src: Dockerfile
+    dest: /tmp/snapraid-build/
 
 - name: Build SnapRAID .deb
   command: /tmp/snapraid-build/build-container
   become: true
 
 - name: Install built .deb file
-  apt: deb=/tmp/snapraid-build/artifact/snapraid-from-source.deb
+  apt:
+    deb: /tmp/snapraid-build/artifact/snapraid-from-source.deb
   become: true

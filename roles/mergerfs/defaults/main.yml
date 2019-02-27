@@ -1,5 +1,2 @@
----
-# if set to yes mergerfs will be compiled from source
-install_from_source: false
-
-update_mergerfs: no
+force_update: false
+install_mergerfs_from_source: false

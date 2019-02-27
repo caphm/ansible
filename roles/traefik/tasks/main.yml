@@ -1,0 +1,107 @@
+- name: Ensures traefik dir exists
+  file:
+    path: "{{ traefik_home }}"
+    state: directory
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
+
+- name: Ensures acme.json file exists
+  file:
+    path: "{{ traefik_home }}/acme.json"
+    state: touch
+    mode: 0600
+
+- name: Adding traefik.toml file
+  template:
+    src: traefik.toml.j2
+    dest: "{{ traefik_home }}/traefik.toml"
+    mode: 0600
+
+# - name: Create the web network
+#   docker_network:
+#     name: web
+
+- name: Create the traefik service
+  docker_service:
+    project_name: traefik
+    state: present
+    pull: "{{force_update}}"
+    definition:
+      version: '3'
+      services:
+        traefik:
+          image: traefik
+          container_name: traefik
+          hostname: traefik
+          stdin_open: true
+           tty: true
+          restart_policy: always
+          networks:
+            - web
+          ports:
+            - "80:80"
+            - "443:443"
+          volumes:
+            - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
+            - "{{ traefik_home }}/acme.json:/acme.json"
+            - /var/run/docker.sock:/var/run/docker.sock
+          labels:
+            traefik.frontend.rule: "Host:{{ traefik_api_url }}"
+            traefik.docker.network: web
+            traefik.port: 8888
+            traefik.enable: false
+      networks:
+        web:
+          driver: bridge
+          driver_opts:
+            subnet: 192.168.2.0/24
+            ip-range: 192.168.2.0/24
+
+- name: Start docker app home-assistant
+  docker_service:
+    project_name: home-assistant-test
+    state: present
+    pull: "{{force_update}}"
+    definition:
+      version: '3'
+      services:
+        home-assistant:
+          image: homeassistant/home-assistant
+          container_name: home-assistant-test
+          hostname: home-assistant
+          stdin_open: true
+          tty: true
+          restart: always
+          volumes:
+            - "{{hass_home}}:/config"
+          networks:
+            - hostnet
+            - web
+            - iot
+          environment:
+            - TZ=Europe/Berlin
+        appdaemon:
+          image: acockburn/appdaemon:latest
+          container_name: appdaemon-test
+          hostname: appdaemon
+          stdin_open: true
+          restart: always
+          volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - "{{appdaemon_home}}:/conf"
+          networks:
+            - iot
+          environment:
+            - "HA_URL={{hass_url}}"
+            - "TOKEN={{appdaemon_token}}"
+      networks:
+        iot:
+          driver: bridge
+          driver_opts:
+            subnet: 192.168.3.0/24
+            ip-range: 192.168.3.0/24
+        web:
+          external: true
+        hostnet:
+          external: true
+          name: host

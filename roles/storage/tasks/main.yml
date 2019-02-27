@@ -1,5 +1,29 @@
----
-  # Setup networking sharing of files from this system
+- name: create mount points
+  file:
+    dest: "{{mountroot}}/{{ item.name }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  loop: "{{ mounts|flatten(levels=1) }}"
+
+- name: mount disks
+  mount:
+    name: "{{mountroot}}/{{ item.name }}"
+    src: "{{ item.src }}"
+    fstype: "{{ item.fs }}"
+    opts: "{{item.opts}}"
+    state: mounted
+  loop: "{{ mounts|flatten(levels=1) }}"
+
+- name: create basic folder structure on storage array
+  file:
+    dest: "{{mountroot}}/{{ item }}"
+    state: directory
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0775
+  loop: "{{ folders(levels=1) }}"
 
 ################################################################################
 # samba

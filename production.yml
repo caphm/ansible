@@ -3,20 +3,21 @@
 - hosts: production
   become: true
   roles:
-    - { role: "docker", tags: ["baseconf"] }
-    - { role: "docker-compose", tags: ["baseconf"] }
-    - { role: "mergerfs", tags: ["baseconf", "mergerfs"] }
-    - { role: "snapraid", tags: ["baseconf", "snapraid"] }
-    - { role: "zeus", tags: ["baseconf"] }
-    - { role: "vm-host", tags: ["vm-host", "virtual-machines"] }
-    - { role: "media-server", tags: ["media-server", "docker-apps"] }
+    - { role: "baseos", tags: ["baseos", "init0"] }
+    - { role: "docker", tags: ["docker", "init0"] }
+    - { role: "mergerfs", tags: ["mergerfs", "init0"] }
+    - { role: "snapraid", tags: ["snapraid", "init0"] }
+    - { role: "storage", tags: ["storage", "init1"] }
+    - { role: "vm-host", tags: ["vm-host", "virtual-machines", "init2"] }
+    # - { role: "print-server", tags: ["print-server", "init2"] }
+    # - { role: "lirc", tags: ["lirc", "init2"] }
+    # - { role: "htpc", tags: ["htpc", "virtual-machines", "init3"] }
+    - { role: "traefik", tags: ["traefik", "docker-apps", "init3"] }
+    - { role: "media-server", tags: ["media-server", "docker-apps", "init3"] }
     - { role: "teamspeak-server", tags: ["teamspeak-server", "docker-apps"] }
     - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker-apps"] }
     - { role: "mosquitto", tags: ["mosquitto", "docker-apps"] }
     - { role: "home-assistant", tags: ["home-assistant", "docker-apps"] }
-    # - { role: "print-server", tags: "print-server" }
-    # - { role: "lirc", tags: "lirc" }
-    # - { role: "kodi-repo", tags: "kodi-repo" }
-    # - { role: "htpc", tags: ["htpc", "virtual-machines"] }
     # - { role: "kodi-alexa-skillhost", tags: ["kodi-alexa", "docker-apps"] }
     # - { role: "onedrive-client", tags: ["onedrive-client", "docker-apps"] }
+    # - { role: "kodi-repo", tags: ["kodi-repo", "init3"] }

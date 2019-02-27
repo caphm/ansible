@@ -1,9 +1,9 @@
 ---
 - name: install required packages
   apt:
-    pkg: "{{ item }}"
-    state: present
-  with_items:
+    name: "{{ item }}"
+    state: "{{ 'latest' if force_update else 'present'}}"
+  loop:
     - qemu-kvm
     - seabios
     - qemu-utils

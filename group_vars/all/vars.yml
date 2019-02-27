@@ -1,5 +1,12 @@
 ---
-# Users & groups
+##########################################################################################
+# GLOBALS
+##########################################################################################
+force_update: false
+
+##########################################################################################
+# BASEOS
+##########################################################################################
 defaultuser:
   name: caphm
   uid: 1000
@@ -10,6 +17,9 @@ defaultuser:
 
 appdata: "/home/{{defaultuser.name}}/appdata"
 
+smtp_host: smtp.gmail.com
+smtp_port: 465
+smtp_over_tls: true
 email_address: !vault |
           $ANSIBLE_VAULT;1.2;AES256;zeus
           35303738356232383665363733633737376566363836636266326238363361373531626531663535
@@ -18,6 +28,78 @@ email_address: !vault |
           6666666531333832340a623134383534626231613939646338313863613163613830336333643334
           34643434366237393165666265343662336139653330396537633665373234666436383462396632
           6636316162303065303433633362643665616334663031623636
-gmail_pass: nope
+email_pass: nope
 
 letsencrypt_domains: "caphm.de,kodi.caphm.de,plex.caphm.de,smarthome.caphm.de"
+
+##########################################################################################
+# DOCKER
+##########################################################################################
+# apt repository key
+apt_key_url: https://download.docker.com/linux/ubuntu/gpg
+# apt repository key signature
+apt_key_sig: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+
+# Line to be added to sources docker.list (release specific)
+apt_repository: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+
+# The following help expose a docker port or to add additional options when
+# running docker daemon.  The default is to not use any special options.
+# docker_opts: >
+#  -H unix://
+#  -H tcp://0.0.0.0:2375
+#  --log-level=debug
+docker_opts: ""
+
+# Set to 'yes' or 'true' to enable updates (sets 'latest' in apt module)
+update_docker_package: yes
+
+##########################################################################################
+# SNAPRAID
+##########################################################################################
+snapraid_log: /var/log/snapraid.log
+# snapraid_mail_events: error
+
+##########################################################################################
+# MOUNTS & STORAGE ARRAY
+##########################################################################################
+mountroot: "/mnt"
+arrayname: "storage"
+diskbasename: "disk"
+arraypath: "{{mountroot}}/{{arrayname}}"
+
+mounts:
+  - { name: "cache1", src: "/dev/disk/by-label/110G-Kingston-C1", fs: ext4, opts: "defaults,relatime,nofail,errors=remount-ro"}
+  - { name: "parity1", src: "/dev/disk/by-label/8.0T-Seagate-P1", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{diskbasename}}1", src: "/dev/disk/by-label/8.0T-Seagate-D1", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{diskbasename}}2", src: "/dev/disk/by-label/3.0T-WD-D2", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{diskbasename}}3", src: "/dev/disk/by-label/3.0T-WD-D3", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
+  - { name: "{{arrayname}}", src: "{{mountroot}}/{{diskbasename}}*", fs: fuse.mergerfs, opts: "defaults,allow_other,direct_io,use_ino,minfreespace=50G,fsname=mergerfs"}
+
+folders:
+  # on all drives
+  - disk1/media/2d-movies
+  - disk2/media/2d-movies
+  - disk3/media/2d-movies
+  - disk1/media/tv-shows
+  - disk2/media/tv-shows
+  - disk3/media/tv-shows
+  - disk1/software
+  - disk2/software
+  - disk3/software
+  # only on disk2
+  - disk2/backups
+  - disk2/media/Videos
+  # only on disk3
+  - disk3/downloads
+  - disk3/media/audio-books
+  - disk3/media/Musik
+  - disk3/media/Bilder
+  # only on cache1
+  - cache1/appdata
+  - cache1/vdisks
+
+##########################################################################################
+# TRAEFIK
+##########################################################################################
+traefik_api_url: traefik.residenz.caphm.de

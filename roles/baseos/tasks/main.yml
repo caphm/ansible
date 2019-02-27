@@ -1,0 +1,61 @@
+- name: Add Ansible repository and update apt cache
+  apt_repository:
+    repo: "ppa:ansible/ansible"
+    update_cache: yes
+    state: present
+
+- name: ensure os is up to date
+  apt:
+    update_cache: yes
+    upgrade: full
+    cache_valid_time: 300
+  when: force_update is true
+
+- name: install packages
+  apt:
+    name: "{{ packages }}"
+    state: "{{ 'latest' if force_update else 'present' }}"
+  vars:
+    packages:
+     - bash-completion
+     - curl
+     - exiftool
+     - fuse
+     - glances
+     - git
+     - htop
+     - iftop
+     - iotop
+     - jq
+     - lynx
+     - mc
+     - ncdu
+     - nmap
+     - openssh-server
+     - python
+     - python3
+     - reptyr
+     - screen
+     - smartmontools
+     - sudo
+     - tmux
+     - tree
+     - wget
+     - bluez
+
+- name: create main group for default user
+  group:
+    name: "{{defaultuser.maingroup}}"
+    gid: "{{defaultuser.maingid}}"
+    state: present
+    system: no
+
+- name: create default user
+  user:
+    uid: "{{defaultuser.uid}}"
+    name: "{{defaultuser.name}}"
+    group: "{{defaultuser.maingroup}}"
+    groups: "{{defaultuser.groups}}"
+    state: present
+    system: no
+    append: yes

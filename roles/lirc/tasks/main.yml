@@ -1,9 +1,9 @@
 ---
 - name: install packages
   apt:
-    pkg: "{{ item }}"
-    state: present
-  with_items:
+    name: "{{ item }}"
+    state: "{{ 'latest' if force_update else 'present'}}"
+  loop:
     - lirc
     - lirc-x
     - alsa
@@ -16,7 +16,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - lirc_options.conf
     - hardware.conf
   notify:
@@ -29,7 +29,7 @@
     owner: root
     group: root
     mode: 0644
-  with_items:
+  loop:
     - samsung-tv.conf
   notify:
     - restart lircd

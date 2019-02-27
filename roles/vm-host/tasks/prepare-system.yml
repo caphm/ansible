@@ -14,7 +14,7 @@
     backup: yes
     block: |
       # blacklist vga drivers for IGP to allow passthrough to VM
-      #blacklist snd_hda_intel
+      # blacklist snd_hda_intel
       blacklist snd_hda_codec_hdmi
       blacklist i915
   notify: update-initramfs
@@ -89,7 +89,7 @@
         backrefs: yes
         regexp: "{{item}}"
         line: '#\1'
-      with_items:
+      loop:
         - "^(auto enp2s0)"
         - "^(iface enp2s0 inet dhcp)"
 

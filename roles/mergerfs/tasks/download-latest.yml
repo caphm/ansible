@@ -7,20 +7,20 @@
 
 - name: create download directory
   file:
-    dest: /tmp/mergerfs-build/artifact/
+    dest: /tmp/mergerfs-latest/artifact/
     state: directory
 
 - name: download mergerfs release package
   get_url:
     url: "{{ release_url.stdout }}"
-    dest: /tmp/mergerfs-build/artifact/mergerfs-latest.deb
+    dest: /tmp/mergerfs-latest/artifact/mergerfs-latest.deb
 
 - name: Install downloaded .deb file
   become: true
   apt:
-    deb: /tmp/mergerfs-build/artifact/mergerfs-latest.deb
+    deb: /tmp/mergerfs-latest/artifact/mergerfs-latest.deb
 
-- name: Delete build directory
+- name: Delete download directory
   file:
-    dest: /tmp/mergerfs-build/
+    dest: /tmp/mergerfs-latest/
     state: absent

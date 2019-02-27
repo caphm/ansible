@@ -1,9 +1,4 @@
 ---
-- name: start cups service
-  service:
-    name: cups
-    state: started
-
 - name: restart cups service
   service:
     name: cups

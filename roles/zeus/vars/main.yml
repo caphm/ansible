@@ -1,8 +1,0 @@
----
-# Backups
-snapraidconf: /etc/snapraid.conf
-
-snap_run_path: /opt/snapraid-runner/snapraid-runner
-snap_run_conf: "{{ snap_run_path }}.conf"
-snap_run_bin: "{{ snap_run_path }}.py"
-snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"

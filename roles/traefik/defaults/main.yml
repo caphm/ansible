@@ -1,0 +1,8 @@
+force_update: false
+appdata: /root/appdata
+
+traefik_home: "{{appdata}}/traefik"
+traefik_api_url: traefik.local
+
+hass_home: "{{appdata}}/home-assistant"
+appdaemon_home: "{{hass_home}}/appdaemon"

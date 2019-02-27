@@ -1,15 +1,13 @@
 ---
-- name: Install packages
+- name: Install CUPS
   apt:
-    name: "{{ item }}"
-    state: present
+    name: cups
+    state: "{{ 'latest' if force_update else 'present'}}"
     update_cache: yes
-  with_items:
-    - cups
   notify:
     - restart cups service
 
-- name: make configuration accessible over network
+- name: make CUPS accessible over network
   become: true
   blockinfile:
     dest: /etc/cups/cupsd.conf
