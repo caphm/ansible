@@ -30,7 +30,7 @@
       version: "3.5"
       services:
         traefik:
-          image: traefik
+          image: traefik:alpine
           container_name: traefik
           hostname: traefik
           stdin_open: true
@@ -43,8 +43,6 @@
             - "80:80"
             - "443:443"
             - "8888:8888"
-          dns:
-            - 1.1.1.1
           volumes:
             - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
             - "{{ traefik_home }}/acme.json:/acme.json"
