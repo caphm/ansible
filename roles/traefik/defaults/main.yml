@@ -1,6 +1,8 @@
 force_update: false
 appdata: /root/appdata
 
+traefik_debug: "false"
+traefik_loglevel: ERROR
 traefik_home: "{{appdata}}/traefik"
 traefik_api_url: traefik.local
 
