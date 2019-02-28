@@ -177,10 +177,10 @@ ssl_certs_path: "{{ ssl_path }}/certs"
 ssl_private_path: "{{ ssl_path }}/private"
 
 isrg_root_cert: "{{ ssl_certs_path }}/isrgrootx1.pem"
-public_domain_cert: "{{ ssl_certs_path }}/{{ acme_public_domain }}.crt"
-public_domain_key: "{{ ssl_private_path }}/{{ acme_public_domain }}.key"
-private_domain_cert: "{{ ssl_certs_path }}/{{ acme_private_domain }}.crt"
-private_domain_key: "{{ ssl_private_path }}/{{ acme_private_domain }}.key"
+public_domain_cert: "{{ ssl_certs_path }}/*.{{ acme_public_domain }}.crt"
+public_domain_key: "{{ ssl_private_path }}/*.{{ acme_public_domain }}.key"
+private_domain_cert: "{{ ssl_certs_path }}/*.{{ acme_private_domain }}.crt"
+private_domain_key: "{{ ssl_private_path }}/*.{{ acme_private_domain }}.key"
 
 ##########################################################################################
 # HOME ASSISTANT
