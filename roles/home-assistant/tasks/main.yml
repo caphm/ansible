@@ -58,7 +58,7 @@
               aliases:
                 - home-assistant
             iot:
-              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}2"
+              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}3"
               aliases:
                 - home-assistant
           environment:
@@ -82,7 +82,7 @@
             - "{{appdaemon_home}}:/conf"
           networks:
             iot:
-              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}3"
+              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}4"
           environment:
             - "HA_URL=http://home-assistant:8123"
             - "TOKEN={{appdaemon_token}}"
@@ -100,7 +100,7 @@
             - /var/run/docker.sock:/var/run/docker.sock
           networks:
             iot:
-              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}4"
+              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}5"
 
         mosquitto:
           image: eclipse-mosquitto
@@ -120,7 +120,7 @@
             - "{{ private_domain_key }}:/mosquitto/certs/key.pem:ro"
           networks:
             iot:
-              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}5"
+              ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}6"
           ports:
             - "8883:8883"
           environment:
