@@ -53,7 +53,7 @@
     state: present
     pull: "{{force_update}}"
     build: "{{force_update or certdumper_dockerfile.changed}}"
-    restart: "{{traefik_config.changed}}"
+    restarted: "{{force_update or traefik_config.changed}}"
     definition:
       version: "3.5"
       services:

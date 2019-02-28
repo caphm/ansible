@@ -31,7 +31,7 @@
     project_name: home-assistant
     state: present
     pull: "{{force_update}}"
-    restart: "{{mosquitto_config.changed}}"
+    restarted: "{{force_update or mosquitto_config.changed}}"
     definition:
       version: "3.5"
       services:

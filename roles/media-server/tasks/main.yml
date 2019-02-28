@@ -28,6 +28,7 @@
     state: present
     build: "{{force_update or filebot_dockerfile.changed}}"
     pull: "{{force_update}}"
+    restarted: "{{force_update or filebot_dockerfile.changed}}"
     definition:
       version: '3.5'
       services:
@@ -66,6 +67,7 @@
             traefik.frontend.rule: "Host:{{ plex_url }}"
             traefik.docker.network: "web"
             traefik.port: "32400"
+
         filebot:
           build: "{{filebot_home}}"
           container_name: filebot
@@ -115,6 +117,7 @@
             traefik.docker.network: "web"
             traefik.port: "8080"
             traefik.enable: "true"
+
       networks:
         web:
           external:
