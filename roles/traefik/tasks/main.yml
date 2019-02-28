@@ -107,7 +107,7 @@
           restart: always
           network_mode: none
           volumes:
-            - "{{ traefik_home }}/acme.json:/acme.json:ro"
+            - "{{ traefik_home }}/acme.json:/traefik/acme.json:ro"
             - "{{ ssl_path }}:/traefik/ssl"
 
         dns-proxy:
