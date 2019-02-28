@@ -138,6 +138,8 @@
             - "{{ dnsproxy_home }}:/app/conf"
             - /var/run/docker.sock:/var/run/docker.sock
             - /etc/resolv.conf:/etc/resolv.conf
+          environment:
+            - MG_REGISTER_CONTAINER_NAMES=1
 
       networks:
         iot:
