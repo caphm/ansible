@@ -117,7 +117,6 @@
           hostname: dns-proxy
           stdin_open: true
           tty: true
-          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           network_mode: bridge
           ports:
