@@ -102,6 +102,7 @@
             - "{{arraypath}}/downloads:/download"
           networks:
             - web
+          ports:
           environment:
             - WIDTH=1280
             - HEIGHT=720
