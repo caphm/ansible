@@ -67,7 +67,7 @@
     definition:
       version: "3.5"
       services:
-          dns-proxy:
+        dns-proxy:
           image: defreitas/dns-proxy-server
           container_name: dns-proxy
           hostname: dns-proxy
