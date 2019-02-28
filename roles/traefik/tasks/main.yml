@@ -1,31 +1,59 @@
-- name: Ensures traefik dir exists
+- name: Create appdata directory for Traefik
   file:
-    path: "{{ traefik_home }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ defaultuser.uid }}"
     group: "{{ defaultuser.maingid }}"
+  loop:
+    - "{{ traefik_home }}"
+    - "{{ certdumper_home }}"
+    - "{{ dnsproxy_home }}"
+    - "{{ ssl_path }}"
+    - "{{ ssl_certs_path }}"
+    - "{{ ssl_private_path }}"
+    - "{{ ssl_path }}/pem"
 
-- name: Ensures acme.json file exists
+- name: Download root CA certificate for use by other apps
+  get_url:
+    url: https://letsencrypt.org/certs/isrgrootx1.pem.txt
+    dest: "{{ isrg_root_cert }}"
+
+- name: Setup acme.json
   file:
     path: "{{ traefik_home }}/acme.json"
     state: touch
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
     mode: 0600
 
-- name: Adding traefik.toml file
+- name: Setup traefik.toml
   template:
     src: traefik.toml.j2
     dest: "{{ traefik_home }}/traefik.toml"
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
     mode: 0600
+  register: traefik_config
 
-# - name: Create the web network
-#   docker_network:
-#     name: web
+- name: upload the certdumper Dockerfile to the docker host
+  copy:
+    src: "{{item}}"
+    dest: "{{ certdumper_home }}"
+    owner: "{{defaultuser.uid}}"
+    group: "{{defaultuser.maingid}}"
+    mode: 0755
+  loop:
+    - certdumper/Dockerfile
+    - certdumper/certdumper.sh
+  register: certdumper_dockerfile
 
-- name: Create the traefik service
+- name: Start docker service traefik
   docker_service:
     project_name: traefik
     state: present
     pull: "{{force_update}}"
+    build: "{{force_update or certdumper_dockerfile.changed}}"
+    restart: "{{traefik_config.changed}}"
     definition:
       version: "3.5"
       services:
@@ -35,10 +63,11 @@
           hostname: traefik
           stdin_open: true
           tty: true
+          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           networks:
             web:
-              ipv4_address: 172.18.0.2
+              ipv4_address: "{{networks.web.subnet.split('/')[0]}}"
           ports:
             - "80:80"
             - "443:443"
@@ -52,7 +81,10 @@
             - "CF_API_EMAIL={{email_address}}"
             - "CF_API_KEY={{cf_api_key}}"
           labels:
-            traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/traefik"
+            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/traefik"
+            traefik.hostname.frontend.rule: "Host:{{ docker_host.split('.')[0] }};PathPrefixStrip:/traefik"
+            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:/traefik"
+            traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:/traefik"
             traefik.docker.network: "web"
             traefik.port: "8888"
             traefik.enable: "true"
@@ -65,6 +97,36 @@
             traefik.frontend.headers.STSIncludeSubdomains: "true"
             traefik.frontend.headers.STSPreload: "true"
             traefik.frontend.headers.frameDeny: "true"
+
+        certdumper:
+          build: "{{ certdumper_home }}"
+          container_name: certdumper
+          hostname: certdumper
+          stdin_open: true
+          tty: true
+          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
+          restart: always
+          network_mode: none
+          volumes:
+            - "{{ traefik_home }}/acme.json:/acme.json:ro"
+            - "{{ ssl_path }}:/traefik/ssl"
+
+        dns-proxy:
+          image: defreitas/dns-proxy-server
+          container_name: dns-proxy
+          hostname: dns-proxy
+          stdin_open: true
+          tty: true
+          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
+          restart: always
+          network_mode: bridge
+          ports:
+            - "5380:5380"
+          volumes:
+            - "{{ dnsproxy_home }}:/app/conf"
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /etc/resolv.conf:/etc/resolv.conf
+
       networks:
         web:
           name: web
@@ -72,4 +134,4 @@
           ipam:
             driver: default
             config:
-              - subnet: 172.18.0.0/24
+              - subnet: "{{networks.web.subnet}}"

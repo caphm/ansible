@@ -1,6 +1,0 @@
-force_update: false
-appdata: /root/appdata
-defaultuser:
-  name: root
-  uid: 0
-  maingid: 0

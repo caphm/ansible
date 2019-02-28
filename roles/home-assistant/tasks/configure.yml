@@ -1,18 +1,6 @@
----
-- name: Create appdata directory
-  file:
-    dest: "{{item}}"
-    state: directory
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-  with_items:
-    - "{{apphome}}"
-    - "{{appdaemon_apphome}}"
-
 - name: Download configuration files from github
   git:
     repo: https://github.com/caphm/hass-config.git
-    version: "{{hass_variant}}"
     dest: /tmp/home-assistant
 
 - name: Install configuration files
@@ -25,10 +13,10 @@
 - name: Install secrets
   copy:
     src: "{{item}}"
-    dest: "{{apphome}}/"
+    dest: "{{hass_home}}/"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
-  with_items:
+  loop:
     - secrets.yaml
     # - known_devices.yaml
   notify: docker restart home-assistant
@@ -36,9 +24,9 @@
 - name: Install secret images
   copy:
     src: "{{item}}"
-    dest: "{{apphome}}/www/"
+    dest: "{{hass_home}}/www/"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
-  with_items:
+  loop:
     - anna.jpg
     - cpm.jpg

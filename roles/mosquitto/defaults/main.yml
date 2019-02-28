@@ -1,3 +1,0 @@
-appdate: /root
-mosquitto_home: "{{appdata}}/mosquitto"
-certs_root: "{{appdata}}/nginx-reverse-proxy/certs"

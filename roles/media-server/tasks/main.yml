@@ -1,31 +1,32 @@
----
-- name: Create media-server appdata directory
+- name: Create media-server appdata directories
   file:
     dest: "{{item}}"
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
   loop:
-    - "{{apphome_plex}}"
-    - "{{apphome_filebot}}"
-    - "{{apphome_jdownloader}}"
+    - "{{plex_home}}"
+    - "{{plex_home}}/certs"
+    - "{{filebot_home}}"
+    - "{{jdownloader_home}}"
 
 - name: upload the filebot Dockerfile to the docker host
   copy:
     src: "{{item}}"
-    dest: "{{apphome_filebot}}/"
+    dest: "{{filebot_home}}/"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0755
   loop:
     - Dockerfile
     - filebot-node
+  register: filebot_dockerfile
 
 - name: Start docker app media-server
   docker_service:
     project_name: media-server
     state: present
-    build: "{{force_update}}"
+    build: "{{force_update or filebot_dockerfile.changed}}"
     pull: "{{force_update}}"
     definition:
       version: '3.5'
@@ -38,7 +39,7 @@
           tty: true
           restart: always
           volumes:
-            - "{{apphome_plex}}:/config"
+            - "{{plex_home}}:/config"
             - "{{arraypath}}/media:/library"
             - "{{arraypath}}/media:{{arraypath}}/media"
           networks:
@@ -59,27 +60,31 @@
             - "ADVERTISE_IP=http://{{ansible_default_ipv4.address}}:32400"
             - CHANGE_CONFIG_DIR_OWNERSHIP=false
             - TZ=Europe/Berlin
-            - ALLOWED_NETWORKS=192.168.1.0/24
+            - "ALLOWED_NETWORKS={{ansible_default_ipv4.address}}/24"
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ plex_url }}"
             traefik.docker.network: "web"
             traefik.port: "32400"
         filebot:
-          build: "{{apphome_filebot}}"
+          build: "{{filebot_home}}"
           container_name: filebot
           hostname: filebot
           stdin_open: true
           tty: true
+          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           volumes:
-            - "{{apphome_filebot}}:/data"
+            - "{{filebot_home}}:/data"
             - "{{arraypath}}/downloads:/download"
             - "{{arraypath}}/media:/out"
           networks:
             - web
           labels:
-            traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/filebot"
+            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{filebot_path}}"
+            traefik.hostname.frontend.rule: "Host:{{ docker_host.split('.')[0] }};PathPrefixStrip:{{filebot_path}}"
+            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{filebot_path}}"
+            traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{filebot_path}}"
             traefik.docker.network: "web"
             traefik.port: "5452"
             traefik.enable: "true"
@@ -92,7 +97,7 @@
           tty: true
           restart: always
           volumes:
-            - "{{apphome_jdownloader}}:/config"
+            - "{{jdownloader_home}}:/config"
             - "{{arraypath}}/downloads:/download"
           networks:
             - web
@@ -112,17 +117,10 @@
           external:
             name: web
 
-- name: Create folder for plex certificates
-  file:
-    dest: "{{apphome_plex}}/certs"
-    state: directory
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-
-- name: Put script to convert Letsencrypt certificate to PKCS12
+- name: Copy script to convert Letsencrypt certificate to PKCS12
   template:
-    src: convert-certificate.sh
-    dest: "{{apphome_plex}}/certs/convert-certificate.sh"
+    src: convert-certificate.sh.j2
+    dest: "{{plex_home}}/certs/convert-certificate.sh"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0755
@@ -130,7 +128,7 @@
 - name: Add cronjob to convert new certificates automatically
   cron:
     user: "root"
-    job: "{{apphome_plex}}/certs/convert-certificate.sh"
+    job: "{{plex_home}}/certs/convert-certificate.sh"
     name: "convert-plex-certificate"
     weekday: "*"
     minute: "00"

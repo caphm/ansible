@@ -155,5 +155,8 @@ caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
   resolvers = ["1.1.1.1:53", "1.0.0.1:53"]
 
 [[acme.domains]]
-  main = "*.caphm.de"
-  sans = ["caphm.de"]
+  main = "*.{{acme_public_domain}}"
+  sans = ["{{acme_public_domain}}"]
+[[acme.domains]]
+  main = "*.{{acme_private_domain}}"
+  sans = ["{{acme_private_domain}}"]
