@@ -2,8 +2,8 @@
 pushd {{plex_home}}/certs > /dev/null
 openssl pkcs12 -export \
    -out {{plex_home}}/certs/{{acme_public_domain}}.pfx \
-   -inkey {{traefik_home}}/ssl/private/{{acme_public_domain}}.key \
-   -in {{traefik_home}}/ssl/certs/{{acme_public_domain}}.crt \
+   -inkey {{traefik_home}}/ssl/private/\*{{acme_public_domain}}.key \
+   -in {{traefik_home}}/ssl/certs/\*{{acme_public_domain}}.crt \
    -name "{{acme_public_domain}}" \
    -passout pass:{{plex_cert_enc_key}}
 popd
