@@ -128,12 +128,8 @@
 
       networks:
         iot:
-          name: iot
-          driver: bridge
-          ipam:
-            driver: default
-            config:
-              - subnet: "{{networks.iot.subnet}}"
+          external:
+            name: iot
         web:
           external:
             name: web

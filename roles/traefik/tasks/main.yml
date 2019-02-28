@@ -47,6 +47,16 @@
     - certdumper/certdumper.sh
   register: certdumper_dockerfile
 
+- name: Create docker networks
+  docker_network:
+    name: "{{ item.key }}"
+    state: present
+    driver: bridge
+    ipam_driver: default
+    ipam_options:
+      subnet: "{{ item.value.subnet }}"
+  loop: "{{networks|dict2items"
+
 - name: Start docker service traefik
   docker_service:
     project_name: traefik
@@ -117,7 +127,9 @@
           stdin_open: true
           tty: true
           restart: always
-          network_mode: bridge
+          networks:
+            - web
+            - iot
           ports:
             - "5380:5380"
           volumes:
@@ -126,10 +138,9 @@
             - /etc/resolv.conf:/etc/resolv.conf
 
       networks:
+        iot:
+          external:
+            name: iot
         web:
-          name: web
-          driver: bridge
-          ipam:
-            driver: default
-            config:
-              - subnet: "{{networks.web.subnet}}"
+          external:
+            name: web
