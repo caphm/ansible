@@ -82,7 +82,7 @@
             - web
           labels:
             traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{filebot_path}}"
-            traefik.hostname.frontend.rule: "Host:{{ docker_host.split('.')[0] }};PathPrefixStrip:{{filebot_path}}"
+            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{filebot_path}}"
             traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{filebot_path}}"
             traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{filebot_path}}"
             traefik.docker.network: "web"
@@ -108,7 +108,10 @@
             - "USER_ID={{defaultuser.uid}}"
             - "GROUP_ID={{defaultuser.maingid}}"
           labels:
-            traefik.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:/jdownloader"
+            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{jdownloader_path}}"
+            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{jdownloader_path}}"
+            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{jdownloader_path}}"
+            traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{jdownloader_path}}"
             traefik.docker.network: "web"
             traefik.port: "8080"
             traefik.enable: "true"
