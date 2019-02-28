@@ -52,7 +52,6 @@
           image: tynor88/socat
           container_name: hass-relay
           hostname: hass-relay
-          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           networks:
             web:
