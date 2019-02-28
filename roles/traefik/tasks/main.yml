@@ -55,7 +55,7 @@
     ipam_driver: default
     ipam_options:
       subnet: "{{ item.value.subnet }}"
-  loop: "{{networks|dict2items"
+  loop: "{{ networks|dict2items }}"
 
 - name: Start docker service traefik
   docker_service:
