@@ -74,7 +74,6 @@
           hostname: filebot
           stdin_open: true
           tty: true
-          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           volumes:
             - "{{filebot_home}}:/data"

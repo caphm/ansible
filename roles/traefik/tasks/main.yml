@@ -63,7 +63,6 @@
           hostname: traefik
           stdin_open: true
           tty: true
-          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           networks:
             web:
