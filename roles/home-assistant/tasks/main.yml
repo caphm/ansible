@@ -122,6 +122,7 @@
             iot:
               ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}6"
           ports:
+            - "1883:1883"
             - "8883:8883"
           environment:
             - TZ=Europe/Berlin

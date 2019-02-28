@@ -67,6 +67,27 @@
     definition:
       version: "3.5"
       services:
+          dns-proxy:
+          image: defreitas/dns-proxy-server
+          container_name: dns-proxy
+          hostname: dns-proxy
+          stdin_open: true
+          tty: true
+          restart: always
+          networks:
+            web:
+              ipv4_address: "{{ networks.web.subnet.split('/')[0] }}"
+            iot:
+              ipv4_address: "{{ networks.iot.subnet.split('/')[0] }}"
+          ports:
+            - "5380:5380"
+          volumes:
+            - "{{ dnsproxy_home }}:/app/conf"
+            - /var/run/docker.sock:/var/run/docker.sock
+            - /etc/resolv.conf:/etc/resolv.conf
+          environment:
+            - MG_REGISTER_CONTAINER_NAMES=1
+
         traefik:
           image: traefik:alpine
           container_name: traefik
@@ -76,7 +97,7 @@
           restart: always
           networks:
             web:
-              ipv4_address: "{{networks.web.subnet.split('/')[0]}}"
+              ipv4_address: "{{ networks.web.subnet.split('/')[0][:-1] }}3"
           ports:
             - "80:80"
             - "443:443"
@@ -119,27 +140,6 @@
           volumes:
             - "{{ traefik_home }}/acme.json:/traefik/acme.json:ro"
             - "{{ ssl_path }}:/traefik/ssl"
-
-        dns-proxy:
-          image: defreitas/dns-proxy-server
-          container_name: dns-proxy
-          hostname: dns-proxy
-          stdin_open: true
-          tty: true
-          restart: always
-          networks:
-            web:
-              ipv4_address: "{{ networks.web.subnet.split('/')[0][:-1] }}3"
-            iot:
-              ipv4_address: "{{ networks.iot.subnet.split('/')[0] }}"
-          ports:
-            - "5380:5380"
-          volumes:
-            - "{{ dnsproxy_home }}:/app/conf"
-            - /var/run/docker.sock:/var/run/docker.sock
-            - /etc/resolv.conf:/etc/resolv.conf
-          environment:
-            - MG_REGISTER_CONTAINER_NAMES=1
 
       networks:
         iot:
