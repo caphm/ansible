@@ -9,4 +9,4 @@ openssl pkcs12 -export \
 popd
 
 chmod 600 {{plex_home}}/certs/{{acme_public_domain}}.pfx
-chown {{defaultuser.guid}}:{{defaultuser.maingid}} {{plex_home}}/certs/{{acme_public_domain}}.pfx
+chown {{defaultuser.uid}}:{{defaultuser.maingid}} {{plex_home}}/certs/{{acme_public_domain}}.pfx
