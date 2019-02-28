@@ -82,10 +82,10 @@
           networks:
             - web
           labels:
-            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{filebot_path}}"
-            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{filebot_path}}"
-            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{filebot_path}}"
-            traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{filebot_path}}"
+            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefix:{{filebot_path}}"
+            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefix:{{filebot_path}}"
+            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefix:{{filebot_path}}"
+            traefik.local.frontend.rule: "Host:localhost;PathPrefix:{{filebot_path}}"
             traefik.docker.network: "web"
             traefik.port: "5452"
             traefik.enable: "true"
