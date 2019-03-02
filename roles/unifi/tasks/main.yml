@@ -29,7 +29,6 @@
           hostname: unifi
           stdin_open: true
           tty: true
-          init: true
           restart: always
           networks:
             mgmt:
