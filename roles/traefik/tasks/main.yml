@@ -87,7 +87,7 @@
           restart: always
           networks:
             web:
-              ipv4_address: "{{ networks.web.subnet.split('/')[0][:-1] + (networks.web.subnet.split('/')[0][-1:]|int + 1) }}"
+              ipv4_address: "{{ networks.web.subnet.split('/')[0][:-1] + (networks.web.subnet.split('/')[0][-1:]|int + 1)|string }}"
           ports:
             - "80:80"
             - "443:443"
