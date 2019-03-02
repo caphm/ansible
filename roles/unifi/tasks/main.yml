@@ -53,14 +53,12 @@
             - "UNIFI_UID={{ defaultuser.uid }}"
             - "UNIFI_GID={{ defaultuser.maingid }}"
           labels:
-            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{ unifi_path }}"
-            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{ unifi_path }}"
-            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{ unifi_path }}"
-            traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{ unifi_path }}"
+            traefik.enable: "true"
             traefik.docker.network: "web"
             traefik.port: "8443"
             traefik.protocol: "https"
-            traefik.enable: "true"
+            traefik.frontend.passHostHeader: "true"
+            traefik.fqdn.frontend.rule: "Host:{{ unifi_host }}"
             traefik.frontend.headers.SSLRedirect: "true"
             traefik.frontend.headers.STSSeconds: 315360000
             traefik.frontend.headers.browserXSSFilter: "true"

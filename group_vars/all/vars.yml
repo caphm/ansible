@@ -151,6 +151,7 @@ folders:
 ##########################################################################################
 unifi_home: "{{ appdata }}/unifi"
 unifi_path: /unifi
+unifi_host: "unifi.{{ acme_private_domain }}"
 networks:
   mgmt:
     subnet: 172.18.0.2/24
