@@ -59,6 +59,7 @@
             traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{ unifi_path }}"
             traefik.docker.network: "web"
             traefik.port: "8443"
+            traefik.protocol: "https"
             traefik.enable: "true"
             traefik.frontend.headers.SSLRedirect: "true"
             traefik.frontend.headers.STSSeconds: 315360000
