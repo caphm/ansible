@@ -30,21 +30,7 @@
           stdin_open: true
           tty: true
           restart: always
-          networks:
-            mgmt:
-              ipv4_address: "{{ networks.mgmt.subnet.split('/')[0] }}"
-              aliases:
-                - unifi
-            web:
-              aliases:
-                - unifi
-          ports:
-            # Give precedence to Plex on port 1900
-            # - "1900:1900/udp" # Port used for "Make controller discoverable on L2 network" in controller settings.
-            - "3478:3478/udp" # STUN
-            - "6789:6789/tcp" # Speed test
-            - "8080:8080/tcp" # Device/ controller comm.
-            - "10001:10001/udp" # AP discovery
+          network_mode: host
           volumes:
             - "{{ unifi_home }}:/unifi"
           environment:
@@ -54,7 +40,7 @@
             - "UNIFI_GID={{ defaultuser.maingid }}"
           labels:
             traefik.enable: "true"
-            traefik.docker.network: "web"
+            traefik.docker.network: "host"
             traefik.port: "8443"
             traefik.protocol: "https"
             traefik.frontend.passHostHeader: "true"
@@ -68,11 +54,3 @@
             traefik.frontend.headers.STSIncludeSubdomains: "true"
             traefik.frontend.headers.STSPreload: "true"
             traefik.frontend.headers.frameDeny: "true"
-
-      networks:
-        mgmt:
-          external:
-            name: mgmt
-        web:
-          external:
-            name: web
