@@ -34,10 +34,10 @@
           volumes:
             - "{{ unifi_home }}:/unifi"
             - "{{ private_domain_cert }}:/unifi/cert/cert.pem:ro"
-            - "{{ private_domain_cert }}:/unifi/cert/chain.pem:ro"
             - "{{ private_domain_key }}:/unifi/cert/privkey.pem:ro"
           environment:
             - "TZ=Europe/Berlin"
             - "RUNAS_UID0=false"
             - "UNIFI_UID={{ defaultuser.uid }}"
             - "UNIFI_GID={{ defaultuser.maingid }}"
+            - "CERT_IS_CHAIN=true"
