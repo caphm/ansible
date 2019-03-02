@@ -13,6 +13,7 @@
     # - { role: "lirc", tags: ["lirc", "init2"] }
     # - { role: "htpc", tags: ["htpc", "virtual-machines", "init3"] }
     # - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker-apps", "init3"] }
+    - { role: "unifi", tags: ["unifi", "docker-apps", "init3"] }
     - { role: "traefik", tags: ["traefik", "docker-apps", "init3"] }
     - { role: "media-server", tags: ["media-server", "docker-apps", "init3"] }
     - { role: "home-assistant", tags: ["home-assistant", "docker-apps", "init3"] }

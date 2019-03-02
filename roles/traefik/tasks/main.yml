@@ -47,16 +47,6 @@
     - certdumper/certdumper.sh
   register: certdumper_dockerfile
 
-- name: Create docker networks
-  docker_network:
-    name: "{{ item.key }}"
-    state: present
-    driver: bridge
-    ipam_driver: default
-    ipam_options:
-      subnet: "{{ item.value.subnet }}"
-  loop: "{{ networks|dict2items }}"
-
 - name: Start docker service traefik
   docker_service:
     project_name: traefik
@@ -97,7 +87,7 @@
           restart: always
           networks:
             web:
-              ipv4_address: "{{ networks.web.subnet.split('/')[0][:-1] }}3"
+              ipv4_address: "{{ networks.web.subnet.split('/')[0][:-1] + (networks.web.subnet.split('/')[0][-1:]|int + 1) }}"
           ports:
             - "80:80"
             - "443:443"

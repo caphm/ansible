@@ -1,0 +1,76 @@
+- name: Create appdata directory for Unifi
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
+  loop:
+    - "{{ unifi_home }}"
+
+- name: Create docker networks
+  docker_network:
+    name: "{{ item.key }}"
+    state: present
+    driver: bridge
+    ipam_driver: default
+    ipam_options:
+      subnet: "{{ item.value.subnet }}"
+  loop: "{{ networks|dict2items }}"
+
+- name: Start docker service unifi
+  docker_service:
+    project_name: unifi
+    state: present
+    pull: "{{force_update}}"
+    definition:
+      version: "3.5"
+      services:
+        controller:
+          image: "jacobalberty/unifi:stable"
+          container_name: unifi
+          hostname: unifi
+          stdin_open: true
+          tty: true
+          init: true
+          restart: always
+          networks:
+            mgmt:
+              ipv4_address: "{{ networks.mgmt.subnet.split('/')[0] }}"
+            web:
+          ports:
+            - "1900:1900/udp" # Port used for "Make controller discoverable on L2 network" in controller settings.
+            - "3478:3478/udp" # STUN
+            - "6789:6789/tcp" # Speed test
+            - "8080:8080/tcp" # Device/ controller comm.
+            - "10001:10001/udp" # AP discovery
+          volumes:
+            - "{{ unifi_home }}:/unifi"
+          environment:
+            TZ: "Europe/Berlin"
+            RUNAS_UID0: false
+            UNIFI_UID: "{{ defaultuser.uid }}"
+            UNIFI_GID: "{{ defaultuser.maingid }}"
+          traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{ unifi_path }}"
+            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{ unifi_path }}"
+            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{ unifi_path }}"
+            traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{ unifi_path }}"
+            traefik.docker.network: "web"
+            traefik.port: "8443"
+            traefik.enable: "true"
+            traefik.frontend.headers.SSLRedirect: "true"
+            traefik.frontend.headers.STSSeconds: 315360000
+            traefik.frontend.headers.browserXSSFilter: "true"
+            traefik.frontend.headers.contentTypeNosniff: "true"
+            traefik.frontend.headers.forceSTSHeader: "true"
+            traefik.frontend.headers.SSLHost: "caphm.de"
+            traefik.frontend.headers.STSIncludeSubdomains: "true"
+            traefik.frontend.headers.STSPreload: "true"
+            traefik.frontend.headers.frameDeny: "true"
+
+      networks:
+        mgmt:
+          external:
+            name: mgmt
+        web:
+          external:
+            name: web
