@@ -150,7 +150,7 @@ folders:
 # NETWORKING
 ##########################################################################################
 unifi_home: "{{ appdata }}/unifi"
-unifi_path: "/unifi"
+unifi_path: /unifi
 networks:
   mgmt:
     subnet: 172.18.0.2/24

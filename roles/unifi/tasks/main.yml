@@ -1,11 +1,9 @@
 - name: Create appdata directory for Unifi
   file:
-    path: "{{ item }}"
+    path: "{{ unifi_home }}"
     state: directory
     owner: "{{ defaultuser.uid }}"
     group: "{{ defaultuser.maingid }}"
-  loop:
-    - "{{ unifi_home }}"
 
 - name: Create docker networks
   docker_network:
@@ -36,7 +34,11 @@
           networks:
             mgmt:
               ipv4_address: "{{ networks.mgmt.subnet.split('/')[0] }}"
+              aliases:
+                - unifi
             web:
+              aliases:
+                - unifi
           ports:
             - "1900:1900/udp" # Port used for "Make controller discoverable on L2 network" in controller settings.
             - "3478:3478/udp" # STUN
@@ -46,11 +48,12 @@
           volumes:
             - "{{ unifi_home }}:/unifi"
           environment:
-            TZ: "Europe/Berlin"
-            RUNAS_UID0: false
-            UNIFI_UID: "{{ defaultuser.uid }}"
-            UNIFI_GID: "{{ defaultuser.maingid }}"
-          traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{ unifi_path }}"
+            - "TZ=Europe/Berlin"
+            - "RUNAS_UID0=false"
+            - "UNIFI_UID={{ defaultuser.uid }}"
+            - "UNIFI_GID={{ defaultuser.maingid }}"
+          labels:
+            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{ unifi_path }}"
             traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{ unifi_path }}"
             traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{ unifi_path }}"
             traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{ unifi_path }}"
