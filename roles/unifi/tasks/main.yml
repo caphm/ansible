@@ -32,7 +32,8 @@
           restart: always
           network_mode: host
           volumes:
-            - "{{ unifi_home }}:/unifi"
+            - "{{ unifi_home }}/data:/unifi/data"
+            - "{{ unifi_home }}/log:/unifi/log"
             - "{{ private_domain_cert }}:/unifi/cert/cert.pem:ro"
             - "{{ private_domain_key }}:/unifi/cert/privkey.pem:ro"
           environment:
