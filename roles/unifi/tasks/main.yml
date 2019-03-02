@@ -39,7 +39,8 @@
               aliases:
                 - unifi
           ports:
-            - "1900:1900/udp" # Port used for "Make controller discoverable on L2 network" in controller settings.
+            # Give precedence to Plex on port 1900
+            # - "1900:1900/udp" # Port used for "Make controller discoverable on L2 network" in controller settings.
             - "3478:3478/udp" # STUN
             - "6789:6789/tcp" # Speed test
             - "8080:8080/tcp" # Device/ controller comm.
