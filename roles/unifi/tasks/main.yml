@@ -33,6 +33,8 @@
           network_mode: host
           volumes:
             - "{{ unifi_home }}:/unifi"
+            - "{{ private_domain_cert }}:/unifi/certs/cert.pem:ro"
+            - "{{ private_domain_key }}:/unifi/certs/privkey.pem:ro"
           environment:
             - "TZ=Europe/Berlin"
             - "RUNAS_UID0=false"
