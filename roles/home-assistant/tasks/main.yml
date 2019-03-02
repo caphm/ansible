@@ -93,7 +93,6 @@
           hostname: ha-dockermon
           stdin_open: true
           tty: true
-          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
           restart: always
           volumes:
             - "{{hadockermon_home}}:/config"
