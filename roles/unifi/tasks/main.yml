@@ -38,9 +38,22 @@
             - "RUNAS_UID0=false"
             - "UNIFI_UID={{ defaultuser.uid }}"
             - "UNIFI_GID={{ defaultuser.maingid }}"
+
+        relay:
+          image: tynor88/socat
+          container_name: unifi-relay
+          hostname: unifi-relay
+          restart: always
+          networks:
+            web:
+              aliases:
+                - unifi
+          environment:
+            - LISTEN_PORT=8443
+            - FORWARD_PORT=8443
           labels:
             traefik.enable: "true"
-            traefik.docker.network: "host"
+            traefik.docker.network: "web"
             traefik.port: "8443"
             traefik.protocol: "https"
             traefik.frontend.passHostHeader: "true"
