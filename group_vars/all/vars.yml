@@ -114,6 +114,7 @@ mountroot: "/mnt"
 arrayname: "storage"
 diskbasename: "disk"
 arraypath: "{{mountroot}}/{{arrayname}}"
+cache_path: "{{ mountroot }}/cache1"
 
 mounts:
   - { name: "cache1", src: "/dev/disk/by-label/110G-Kingston-C1", fs: ext4, opts: "defaults,relatime,nofail,errors=remount-ro"}
@@ -213,9 +214,10 @@ appdaemon_token: !vault |
 ##########################################################################################
 # MEDIA SERVER
 ##########################################################################################
-plex_home: "{{appdata}}/plex"
-filebot_home: "{{appdata}}/filebot"
-jdownloader_home: "{{appdata}}/jdownloader"
+plex_home: "{{ appdata }}/plex"
+plex_transcode_dir: "{{ cache_path }}/transcode"
+filebot_home: "{{ appdata }}/filebot"
+jdownloader_home: "{{ appdata }}/jdownloader"
 filebot_path: /filebot
 jdownloader_path: /jdownloader
 plex_url: !vault |

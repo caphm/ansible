@@ -5,10 +5,11 @@
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
   loop:
-    - "{{plex_home}}"
-    - "{{plex_home}}/certs"
-    - "{{filebot_home}}"
-    - "{{jdownloader_home}}"
+    - "{{ plex_home }}"
+    - "{{ plex_home }}/certs"
+    - "{{ plex_transcode_dir }}"
+    - "{{ filebot_home }}"
+    - "{{ jdownloader_home }}"
 
 - name: upload the filebot Dockerfile to the docker host
   copy:
@@ -40,9 +41,10 @@
           tty: true
           restart: always
           volumes:
-            - "{{plex_home}}:/config"
-            - "{{arraypath}}/media:/library"
-            - "{{arraypath}}/media:{{arraypath}}/media"
+            - "{{ plex_home }}:/config"
+            - "{{ arraypath }}/media:/library"
+            - "{{ arraypath }}/media:{{ arraypath }}/media"
+            - "{{ plex_transcode_dir }}:/transcode"
           networks:
             - web
           ports:
