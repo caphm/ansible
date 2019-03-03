@@ -4,10 +4,12 @@
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
+    mode: 0755
   loop:
     - "{{ plex_home }}"
     - "{{ plex_home }}/certs"
-    - "{{ plex_transcode_dir }}"
+    - "{{ plex_tmp_dir }}/transcode"
+    - "{{ plex_tmp_dir }}/tmp"
     - "{{ filebot_home }}"
     - "{{ jdownloader_home }}"
 
@@ -44,7 +46,8 @@
             - "{{ plex_home }}:/config"
             - "{{ arraypath }}/media:/library"
             - "{{ arraypath }}/media:{{ arraypath }}/media"
-            - "{{ plex_transcode_dir }}:/transcode"
+            - "{{ plex_tmp_dir }}/transcode:/transcode"
+            - "{{ plex_tmp_dir }}/tmp:/tmp"
           networks:
             - web
           ports:
