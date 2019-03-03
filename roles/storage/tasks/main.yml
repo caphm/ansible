@@ -23,7 +23,7 @@
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0755
-  loop: "{{ folders(levels=1) }}"
+  loop: "{{ folders|flatten(levels=1) }}"
 
 ################################################################################
 # samba
