@@ -9,7 +9,7 @@
     update_cache: yes
     upgrade: full
     cache_valid_time: 300
-  when: force_update is true
+  when: force_update
 
 - name: install packages
   apt:
