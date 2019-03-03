@@ -1,14 +1,14 @@
 - name: Create appdata directories
   file:
-    dest: "{{item}}"
+    dest: "{{ item }}"
     state: directory
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
   loop:
-    - "{{hass_home}}"
-    - "{{appdaemon_home}}"
-    - "{{hadockermon_home}}"
-    - "{{mosquitto_home}}"
+    - "{{ hass_home }}"
+    - "{{ appdaemon_home }}"
+    - "{{ hadockermon_home }}"
+    - "{{ mosquitto_home }}"
 
 # - name: Configure home-assistant
 #   import_tasks: configure.yml
@@ -17,10 +17,10 @@
 
 - name: Install mosquitto configuration
   copy:
-    src: "{{item}}"
-    dest: "{{mosquitto_home}}/{{item}}"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
+    src: "{{ item }}"
+    dest: "{{ mosquitto_home }}/{{ item }}"
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
     mode: 0644
   loop:
     - mosquitto.conf
@@ -30,8 +30,8 @@
   docker_service:
     project_name: home-assistant
     state: present
-    pull: "{{force_update}}"
-    restarted: "{{force_update or mosquitto_config.changed}}"
+    pull: "{{ force_update }}"
+    restarted: "{{ force_update or mosquitto_config.changed }}"
     definition:
       version: "3.5"
       services:
@@ -43,7 +43,7 @@
           tty: true
           restart: always
           volumes:
-            - "{{hass_home}}:/config"
+            - "{{ hass_home }}:/config"
           network_mode: host
           environment:
             - TZ=Europe/Berlin
@@ -75,17 +75,17 @@
           container_name: appdaemon
           hostname: appdaemon
           stdin_open: true
-          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
+          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
           restart: always
           volumes:
             - /etc/localtime:/etc/localtime:ro
-            - "{{appdaemon_home}}:/conf"
+            - "{{ appdaemon_home }}:/conf"
           networks:
             iot:
               ipv4_address: "{{ networks.iot.subnet.split('/')[0][:-1] }}4"
           environment:
             - "HA_URL=http://home-assistant:8123"
-            - "TOKEN={{appdaemon_token}}"
+            - "TOKEN={{ appdaemon_token }}"
 
         ha-dockermon:
           image: philhawthorne/ha-dockermon
@@ -95,7 +95,7 @@
           tty: true
           restart: always
           volumes:
-            - "{{hadockermon_home}}:/config"
+            - "{{ hadockermon_home }}:/config"
             - /var/run/docker.sock:/var/run/docker.sock
           networks:
             iot:
@@ -107,7 +107,7 @@
           hostname: mosquitto
           stdin_open: true
           tty: true
-          user: "{{defaultuser.uid}}:{{defaultuser.maingid}}"
+          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
           restart: always
           volumes:
             - "{{ mosquitto_home }}/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro"
