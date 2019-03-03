@@ -59,3 +59,10 @@
     state: present
     system: no
     append: yes
+
+- name: disable swapping
+  become: true
+  blockinfile:
+    dest: /etc/sysctl.conf
+    block: vm.swappiness=1
+  notify: reload-sysctl

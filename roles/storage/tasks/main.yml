@@ -2,9 +2,9 @@
   file:
     dest: "{{mountroot}}/{{ item.name }}"
     state: directory
-    owner: root
-    group: root
-    mode: 0775
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
+    mode: 0755
   loop: "{{ mounts|flatten(levels=1) }}"
 
 - name: mount disks
@@ -22,7 +22,7 @@
     state: directory
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
-    mode: 0775
+    mode: 0755
   loop: "{{ folders(levels=1) }}"
 
 ################################################################################

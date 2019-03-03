@@ -8,16 +8,15 @@
     - { role: "mergerfs", tags: ["mergerfs", "init0"] }
     - { role: "snapraid", tags: ["snapraid", "init0"] }
     - { role: "storage", tags: ["storage", "init1"] }
-    - { role: "vm-host", tags: ["vm-host", "virtual-machines", "init2"] }
+    # - { role: "vm-host", tags: ["vm-host", "virtual-machines", "init2"] }
     # - { role: "print-server", tags: ["print-server", "init2"] }
     # - { role: "lirc", tags: ["lirc", "init2"] }
     # - { role: "htpc", tags: ["htpc", "virtual-machines", "init3"] }
-    # - { role: "nginx-reverse-proxy", tags: ["nginx-reverse-proxy", "docker-apps", "init3"] }
     - { role: "unifi", tags: ["unifi", "docker-apps", "init3"] }
     - { role: "traefik", tags: ["traefik", "docker-apps", "init3"] }
     - { role: "media-server", tags: ["media-server", "docker-apps", "init3"] }
     - { role: "home-assistant", tags: ["home-assistant", "docker-apps", "init3"] }
     - { role: "teamspeak-server", tags: ["teamspeak-server", "docker-apps", "init3"] }
-    # - { role: "kodi-alexa-skillhost", tags: ["kodi-alexa", "docker-apps"] }
-    # - { role: "onedrive-client", tags: ["onedrive-client", "docker-apps"] }
-    # - { role: "kodi-repo", tags: ["kodi-repo", "init3"] }
+    # - { role: "kodi-alexa", tags: ["kodi-alexa", "docker-apps", "init3"] }
+    # - { role: "onedrive", tags: ["onedrive", "docker-apps", "init3"] }
+    # - { role: "kodi-repo", tags: ["kodi-repo", "init4"] }

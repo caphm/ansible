@@ -22,7 +22,7 @@
     dest: "{{ snapraidconf }}"
     owner: root
     group: root
-    mode: 0775
+    mode: 0644
 
 - name: clone snapraid-runner
   git:
@@ -35,7 +35,7 @@
     dest: "{{ snap_run_conf }}"
     owner: root
     group: root
-    mode: 0775
+    mode: 0644
 
 - name: setup cron for snapraid
   cron:

@@ -8,7 +8,6 @@
     - seabios
     - qemu-utils
     - hugepages
-    - bridge-utils
     - libvirt-bin
     - virtinst
     - python-libvirt

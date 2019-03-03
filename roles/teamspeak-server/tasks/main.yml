@@ -1,21 +1,18 @@
----
-- set_fact:
-    apphome: "{{appdata}}/teamspeak"
-
 - name: Create teamspeak-server appdata directory
   file:
-    dest: "{{apphome}}"
+    dest: "{{ teamspeak_home }}"
     state: directory
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
+    mode: 0755
 
 - name: Start docker app teamspeak-server
   docker_service:
     project_name: teamspeak-server
     state: present
-    pull: "{{update_dockers}}"
+    pull: "{{ force_update }}"
     definition:
-      version: '2'
+      version: '3'
       services:
         teamspeak:
           image: aheil/teamspeak3-server
@@ -23,14 +20,20 @@
           hostname: teamspeak
           stdin_open: true
           tty: true
-          user: "{{defaultuser.uid}}"
+          user: "{{ defaultuser.uid }}"
           restart: always
           volumes:
-            - "{{apphome}}:/data"
-          network_mode: bridge
+            - "{{ teamspeak_home }}:/data"
+          networks:
+            - web
           ports:
             - "9987:9987/udp"
             - "10011:10011"
             - "30033:30033"
           environment:
             - "TS3SERVER_LICENSE=accept"
+
+      networks:
+        web:
+          external:
+            name: web

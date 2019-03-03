@@ -1,29 +1,26 @@
----
-- set_fact:
-    apphome: "{{appdata}}/kodi-alexa"
-
 - name: Create kodi-alexa appdata directory
   file:
-    dest: "{{apphome}}"
+    dest: "{{ kodi_alexa_home }}"
     state: directory
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-
-- name: Install kodi-alexa config
-  copy:
-    src: kodi.config
-    dest: "{{apphome}}/kodi.config"
     owner: "{{defaultuser.uid}}"
     group: "{{defaultuser.maingid}}"
     mode: 0755
 
-- name: Start docker app kodi-alexa-skillhost
+- name: Install kodi-alexa config
+  copy:
+    src: kodi.config
+    dest: "{{ kodi_alexa_home }}/kodi.config"
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
+    mode: 0755
+
+- name: Start docker app kodi-alexa
   docker_service:
-    project_name: kodi-alexa-skillhost
+    project_name: kodi-alexa
     state: present
-    pull: "{{update_dockers}}"
+    pull: "{{ force_update }}"
     definition:
-      version: '2'
+      version: '3'
       services:
         kodi-alexa:
           image: caphm/kodi-alexa:snapshot
@@ -31,15 +28,21 @@
           hostname: kodi-alexa
           stdin_open: true
           tty: true
-          user: "{{defaultuser.uid}}"
+          user: "{{ defaultuser.uid }}"
           restart: always
           volumes:
-            - "{{apphome}}:/config"
-          network_mode: bridge
-          ports:
-            - "5454:8000"
+            - "{{ kodi_alexa_home }}:/config"
+          networks:
+            - web
           environment:
             - GUNICORN_LOGLEVEL=debug
-            - VIRTUAL_HOST=kodi.caphm.de
-            - "LETSENCRYPT_HOST={{letsencrypt_domains}}"
-            - "LETSENCRYPT_EMAIL={{email_address}}"
+          labels:
+            traefik.enable: "true"
+            traefik.frontend.rule: "Host:{{ kodi_alexa_url }}"
+            traefik.docker.network: "web"
+            traefik.port: "8080"
+
+      networks:
+        web:
+          external:
+            name: web
