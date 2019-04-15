@@ -65,10 +65,8 @@
           tty: true
           restart: always
           networks:
-            web:
-              ipv4_address: "{{ networks.web.subnet.split('/')[0] }}"
-            iot:
-              ipv4_address: "{{ networks.iot.subnet.split('/')[0] }}"
+            - web
+            - iot
           ports:
             - "5380:5380"
           volumes:
@@ -87,8 +85,7 @@
           tty: true
           restart: always
           networks:
-            web:
-              ipv4_address: "{{ networks.web.subnet.split('/')[0][:-1] + (networks.web.subnet.split('/')[0][-1:]|int + 1)|string }}"
+            - web
           ports:
             - "80:80"
             - "443:443"
