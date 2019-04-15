@@ -75,6 +75,7 @@
             - "{{ dnsproxy_home }}:/app/conf"
             - /var/run/docker.sock:/var/run/docker.sock
             - /etc/resolv.conf:/etc/resolv.conf
+            - "/etc/timezone:/etc/timezone:ro"
           environment:
             - MG_REGISTER_CONTAINER_NAMES=1
 
@@ -96,8 +97,8 @@
             - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
             - "{{ traefik_home }}/acme.json:/acme.json"
             - /var/run/docker.sock:/var/run/docker.sock
+            - "/etc/timezone:/etc/timezone:ro"
           environment:
-            - "TZ=Europe/Berlin"
             - "CF_API_EMAIL={{email_address}}"
             - "CF_API_KEY={{cf_api_key}}"
           labels:
@@ -130,6 +131,7 @@
           volumes:
             - "{{ traefik_home }}/acme.json:/traefik/acme.json:ro"
             - "{{ ssl_path }}:/traefik/ssl"
+            - "/etc/timezone:/etc/timezone:ro"
 
       networks:
         iot:

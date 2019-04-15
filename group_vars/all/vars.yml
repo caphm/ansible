@@ -227,11 +227,11 @@ appdaemon_token: !vault |
 # MEDIA SERVER
 ##########################################################################################
 plex_home: "{{ appdata }}/plex"
-plex_tmp_dir: "{{ cache_path }}/plex"
+plex_transcode: "{{ cache_path }}/plex/transcode"
+plex_tmp: "{{ cache_path }}/plex/tmp"
 filebot_home: "{{ appdata }}/filebot"
 jdownloader_home: "{{ appdata }}/jdownloader"
 tautulli_home: "{{ appdata }}/tautulli"
-filebot_path: /filebot
 jdownloader_path: /jdownloader
 tautulli_path: /tautulli
 plex_url: !vault |

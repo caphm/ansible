@@ -32,6 +32,7 @@
           restart: always
           volumes:
             - "{{ kodi_alexa_home }}:/config"
+            - "/etc/timezone:/etc/timezone:ro"
           networks:
             - web
           environment:

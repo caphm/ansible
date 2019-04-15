@@ -36,8 +36,8 @@
             - "{{ unifi_home }}/log:/unifi/log"
             - "{{ private_domain_cert }}:/unifi/cert/cert.pem:ro"
             - "{{ private_domain_key }}:/unifi/cert/privkey.pem:ro"
+            - "/etc/timezone:/etc/timezone:ro"
           environment:
-            - "TZ=Europe/Berlin"
             - "RUNAS_UID0=false"
             - "UNIFI_UID={{ defaultuser.uid }}"
             - "UNIFI_GID={{ defaultuser.maingid }}"

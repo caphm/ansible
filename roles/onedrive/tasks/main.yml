@@ -61,6 +61,7 @@
           volumes:
             - "{{apphome}}:/config"
             - "{{arraypath}}/media:/onedrive"
+            - "/etc/timezone:/etc/timezone:ro"
           environment:
             - ONEDRIVE_UID={{defaultuser.uid}}
             - ONEDRIVE_GID={{defaultuser.maingid}}
