@@ -230,8 +230,10 @@ plex_home: "{{ appdata }}/plex"
 plex_tmp_dir: "{{ cache_path }}/plex"
 filebot_home: "{{ appdata }}/filebot"
 jdownloader_home: "{{ appdata }}/jdownloader"
+tautulli_home: "{{ appdata }}/tautulli"
 filebot_path: /filebot
 jdownloader_path: /jdownloader
+tautulli_path: /tautulli
 plex_url: !vault |
           $ANSIBLE_VAULT;1.2;AES256;zeus
           33376134626663356532366162306635636666383938653038383833393466376431656461613330

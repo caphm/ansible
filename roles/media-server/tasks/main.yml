@@ -87,6 +87,8 @@
             - "{{arraypath}}/media:/out"
           networks:
             - web
+          ports:
+            - "5452:5452"
           labels:
             traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefix:{{filebot_path}}"
             traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefix:{{filebot_path}}"
@@ -94,7 +96,7 @@
             traefik.local.frontend.rule: "Host:localhost;PathPrefix:{{filebot_path}}"
             traefik.docker.network: "web"
             traefik.port: "5452"
-            traefik.enable: "true"
+            traefik.enable: "false"
 
         jdownloader:
           image: aptalca/docker-jdownloader2
@@ -121,6 +123,31 @@
             traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{jdownloader_path}}"
             traefik.docker.network: "web"
             traefik.port: "8080"
+            traefik.enable: "true"
+
+        tautulli:
+          image: tautulli/tautulli
+          container_name: tautulli
+          hostname: tautulli
+          stdin_open: true
+          tty: true
+          restart: always
+          volumes:
+            - "{{ tautulli_home }}:/config"
+            - "{{ plex_home }}/Library/Application Support/Plex Media Server/Logs:/plex_logs:ro"
+          networks:
+            - web
+          environment:
+            - TZ=Europe/Berlin
+            - "PUID={{ defaultuser.uid }}"
+            - "PGID={{ defaultuser.maingid }}"
+          labels:
+            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefix:{{ tautulli_path }}"
+            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefix:{{ tautulli_path }}"
+            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefix:{{ tautulli_path }}"
+            traefik.local.frontend.rule: "Host:localhost;PathPrefix:{{ tautulli_path }}"
+            traefik.docker.network: "web"
+            traefik.port: "8181"
             traefik.enable: "true"
 
       networks:
