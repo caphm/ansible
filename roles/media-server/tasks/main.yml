@@ -101,12 +101,12 @@
           volumes:
             - "{{jdownloader_home}}:/config"
             - "{{arraypath}}/downloads:/download"
-            - "/etc/timezone:/etc/timezone:ro"
           networks:
             - web
           environment:
             - WIDTH=1280
             - HEIGHT=720
+            - TZ=Europe/Berlin
             - "USER_ID={{defaultuser.uid}}"
             - "GROUP_ID={{defaultuser.maingid}}"
           labels:
