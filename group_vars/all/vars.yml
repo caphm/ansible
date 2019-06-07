@@ -197,9 +197,11 @@ private_domain_key: "{{ ssl_private_path }}/*.{{ acme_private_domain }}.key"
 # HOME ASSISTANT
 ##########################################################################################
 hass_home: "{{appdata}}/home-assistant"
+hass_configurator_home: "{{appdata}}/hass-configurator"
 appdaemon_home: "{{hass_home}}/appdaemon"
 hadockermon_home: "{{hass_home}}/ha-dockermon"
 mosquitto_home: "{{appdata}}/mosquitto"
+hass_configurator_path: /configurator
 hass_url: !vault |
           $ANSIBLE_VAULT;1.2;AES256;zeus
           31623466353164316337663663333636353335383735326436646235643433663135623863333665
@@ -227,8 +229,8 @@ appdaemon_token: !vault |
 # MEDIA SERVER
 ##########################################################################################
 plex_home: "{{ appdata }}/plex"
-plex_transcode: "{{ cache_path }}/plex/transcode"
-plex_tmp: "{{ cache_path }}/plex/tmp"
+plex_transcode: "{{ plex_home }}/transcode"
+plex_tmp: "{{ plex_home }}/tmp"
 filebot_home: "{{ appdata }}/filebot"
 jdownloader_home: "{{ appdata }}/jdownloader"
 tautulli_home: "{{ appdata }}/tautulli"

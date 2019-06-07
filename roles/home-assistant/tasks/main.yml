@@ -9,6 +9,7 @@
     - "{{ appdaemon_home }}"
     - "{{ hadockermon_home }}"
     - "{{ mosquitto_home }}"
+    - "{{ hass_configurator_home }}"
 
 # - name: Configure home-assistant
 #   import_tasks: configure.yml
@@ -44,6 +45,7 @@
           restart: always
           volumes:
             - "{{ hass_home }}:/config"
+            - "{{ hass_home }}/sucks:/usr/local/lib/python3.7/site-packages/sucks"
             - "/etc/timezone:/etc/timezone:ro"
           network_mode: host
 
@@ -86,6 +88,26 @@
             - "HA_URL=http://home-assistant:8123"
             - "TOKEN={{ appdaemon_token }}"
 
+        hass-configurator:
+          image: "causticlab/hass-configurator-docker:x86_64"
+          container_name: hass-configurator
+          hostname: hass-configurator
+          restart: always
+          volumes:
+            - "{{ hass_configurator_home }}:/config"
+            - "{{ hass_home }}:/hass-config"
+            - "/etc/timezone:/etc/timezone:ro"
+          networks:
+            web:
+              aliases:
+                - hass-configurator
+          labels:
+            traefik.enable: "true"
+            traefik.frontend.rule: "Host:{{ hass_url }};PathPrefixStrip:{{ hass_configurator_path }}"
+            traefik.frontend.auth.basic: caphm:$$2y$$05$$H2zMRdFcjXPGrEzsWWErT.ASda0DmeVjWLsBe/p9l2WdeInMqk.Zq
+            traefik.docker.network: "web"
+            traefik.port: "3218"
+
         ha-dockermon:
           image: philhawthorne/ha-dockermon
           container_name: ha-dockermon
@@ -98,7 +120,8 @@
             - /var/run/docker.sock:/var/run/docker.sock
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            - iot
+            iot:
+              ipv4_address: 172.18.20.101
 
         mosquitto:
           image: eclipse-mosquitto

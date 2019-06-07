@@ -52,7 +52,7 @@
     project_name: traefik
     state: present
     pull: "{{force_update}}"
-    build: "{{force_update or certdumper_dockerfile.changed}}"
+    build: "{{certdumper_dockerfile.changed}}"
     restarted: "{{force_update or traefik_config.changed}}"
     definition:
       version: "3.5"
@@ -85,7 +85,8 @@
           tty: true
           restart: always
           networks:
-            - web
+            web:
+              ipv4_address: 172.18.10.100
           ports:
             - "80:80"
             - "443:443"
