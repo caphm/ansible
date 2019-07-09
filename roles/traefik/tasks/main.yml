@@ -57,26 +57,6 @@
     definition:
       version: "3.5"
       services:
-        dns-proxy:
-          image: defreitas/dns-proxy-server
-          container_name: dns-proxy
-          hostname: dns-proxy
-          stdin_open: true
-          tty: true
-          restart: always
-          networks:
-            - web
-            - iot
-          ports:
-            - "5380:5380"
-          volumes:
-            - "{{ dnsproxy_home }}:/app/conf"
-            - /var/run/docker.sock:/var/run/docker.sock
-            - /etc/resolv.conf:/etc/resolv.conf
-            - "/etc/timezone:/etc/timezone:ro"
-          environment:
-            - MG_REGISTER_CONTAINER_NAMES=1
-
         traefik:
           image: traefik:alpine
           container_name: traefik
@@ -86,11 +66,10 @@
           restart: always
           networks:
             web:
-              ipv4_address: 172.18.10.100
-          ports:
-            - "80:80"
-            - "443:443"
-            - "8888:8888"
+              ipv4_address: "{{ macvlannetworks.web.static_ips.traefik }}"
+              aliases:
+                - traefik
+          dns: "{{ macvlannetworks.web.dns_server }}"
           volumes:
             - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
             - "{{ traefik_home }}/acme.json:/acme.json"
@@ -100,11 +79,9 @@
             - "CF_API_EMAIL={{email_address}}"
             - "CF_API_KEY={{cf_api_key}}"
           labels:
-            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{ traefik_path }}"
-            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{ traefik_path }}"
-            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{ traefik_path }}"
+            traefik.fqdn.frontend.rule: "Host:srv.caphm.de;PathPrefixStrip:{{ traefik_path }}"
             traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{ traefik_path }}"
-            traefik.docker.network: "web"
+            traefik.docker.network: "{{ macvlannetworks.web.name }}"
             traefik.port: "8888"
             traefik.enable: "true"
             traefik.frontend.headers.SSLRedirect: "true"
@@ -132,9 +109,6 @@
             - "/etc/timezone:/etc/timezone:ro"
 
       networks:
-        iot:
-          external:
-            name: iot
         web:
           external:
-            name: web
+            name: "{{ macvlannetworks.web.name }}"

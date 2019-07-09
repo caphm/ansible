@@ -54,27 +54,15 @@
             iot:
               aliases:
                 - home-assistant
+            hass:
+              aliases:
+                - home-assistant
+          dns: "{{ macvlannetworks.web.dns_server }}"
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }}"
-            traefik.docker.network: "web"
+            traefik.docker.network: "{{ macvlannetworks.web.name }}"
             traefik.port: "8123"
-
-        appdaemon:
-          image: acockburn/appdaemon:latest
-          container_name: appdaemon
-          hostname: appdaemon
-          stdin_open: true
-          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
-          restart: always
-          volumes:
-            - "{{ appdaemon_home }}:/conf"
-            - /etc/localtime:/etc/localtime:ro
-          networks:
-            - iot
-          environment:
-            - "HA_URL=http://home-assistant:8123"
-            - "TOKEN={{ appdaemon_token }}"
 
         hass-configurator:
           image: "causticlab/hass-configurator-docker:x86_64"
@@ -86,30 +74,13 @@
             - "{{ hass_home }}:/hass-config"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            web:
-              aliases:
-                - hass-configurator
+            - web
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }};PathPrefixStrip:{{ hass_configurator_path }}"
             traefik.frontend.auth.basic: caphm:$$2y$$05$$H2zMRdFcjXPGrEzsWWErT.ASda0DmeVjWLsBe/p9l2WdeInMqk.Zq
-            traefik.docker.network: "web"
+            traefik.docker.network: "{{ macvlannetworks.web.name }}"
             traefik.port: "3218"
-
-        ha-dockermon:
-          image: philhawthorne/ha-dockermon
-          container_name: ha-dockermon
-          hostname: ha-dockermon
-          stdin_open: true
-          tty: true
-          restart: always
-          volumes:
-            - "{{ hadockermon_home }}:/config"
-            - /var/run/docker.sock:/var/run/docker.sock
-            - "/etc/timezone:/etc/timezone:ro"
-          networks:
-            iot:
-              ipv4_address: 172.18.20.101
 
         mosquitto:
           image: eclipse-mosquitto
@@ -124,20 +95,47 @@
             - "{{ mosquitto_home }}/passwd:/mosquitto/passwd:ro"
             - "{{ mosquitto_home }}/data:/mosquitto/data"
             - "{{ mosquitto_home }}/log:/mosquitto/log"
-            - "{{ isrg_root_cert }}:/mosquitto/certs/isrgrootx1.pem:ro"
-            - "{{ private_domain_cert }}:/mosquitto/certs/cert.pem:ro"
-            - "{{ private_domain_key }}:/mosquitto/certs/key.pem:ro"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
             - iot
-          ports:
-            - "1883:1883"
-            - "8883:8883"
+
+        appdaemon:
+          image: acockburn/appdaemon:latest
+          container_name: appdaemon
+          hostname: appdaemon
+          stdin_open: true
+          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
+          restart: always
+          volumes:
+            - "{{ appdaemon_home }}:/conf"
+            - /etc/localtime:/etc/localtime:ro
+          networks:
+            - hass
+          environment:
+            - "HA_URL=http://home-assistant:8123"
+            - "TOKEN={{ appdaemon_token }}"
+
+        ha-dockermon:
+          image: philhawthorne/ha-dockermon
+          container_name: ha-dockermon
+          hostname: ha-dockermon
+          stdin_open: true
+          tty: true
+          restart: always
+          volumes:
+            - "{{ hadockermon_home }}:/config"
+            - "/var/run/docker.sock:/var/run/docker.sock"
+            - "/etc/timezone:/etc/timezone:ro"
+          networks:
+            - hass
 
       networks:
         iot:
           external:
-            name: iot
+            name: "{{ macvlannetworks.iot.name }}"
         web:
           external:
-            name: web
+            name: "{{ macvlannetworks.web.name }}"
+        hass:
+          external:
+            name: "{{ bridgenetworks.hass.name }}"

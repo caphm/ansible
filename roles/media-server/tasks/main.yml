@@ -50,16 +50,7 @@
             - "/etc/timezone:/etc/timezone:ro"
           networks:
             - web
-          ports:
-            - "1900:1900/udp"
-            - "3005:3005/tcp"
-            - "8324:8324/tcp"
-            - "32400:32400/tcp"
-            - "32410:32410/udp"
-            - "32412:32412/udp"
-            - "32413:32413/udp"
-            - "32414:32414/udp"
-            - "32469:32469/tcp"
+          dns: "{{ macvlannetworks.web.dns_server }}"
           environment:
             - "PLEX_CLAIM={{ plex_claim_token }}"
             - "PLEX_UID={{ defaultuser.uid }}"
@@ -70,7 +61,7 @@
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ plex_url }}"
-            traefik.docker.network: "web"
+            traefik.docker.network: "{{ macvlannetworks.web.name }}"
             traefik.port: "32400"
 
         filebot:
@@ -86,8 +77,7 @@
             - "{{arraypath}}/media:/out"
           networks:
             - web
-          ports:
-            - "5452:5452"
+          dns: "{{ macvlannetworks.web.dns_server }}"
           labels:
             traefik.enable: "false"
 
@@ -103,6 +93,7 @@
             - "{{arraypath}}/downloads:/download"
           networks:
             - web
+          dns: "{{ macvlannetworks.web.dns_server }}"
           environment:
             - WIDTH=1280
             - HEIGHT=720
@@ -110,11 +101,9 @@
             - "USER_ID={{defaultuser.uid}}"
             - "GROUP_ID={{defaultuser.maingid}}"
           labels:
-            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefixStrip:{{jdownloader_path}}"
-            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefixStrip:{{jdownloader_path}}"
-            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefixStrip:{{jdownloader_path}}"
+            traefik.fqdn.frontend.rule: "Host:srv.caphm.de;PathPrefixStrip:{{jdownloader_path}}"
             traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{jdownloader_path}}"
-            traefik.docker.network: "web"
+            traefik.docker.network: "{{ macvlannetworks.web.name }}"
             traefik.port: "8080"
             traefik.enable: "true"
 
@@ -135,33 +124,13 @@
             - "PUID={{ defaultuser.uid }}"
             - "PGID={{ defaultuser.maingid }}"
           labels:
-            traefik.fqdn.frontend.rule: "Host:{{ docker_host }};PathPrefix:{{ tautulli_path }}"
-            traefik.hostname.frontend.rule: "Host:{{ docker_host_hostname }};PathPrefix:{{ tautulli_path }}"
-            traefik.ip.frontend.rule: "Host:{{ ansible_default_ipv4.address }};PathPrefix:{{ tautulli_path }}"
+            traefik.fqdn.frontend.rule: "Host:srv.caphm.de;PathPrefix:{{ tautulli_path }}"
             traefik.local.frontend.rule: "Host:localhost;PathPrefix:{{ tautulli_path }}"
-            traefik.docker.network: "web"
+            traefik.docker.network: "{{ macvlannetworks.web.name }}"
             traefik.port: "8181"
             traefik.enable: "true"
 
       networks:
         web:
           external:
-            name: web
-
-- name: Copy script to convert Letsencrypt certificate to PKCS12
-  template:
-    src: convert-certificate.sh.j2
-    dest: "{{plex_home}}/certs/convert-certificate.sh"
-    owner: "{{defaultuser.uid}}"
-    group: "{{defaultuser.maingid}}"
-    mode: 0755
-
-- name: Add cronjob to convert new certificates automatically
-  cron:
-    user: "root"
-    job: "{{plex_home}}/certs/convert-certificate.sh"
-    name: "convert-plex-certificate"
-    weekday: "*"
-    minute: "00"
-    hour: "01"
-    dom: "*"
+            name: "{{ macvlannetworks.web.name }}"
