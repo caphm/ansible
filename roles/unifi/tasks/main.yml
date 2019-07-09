@@ -7,25 +7,25 @@
 
 - name: Create macvlan networks
   docker_network:
-    name: "{{ item.name }}"
+    name: "{{ item.value.name }}"
     state: present
     driver: macvlan
     driver_options:
-      parent: "{{ item.parent }}"
+      parent: "{{ item.value.parent }}"
     ipam_driver: default
     ipam_options:
-      subnet: "{{ item.subnet }}"
-  loop: "{{ macvlannetworks | dict2items | subelements('value') }}"
+      subnet: "{{ item.value.subnet }}"
+  loop: "{{ macvlannetworks | dict2items }}"
 
 - name: Create docker bridge networks
   docker_network:
-    name: "{{ item.name }}"
+    name: "{{ item.value.name }}"
     state: present
     driver: bridge
     ipam_driver: default
     ipam_options:
-      subnet: "{{ item.subnet }}"
-  loop: "{{ bridgenetworks | dict2items | subelements('value') }}"
+      subnet: "{{ item.value.subnet }}"
+  loop: "{{ bridgenetworks | dict2items }}"
 
 - name: Start docker service unifi
   docker_service:
