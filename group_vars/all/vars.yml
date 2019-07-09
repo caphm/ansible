@@ -174,8 +174,9 @@ macvlannetworks:
     iprange: 10.0.20.193/26
     dns_server: 10.0.20.1
     static_ips:
-      traefik: 10.0.20.254
-      teamspeak: 10.0.20.253
+      traefik: 10.0.20.192
+      teamspeak: 10.0.20.193
+      plex: 10.0.20.194
   iot:
     name: iot.caphm.de
     parent: enp2s0.30
@@ -183,6 +184,9 @@ macvlannetworks:
     gateway: 10.0.30.1
     iprange: 10.0.30.193/26
     dns_server: 10.0.30.1
+    static_ips:
+      mosquitto: 10.0.30.192
+      home_assistant: 10.0.30.193
 bridgenetworks:
   hass:
     name: hass

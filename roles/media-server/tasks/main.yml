@@ -49,7 +49,8 @@
             - "{{ plex_tmp }}:/tmp"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            - web
+            web:
+              ipv4_address: "{{ macvlannetworks.web.static_ips.plex }}"
           dns: "{{ macvlannetworks.web.dns_server }}"
           environment:
             - "PLEX_CLAIM={{ plex_claim_token }}"
@@ -76,7 +77,8 @@
             - "{{arraypath}}/downloads:/download"
             - "{{arraypath}}/media:/out"
           networks:
-            - web
+            web:
+              ipv4_address: "{{ macvlannetworks.web.static_ips.filebot }}"
           dns: "{{ macvlannetworks.web.dns_server }}"
           labels:
             traefik.enable: "false"

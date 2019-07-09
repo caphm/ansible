@@ -48,15 +48,9 @@
             - "{{ hass_home }}/sucks:/usr/local/lib/python3.7/site-packages/sucks"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            web:
-              aliases:
-                - home-assistant
             iot:
-              aliases:
-                - home-assistant
+              ipv4_address: "{{ macvlannetworks.iot.static_ips.home_assistant }}"
             hass:
-              aliases:
-                - home-assistant
           dns: "{{ macvlannetworks.web.dns_server }}"
           labels:
             traefik.enable: "true"
@@ -97,7 +91,8 @@
             - "{{ mosquitto_home }}/log:/mosquitto/log"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            - iot
+            iot:
+              ipv4_address: "{{ macvlannetworks.iot.static_ips.mosquitto }}"
 
         appdaemon:
           image: acockburn/appdaemon:latest

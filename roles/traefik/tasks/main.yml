@@ -66,8 +66,6 @@
           networks:
             web:
               ipv4_address: "{{ macvlannetworks.web.static_ips.traefik }}"
-              aliases:
-                - traefik
           dns: "{{ macvlannetworks.web.dns_server }}"
           volumes:
             - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
