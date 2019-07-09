@@ -15,6 +15,7 @@
     ipam_driver: default
     ipam_options:
       subnet: "{{ item.value.subnet }}"
+      iprange: "{{ item.value.iprange }}"
   loop: "{{ macvlannetworks | dict2items }}"
 
 - name: Create docker bridge networks
