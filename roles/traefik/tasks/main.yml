@@ -7,7 +7,6 @@
   loop:
     - "{{ traefik_home }}"
     - "{{ certdumper_home }}"
-    - "{{ dnsproxy_home }}"
     - "{{ ssl_path }}"
     - "{{ ssl_certs_path }}"
     - "{{ ssl_private_path }}"
