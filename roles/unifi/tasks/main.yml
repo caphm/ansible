@@ -15,7 +15,7 @@
     ipam_driver: default
     ipam_options:
       subnet: "{{ item.subnet }}"
-  loop: "{{ macvlannetworks }}"
+  loop: "{{ macvlannetworks | dict2items | subelements('value') }}"
 
 - name: Create docker bridge networks
   docker_network:
@@ -25,7 +25,7 @@
     ipam_driver: default
     ipam_options:
       subnet: "{{ item.subnet }}"
-  loop: "{{ bridgenetworks }}"
+  loop: "{{ bridgenetworks | dict2items | subelements('value') }}"
 
 - name: Start docker service unifi
   docker_service:
