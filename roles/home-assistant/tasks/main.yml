@@ -47,15 +47,6 @@
             - "{{ hass_home }}:/config"
             - "{{ hass_home }}/sucks:/usr/local/lib/python3.7/site-packages/sucks"
             - "/etc/timezone:/etc/timezone:ro"
-          network_mode: host
-
-        hass-relay:
-          image: tynor88/socat
-          container_name: hass-relay
-          hostname: hass-relay
-          restart: always
-          volumes:
-            - "/etc/timezone:/etc/timezone:ro"
           networks:
             web:
               aliases:
@@ -63,9 +54,6 @@
             iot:
               aliases:
                 - home-assistant
-          environment:
-            - LISTEN_PORT=8123
-            - FORWARD_PORT=8123
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }}"
