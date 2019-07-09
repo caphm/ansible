@@ -177,6 +177,7 @@ macvlannetworks:
       traefik: 10.0.20.192
       teamspeak: 10.0.20.193
       plex: 10.0.20.194
+      filebot: 10.0.20.195
   iot:
     name: iot.caphm.de
     parent: enp2s0.30
