@@ -26,11 +26,8 @@
             - "{{ teamspeak_home }}:/data"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            - web
-          ports:
-            - "9987:9987/udp"
-            - "10011:10011"
-            - "30033:30033"
+            web:
+              ipv4_address: "{{ macvlannetworks.web.static_ips.teamspeak }}"
           environment:
             - "TS3SERVER_LICENSE=accept"
 

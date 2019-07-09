@@ -175,6 +175,7 @@ macvlannetworks:
     dns_server: 10.0.20.1
     static_ips:
       traefik: 10.0.20.254
+      teamspeak: 10.0.20.253
   iot:
     name: iot.caphm.de
     parent: enp2s0.30
