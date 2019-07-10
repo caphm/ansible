@@ -52,6 +52,10 @@
             web:
               ipv4_address: "{{ macvlannetworks.web.static_ips.plex }}"
           dns: "{{ macvlannetworks.web.dns_server }}"
+          # Uncomment this enable HW accelerated transcoding (PlexPass required)
+          # devices:
+          #  - /dev/dri:/dev/dri
+          # privileged: true
           environment:
             - "PLEX_CLAIM={{ plex_claim_token }}"
             - "PLEX_UID={{ defaultuser.uid }}"
