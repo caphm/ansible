@@ -67,7 +67,7 @@
             - "PLEX_CLAIM={{ plex_claim_token }}"
             - "PLEX_UID={{ defaultuser.uid }}"
             - "PLEX_GID={{ defaultuser.maingid }}"
-            - "ADVERTISE_IP=https://{{ plex_url }}:443"
+            - "ADVERTISE_IP=http://{{ ansible_default_ipv4.address }}:32400,https://{{ plex_url }}:443"
             - "CHANGE_CONFIG_DIR_OWNERSHIP=false"
             - "ALLOWED_NETWORKS={{ ansible_default_ipv4.address }}/24"
           labels:
