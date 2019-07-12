@@ -174,7 +174,6 @@ macvlannetworks:
     iprange: 10.0.20.193/26
     dns_server: 10.0.20.1
     static_ips:
-      traefik: 10.0.20.150
       teamspeak: 10.0.20.151
   iot:
     name: iot.caphm.de
