@@ -51,15 +51,14 @@
           networks:
             - traefik_backend
           ports:
-            - "3005:3005/tcp"
-            - "5353:5353/udp"
-            - "8324:8324/tcp"
-            - "32400:32400/tcp"
-            - "32410:32410/udp"
-            - "32412:32412/udp"
-            - "32413:32413/udp"
-            - "32414:32414/udp"
-            - "32469:32469/tcp"
+            - "3005:{{ ansible_default_ipv4.address }}3005/tcp"
+            - "8324:{{ ansible_default_ipv4.address }}8324/tcp"
+            - "32400:{{ ansible_default_ipv4.address }}32400/tcp"
+            - "32410:{{ ansible_default_ipv4.address }}32410/udp"
+            - "32412:{{ ansible_default_ipv4.address }}32412/udp"
+            - "32413:{{ ansible_default_ipv4.address }}32413/udp"
+            - "32414:{{ ansible_default_ipv4.address }}32414/udp"
+            - "32469:{{ ansible_default_ipv4.address }}32469/tcp"
           # Uncomment this enable HW accelerated transcoding (PlexPass required)
           # devices:
           #  - /dev/dri:/dev/dri

@@ -67,8 +67,8 @@
             traefik_backend:
               ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.traefik }}"
           ports:
-            - "80:80"
-            - "443:443"
+            - "80:{{ ansible_default_ipv4.address }}80"
+            - "443:{{ ansible_default_ipv4.address }}443"
           volumes:
             - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
             - "{{ traefik_home }}/acme.json:/acme.json"

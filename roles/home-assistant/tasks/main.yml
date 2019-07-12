@@ -52,6 +52,8 @@
             iot:
               ipv4_address: "{{ macvlannetworks.iot.static_ips.home_assistant }}"
             hass:
+          ports:
+            - "5353:{{ ansible_default_ipv4.address }}5353/udp"
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }}"
