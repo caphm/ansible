@@ -49,8 +49,7 @@
             - "{{ plex_tmp }}:/tmp"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            traefik_backend:
-              ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.plex }}"
+            - traefik_backend
           ports:
             - "1900:1900/udp"
             - "3005:3005/tcp"
@@ -90,8 +89,7 @@
             - "{{arraypath}}/downloads:/download"
             - "{{arraypath}}/media:/out"
           networks:
-            traefik_backend:
-              ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.filebot }}"
+            - traefik_backend
           ports:
             - "5452:5452"
           labels:
