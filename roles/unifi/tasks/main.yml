@@ -39,6 +39,16 @@
     jump: DROP
   loop: "{{ bridgenetworks | dict2items }}"
 
+- name: Allow Home Assistant access to LAN
+  iptables:
+    state: present
+    action: insert
+    chain: INPUT
+    source: "{{ bridgenetworks.traefik_backend.static_ips.home_assistant }}"
+    destination: 192.168.1.0/24
+    jump: ACCEPT
+  
+
 - name: Start docker service unifi
   docker_service:
     project_name: unifi

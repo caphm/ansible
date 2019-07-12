@@ -49,6 +49,7 @@
             - "/etc/timezone:/etc/timezone:ro"
           networks:
             traefik_backend:
+              ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.home_assistant }}"
             iot:
               ipv4_address: "{{ macvlannetworks.iot.static_ips.home_assistant }}"
             hass:
