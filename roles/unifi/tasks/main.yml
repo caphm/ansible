@@ -25,6 +25,18 @@
     state: present
     driver: bridge
     ipam_driver: default
+    ipam_options:
+      subnet: "{{ item.value.subnet }}"
+  loop: "{{ bridgenetworks | dict2items }}"
+
+- name: Isolate docker bridge networks from LAN
+  iptables:
+    state: present
+    action: insert
+    chain: INPUT
+    source: "{{ item.value.subnet }}"
+    destination: 192.168.1.0/24
+    jump: DROP
   loop: "{{ bridgenetworks | dict2items }}"
 
 - name: Start docker service unifi

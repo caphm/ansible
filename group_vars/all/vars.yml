@@ -174,10 +174,7 @@ macvlannetworks:
     iprange: 10.0.20.193/26
     dns_server: 10.0.20.1
     static_ips:
-      traefik: 10.0.20.150
       teamspeak: 10.0.20.151
-      plex: 10.0.20.152
-      filebot: 10.0.20.153
   iot:
     name: iot.caphm.de
     parent: enp2s0.30
@@ -191,6 +188,12 @@ macvlannetworks:
 bridgenetworks:
   hass:
     name: hass
+    subnet: 172.0.50.0/24
+  traefik_backend:
+    name: traefik_backend
+    subnet: 172.0.20.0/24
+    static_ips:
+      traefik: 172.0.20.2
 
 ##########################################################################################
 # TRAEFIK

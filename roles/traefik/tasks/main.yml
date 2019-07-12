@@ -64,9 +64,11 @@
           tty: true
           restart: always
           networks:
-            web:
-              ipv4_address: "{{ macvlannetworks.web.static_ips.traefik }}"
-          dns: "{{ macvlannetworks.web.dns_server }}"
+            traefik_backend:
+              ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.traefik }}"
+          ports:
+            - "80:80"
+            - "443:443"
           volumes:
             - "{{ traefik_home }}/traefik.toml:/etc/traefik/traefik.toml"
             - "{{ traefik_home }}/acme.json:/acme.json"
@@ -76,9 +78,9 @@
             - "CF_API_EMAIL={{email_address}}"
             - "CF_API_KEY={{cf_api_key}}"
           labels:
-            traefik.fqdn.frontend.rule: "Host:srv.caphm.de;PathPrefixStrip:{{ traefik_path }}"
+            traefik.fqdn.frontend.rule: "Host:traefik.caphm.de"
             traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{ traefik_path }}"
-            traefik.docker.network: "{{ macvlannetworks.web.name }}"
+            traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "8888"
             traefik.enable: "true"
             traefik.frontend.headers.SSLRedirect: "true"
@@ -106,6 +108,6 @@
             - "/etc/timezone:/etc/timezone:ro"
 
       networks:
-        web:
+        traefik_backend:
           external:
-            name: "{{ macvlannetworks.web.name }}"
+            name: "{{ bridgenetworks.traefik_backend.name }}"

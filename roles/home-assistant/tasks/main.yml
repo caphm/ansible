@@ -48,15 +48,14 @@
             - "{{ hass_home }}/sucks:/usr/local/lib/python3.7/site-packages/sucks"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            web:
+            traefik_backend:
             iot:
               ipv4_address: "{{ macvlannetworks.iot.static_ips.home_assistant }}"
             hass:
-          dns: "{{ macvlannetworks.web.dns_server }}"
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }}"
-            traefik.docker.network: "{{ macvlannetworks.web.name }}"
+            traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "8123"
 
         hass-configurator:
@@ -69,12 +68,12 @@
             - "{{ hass_home }}:/hass-config"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            - web
+            - traefik_backend
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }};PathPrefixStrip:{{ hass_configurator_path }}"
             traefik.frontend.auth.basic: caphm:$$2y$$05$$H2zMRdFcjXPGrEzsWWErT.ASda0DmeVjWLsBe/p9l2WdeInMqk.Zq
-            traefik.docker.network: "{{ macvlannetworks.web.name }}"
+            traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "3218"
 
         mosquitto:
@@ -129,9 +128,9 @@
         iot:
           external:
             name: "{{ macvlannetworks.iot.name }}"
-        web:
+        traefik_backend:
           external:
-            name: "{{ macvlannetworks.web.name }}"
+            name: "{{ bridgenetworks.traefik_backend.name }}"
         hass:
           external:
             name: "{{ bridgenetworks.hass.name }}"
