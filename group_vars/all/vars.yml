@@ -193,8 +193,8 @@ bridgenetworks:
     name: traefik_backend
     subnet: 172.20.20.0/24
     static_ips:
-      traefik: 172.20.20.2
-      home_assistant  : 172.20.20.20
+      traefik: 172.20.20.150
+      home_assistant  : 172.20.20.151
 
 ##########################################################################################
 # TRAEFIK
