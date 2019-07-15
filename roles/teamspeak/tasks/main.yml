@@ -28,7 +28,7 @@
           networks:
             web:
               ipv4_address: "{{ macvlannetworks.web.static_ips.teamspeak }}"
-          dns_server: "{{ macvlannetworks.web.dns_server }}"
+          dns: "{{ macvlannetworks.web.dns_server }}"
           environment:
             - "TS3SERVER_LICENSE=accept"
 
