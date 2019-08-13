@@ -25,7 +25,7 @@
     state: present
     driver: bridge
     driver_options:
-      "com.docker.network.bridge.name": "br-{{ item.value.name.split('.')[0] }}"
+      "com.docker.network.bridge.name": "br-{{ item.value.name }}"
     ipam_driver: default
     ipam_options:
       subnet: "{{ item.value.subnet }}"

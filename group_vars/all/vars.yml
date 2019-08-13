@@ -199,10 +199,10 @@ macvlannetworks:
       home_assistant: 192.168.1.12
 bridgenetworks:
   hass:
-    name: hass
+    name: docker-hass
     subnet: 172.20.50.0/24
   traefik_backend:
-    name: traefik_backend
+    name: docker-traefik
     subnet: 172.20.20.0/24
     static_ips:
       traefik: 172.20.20.150
