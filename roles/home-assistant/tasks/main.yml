@@ -50,11 +50,11 @@
           networks:
             traefik_backend:
               ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.home_assistant }}"
+            homelan:
+              ipv4_address: "{{ bridgenetworks.homelan.static_ips.home_assistant }}"
             iot:
               ipv4_address: "{{ macvlannetworks.iot.static_ips.home_assistant }}"
             hass:
-          ports:
-            - "5353:5353/udp"
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }}"
@@ -128,6 +128,9 @@
             - hass
 
       networks:
+        homelan:
+          external:
+            name: "{{ bridgenetworks.homelan.name }}"
         iot:
           external:
             name: "{{ macvlannetworks.iot.name }}"

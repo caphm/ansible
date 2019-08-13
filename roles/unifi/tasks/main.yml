@@ -24,6 +24,8 @@
     name: "{{ item.value.name }}"
     state: present
     driver: bridge
+    driver_options:
+      "com.docker.network.bridge.name": "br-{{ item.value.name }}"
     ipam_driver: default
     ipam_options:
       subnet: "{{ item.value.subnet }}"
@@ -64,7 +66,9 @@
           stdin_open: true
           tty: true
           restart: always
-          network_mode: host
+          networks:
+            homelan:
+              ipv4_address: "{{ bridgenetworks.homelan.static_ips.unifi }}"
           volumes:
             - "{{ unifi_home }}/data:/unifi/data"
             - "{{ unifi_home }}/log:/unifi/log"
@@ -76,3 +80,7 @@
             - "UNIFI_UID={{ defaultuser.uid }}"
             - "UNIFI_GID={{ defaultuser.maingid }}"
             - "CERT_IS_CHAIN=true"
+      networks:
+        homelan:
+          external:
+            name: "{{ bridgenetworks.homelan.name }}"

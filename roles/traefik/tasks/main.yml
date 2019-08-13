@@ -78,8 +78,7 @@
             - "CF_API_EMAIL={{email_address}}"
             - "CF_API_KEY={{cf_api_key}}"
           labels:
-            traefik.fqdn.frontend.rule: "Host:traefik.caphm.de"
-            traefik.local.frontend.rule: "Host:localhost;PathPrefixStrip:{{ traefik_path }}"
+            traefik.frontend.rule: "Host:traefik.caphm.de,localhost;PathPrefixStrip:{{ traefik_path }}"
             traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "8888"
             traefik.enable: "true"

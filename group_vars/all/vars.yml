@@ -185,6 +185,18 @@ macvlannetworks:
     static_ips:
       mosquitto: 10.0.30.150
       home_assistant: 10.0.30.151
+  homelan:
+    name: residenz.caphm.de
+    parent: enp2s0
+    subnet: 192.168.1.0/24
+    subnet2: 192.168.1.0/255.255.255.0
+    gateway: 192.168.1.1
+    iprange: 192.168.1.32/27
+    dns_server: 192.168.1.1
+    static_ips:
+      unifi: 192.168.1.10
+      plex: 192.168.1.11
+      home_assistant: 192.168.1.12
 bridgenetworks:
   hass:
     name: hass
