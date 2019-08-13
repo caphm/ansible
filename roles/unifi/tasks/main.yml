@@ -68,7 +68,7 @@
           restart: always
           networks:
             homelan:
-              ipv4_address: "{{ bridgenetworks.homelan.static_ips.unifi }}"
+              ipv4_address: "{{ macvlannetworks.homelan.static_ips.unifi }}"
           volumes:
             - "{{ unifi_home }}/data:/unifi/data"
             - "{{ unifi_home }}/log:/unifi/log"
@@ -83,4 +83,4 @@
       networks:
         homelan:
           external:
-            name: "{{ bridgenetworks.homelan.name }}"
+            name: "{{ macvlannetworks.homelan.name }}"

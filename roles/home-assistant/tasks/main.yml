@@ -51,7 +51,7 @@
             traefik_backend:
               ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.home_assistant }}"
             homelan:
-              ipv4_address: "{{ bridgenetworks.homelan.static_ips.home_assistant }}"
+              ipv4_address: "{{ macvlannetworks.homelan.static_ips.home_assistant }}"
             iot:
               ipv4_address: "{{ macvlannetworks.iot.static_ips.home_assistant }}"
             hass:
@@ -130,7 +130,7 @@
       networks:
         homelan:
           external:
-            name: "{{ bridgenetworks.homelan.name }}"
+            name: "{{ macvlannetworks.homelan.name }}"
         iot:
           external:
             name: "{{ macvlannetworks.iot.name }}"

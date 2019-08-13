@@ -139,4 +139,4 @@
             name: "{{ bridgenetworks.traefik_backend.name }}"
         homelan:
           external:
-            name: "{{ bridgenetworks.homelan.name }}"
+            name: "{{ macvlannetworks.homelan.name }}"
