@@ -198,15 +198,15 @@ macvlannetworks:
       plex: 192.168.1.11
       home_assistant: 192.168.1.12
 bridgenetworks:
-  hass:
-    name: docker-hass
-    subnet: 172.20.50.0/24
   traefik_backend:
-    name: docker-traefik
+    name: traefik
     subnet: 172.20.20.0/24
     static_ips:
       traefik: 172.20.20.150
       home_assistant  : 172.20.20.151
+  hass:
+    name: hass
+    subnet: 172.20.50.0/24
 
 ##########################################################################################
 # TRAEFIK
