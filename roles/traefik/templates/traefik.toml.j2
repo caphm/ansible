@@ -19,6 +19,9 @@ defaultEntryPoints = ["http", "https"]
   [entryPoints.https]
     address = ":443"
   [entryPoints.https.tls]
+    [entryPoints.https.tls.defaultCertificate]
+      CertFile = "/defaultcert.pem"
+      KeyFile = "/defaultcert_key.pem"
 
   [entryPoints.traefik]
     address = ":8888"
