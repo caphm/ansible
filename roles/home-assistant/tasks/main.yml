@@ -47,6 +47,7 @@
             - "{{ hass_home }}:/config"
             - "{{ hass_home }}/sucks:/usr/local/lib/python3.7/site-packages/sucks"
             - "/etc/timezone:/etc/timezone:ro"
+            - "/var/run/docker.sock:/var/run/docker.sock"
           networks:
             traefik_backend:
               ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.home_assistant }}"
