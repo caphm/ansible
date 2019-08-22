@@ -13,10 +13,10 @@
     driver_options:
       parent: "{{ item.value.parent }}"
     ipam_driver: default
-    ipam_options:
-      subnet: "{{ item.value.subnet }}"
-      gateway: "{{ item.value.gateway }}"
-      iprange: "{{ item.value.iprange }}"
+    ipam_config:
+      - subnet: "{{ item.value.subnet }}"
+        gateway: "{{ item.value.gateway }}"
+        iprange: "{{ item.value.iprange }}"
   loop: "{{ macvlannetworks | dict2items }}"
 
 - name: Create docker bridge networks
@@ -27,8 +27,8 @@
     driver_options:
       "com.docker.network.bridge.name": "dbr-{{ item.value.name }}"
     ipam_driver: default
-    ipam_options:
-      subnet: "{{ item.value.subnet }}"
+    ipam_config:
+      - subnet: "{{ item.value.subnet }}"
   loop: "{{ bridgenetworks | dict2items }}"
 
 # - name: Isolate docker bridge networks from LAN
@@ -41,18 +41,8 @@
 #     jump: DROP
 #   loop: "{{ bridgenetworks | dict2items }}"
 
-# - name: Allow Home Assistant access to LAN
-#   iptables:
-#     state: present
-#     action: insert
-#     chain: INPUT
-#     source: "{{ bridgenetworks.traefik_backend.static_ips.home_assistant }}"
-#     destination: 192.168.1.0/24
-#     jump: ACCEPT
-  
-
 - name: Start docker service unifi
-  docker_service:
+  docker_compose:
     project_name: unifi
     state: present
     pull: "{{force_update}}"

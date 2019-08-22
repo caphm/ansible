@@ -7,7 +7,7 @@
     mode: 0755
 
 - name: Start docker app teamspeak-server
-  docker_service:
+  docker_compose:
     project_name: teamspeak-server
     state: present
     pull: "{{ force_update }}"

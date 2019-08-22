@@ -26,7 +26,7 @@
   register: filebot_dockerfile
 
 - name: Start docker app media-server
-  docker_service:
+  docker_compose:
     project_name: media-server
     state: present
     build: "{{force_update or filebot_dockerfile.changed}}"
@@ -53,9 +53,9 @@
             homelan:
               ipv4_address: "{{ macvlannetworks.homelan.static_ips.plex }}"
           # Uncomment this to enable HW accelerated transcoding (PlexPass required)
-          # devices:
-          #  - /dev/dri:/dev/dri
-          # privileged: true
+          devices:
+           - /dev/dri:/dev/dri
+          privileged: true
           environment:
             - "PLEX_CLAIM={{ plex_claim_token }}"
             - "PLEX_UID={{ defaultuser.uid }}"
@@ -106,7 +106,7 @@
             - "USER_ID={{defaultuser.uid}}"
             - "GROUP_ID={{defaultuser.maingid}}"
           labels:
-            traefik.frontend.rule: "Host:traefik.caphm.de,localhost;PathPrefixStrip:{{jdownloader_path}}"
+            traefik.frontend.rule: "Host:{{ traefik_host }},localhost;PathPrefixStrip:{{jdownloader_path}}"
             traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "8080"
             traefik.enable: "true"
@@ -128,7 +128,7 @@
             - "PUID={{ defaultuser.uid }}"
             - "PGID={{ defaultuser.maingid }}"
           labels:
-            traefik.frontend.rule: "Host:traefik.caphm.de,localhost;PathPrefix:{{ tautulli_path }}"
+            traefik.frontend.rule: "Host:{{ traefik_host }},localhost;PathPrefix:{{ tautulli_path }}"
             traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "8181"
             traefik.enable: "true"

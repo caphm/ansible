@@ -47,6 +47,6 @@
     hour: "{{ item.hour }}"
     dom: "{{ item.dom|default('*') }}"
   loop:
-    - { job: '{{ snap_run_command }}', name: 'snapraid_runner', weekday: '3', hour: '01' }
+    - { job: '{{ snap_run_command }}', name: 'snapraid_runner', weekday: '1,3,5', hour: '03' }
   tags:
     - cron

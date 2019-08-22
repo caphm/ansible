@@ -73,9 +73,21 @@ acme_private_domain: !vault |
 # BASEOS
 ##########################################################################################
 defaultuser:
-  name: caphm
+  name: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          31623231353437303130336163643838653338386463663534386439626338353162323966633163
+          6135366136616235353833613664303134346135666137320a303961643030366537383066366533
+          33333732373564636666336130643236393332396637643138363666656664386636363632623163
+          3963656332353136610a363136356435636166386564356337363731303239376530373238363639
+          3565
   uid: 1000
-  maingroup: caphm
+  maingroup: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          31623231353437303130336163643838653338386463663534386439626338353162323966633163
+          6135366136616235353833613664303134346135666137320a303961643030366537383066366533
+          33333732373564636666336130643236393332396637643138363666656664386636363632623163
+          3963656332353136610a363136356435636166386564356337363731303239376530373238363639
+          3565
   maingid: 1000
   groups:
     - sudo
@@ -116,8 +128,8 @@ snapraid_mail_events: error
 snapraid_delete_threshold: 250
 snapraid_report_subject: "[SnapRAID] Status Report:"
 snapraid_enable_scrub: true
-snapraid_scrub_percentage: 22
-snapraid_scrub_olderthan: 12
+snapraid_scrub_percentage: 8
+snapraid_scrub_olderthan: 10
 
 ##########################################################################################
 # MOUNTS & STORAGE ARRAY
@@ -134,7 +146,7 @@ mounts:
   - { name: "{{diskbasename}}1", src: "/dev/disk/by-label/8.0T-Seagate-D1", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
   - { name: "{{diskbasename}}2", src: "/dev/disk/by-label/3.0T-WD-D2", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
   - { name: "{{diskbasename}}3", src: "/dev/disk/by-label/3.0T-WD-D3", fs: ext4, opts: "defaults,nofail,errors=remount-ro"}
-  - { name: "{{arrayname}}", src: "{{mountroot}}/{{diskbasename}}*", fs: fuse.mergerfs, opts: "defaults,allow_other,direct_io,use_ino,minfreespace=50G,fsname=mergerfs"}
+  - { name: "{{arrayname}}", src: "{{mountroot}}/{{diskbasename}}*", fs: fuse.mergerfs, opts: "defaults,allow_other,cache.files=auto-full,dropcacheonclose=true,category.search=newest,category.create=epmfs,use_ino,minfreespace=150G,fsname=mergerfs"}
 
 folders:
   # on all drives
@@ -167,7 +179,7 @@ unifi_path: /unifi
 unifi_host: "unifi.{{ acme_private_domain }}"
 macvlannetworks:
   web:
-    name: web.caphm.de
+    name: "web.{{ acme_public_domain }}"
     parent: enp2s0.20
     subnet: 10.0.20.0/24
     gateway: 10.0.20.1
@@ -176,7 +188,7 @@ macvlannetworks:
     static_ips:
       teamspeak: 10.0.20.151
   iot:
-    name: iot.caphm.de
+    name: "iot.{{ acme_public_domain }}"
     parent: enp2s0.30
     subnet: 10.0.30.0/24
     gateway: 10.0.30.1
@@ -186,7 +198,7 @@ macvlannetworks:
       mosquitto: 10.0.30.150
       home_assistant: 10.0.30.151
   homelan:
-    name: residenz.caphm.de
+    name: "{{ acme_private_domain }}"
     parent: enp2s0
     subnet: 192.168.1.0/24
     subnet2: 192.168.1.0/255.255.255.0
@@ -214,7 +226,8 @@ bridgenetworks:
 traefik_debug: false
 traefik_loglevel: ERROR
 traefik_home: "{{ appdata }}/traefik"
-traefik_path: /traefik
+traefik_host: "traefik.{{ acme_public_domain }}"
+traefik_dashboard_path: /dashboard
 certdumper_home: "{{ traefik_home }}/certdumper"
 
 ssl_path: "{{traefik_home}}/ssl"
@@ -232,10 +245,32 @@ private_domain_key: "{{ ssl_private_path }}/*.{{ acme_private_domain }}.key"
 ##########################################################################################
 hass_home: "{{appdata}}/home-assistant"
 hass_configurator_home: "{{appdata}}/hass-configurator"
+esphome_home: "{{appdata}}/esphome"
 appdaemon_home: "{{hass_home}}/appdaemon"
 hadockermon_home: "{{hass_home}}/ha-dockermon"
 mosquitto_home: "{{appdata}}/mosquitto"
+grafana_home: "{{ appdata }}/grafana"
+grafana_path: /grafana
+grafana_plugins: 
+influxdb_home: "{{ appdata }}/influxdb"
 hass_configurator_path: /configurator
+esphome_path: /esphome
+hass_configurator_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37396435343661623830613663326435613033343332363131323965613030333236326564356463
+          6466313564653663346537616165323036666365613761610a303732623163646433616263386532
+          38373138323937386563636463346462636266336232343961313166643332353266323133323332
+          3531306433323461360a343537333935343862303439616330353536613532336432353233313736
+          65636263633837363335336562353537323461396231616537393534346562313763333564346439
+          64386332326365613837336364656164366134333735376462646362356566306534366262333531
+          663430323037353733656332616661343163
+esphome_password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          38393335326538306538366635663166303763633638336536316462313265303833336365313362
+          6464333238663365336266623866633266623132356665330a636139366264623565316239636339
+          32633761393132653463376661313034383338656464393532626439393536623062363761393230
+          6338636662373832320a613362653661623932386263343562623563326532646666663064663864
+          6431
 hass_url: !vault |
           $ANSIBLE_VAULT;1.2;AES256;zeus
           31623466353164316337663663333636353335383735326436646235643433663135623863333665
@@ -258,6 +293,22 @@ appdaemon_token: !vault |
           63333033666431333863383932363663616361666535303832393461333561663439663231313635
           66323539333064393430306532303834393836303135623739346335346332336638613330386562
           31326462306331333431353531376461633839343331323734353738623864346463
+grafana_admin_user: "{{ defaultuser.name }}" 
+grafana_admin_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37623632623030626331336339636363623036343034616462623534653862363431336461666635
+          6530323237663666346335323062366135653639383334380a626265643735333632306365666636
+          31636265666439346633346633636235643561303935393261343562356263646331303230663463
+          3563333737323165370a376562313532393537616331346330333435306663663633626461656231
+          3639
+grafana_metrics_user: "{{ defaultuser.name }}"
+grafana_metrics_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          37623632623030626331336339636363623036343034616462623534653862363431336461666635
+          6530323237663666346335323062366135653639383334380a626265643735333632306365666636
+          31636265666439346633346633636235643561303935393261343562356263646331303230663463
+          3563333737323165370a376562313532393537616331346330333435306663663633626461656231
+          3639
 
 ##########################################################################################
 # MEDIA SERVER

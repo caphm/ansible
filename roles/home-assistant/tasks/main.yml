@@ -10,6 +10,8 @@
     - "{{ hadockermon_home }}"
     - "{{ mosquitto_home }}"
     - "{{ hass_configurator_home }}"
+    - "{{ influxdb_home }}"
+    - "{{ grafana_home }}"
 
 # - name: Configure home-assistant
 #   import_tasks: configure.yml
@@ -22,13 +24,21 @@
     dest: "{{ mosquitto_home }}/{{ item }}"
     owner: "{{ defaultuser.uid }}"
     group: "{{ defaultuser.maingid }}"
-    mode: 0644
+    mode: u=rw,g=r,o=r
   loop:
     - mosquitto.conf
   register: mosquitto_config
 
+- name: Ensure .influx_history exists
+  file:
+    dest: "{{ influxdb_home }}/.influx_history"
+    owner: "{{ defaultuser.uid }}"
+    group: "{{ defaultuser.maingid }}"
+    mode: u=rw,g=r,o=r
+    state: touch
+
 - name: Start docker app home-assistant
-  docker_service:
+  docker_compose:
     project_name: home-assistant
     state: present
     pull: "{{ force_update }}"
@@ -47,7 +57,6 @@
             - "{{ hass_home }}:/config"
             - "{{ hass_home }}/sucks:/usr/local/lib/python3.7/site-packages/sucks"
             - "/etc/timezone:/etc/timezone:ro"
-            - "/var/run/docker.sock:/var/run/docker.sock"
           networks:
             traefik_backend:
               ipv4_address: "{{ bridgenetworks.traefik_backend.static_ips.home_assistant }}"
@@ -56,17 +65,69 @@
             iot:
               ipv4_address: "{{ macvlannetworks.iot.static_ips.home_assistant }}"
             hass:
+          depends_on:
+            - influxdb
+            - mosquitto
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }}"
             traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "8123"
 
+        influxdb:
+          container_name: influxdb
+          restart: always
+          image: influxdb
+          hostname: influxdb
+          stdin_open: true
+          tty: true
+          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
+          networks:
+            - hass
+          volumes:
+            # - "{{ influxdb_home }}/influxdb.conf:/etc/influxdb/influxdb.conf:ro"
+            - "{{ influxdb_home }}/db:/var/lib/influxdb"
+            - "{{ influxdb_home }}/.influx_history:/.influx_history"
+          environment:
+            - INFLUX_GRAPHITE_ENABLED='true'
+
+        grafana:
+          container_name: grafana
+          hostname: grafana
+          restart: always
+          image: grafana/grafana
+          stdin_open: true
+          tty: true
+          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
+          depends_on:
+            - "influxdb"
+          networks:
+            - hass
+            - traefik_backend
+          volumes:
+            - "{{ grafana_home }}:/var/lib/grafana"
+          environment:
+            - "GF_SERVER_DOMAIN={{ traefik_host }}"
+            - "GF_SERVER_ROOT_URL=https://{{ traefik_host }}{{ grafana_path }}"
+            - "GF_SECURITY_ADMIN_USER={{ grafana_admin_user }}"
+            - "GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_pass }}"
+            - "GF_METRICS_ENABLED=true"
+            - "GF_METRICS_BASIC_AUTH_USERNAME={{ grafana_metrics_user}}"
+            - "GF_METRICS_BASIC_AUTH_PASSWORD={{ grafana_metrics_pass }}"
+            - "GF_ANALYTICS_REPORTING_ENABLED=false"
+            - "GF_INSTALL_PLUGINS={{ grafana_plugins }}"
+          labels:
+            traefik.enable: "true"
+            traefik.frontend.rule: "Host:{{ traefik_host }},localhost;PathPrefix:{{ grafana_path }}"
+            traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
+            traefik.port: "3000"
+
         hass-configurator:
           image: "causticlab/hass-configurator-docker:x86_64"
           container_name: hass-configurator
           hostname: hass-configurator
           restart: always
+          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
           volumes:
             - "{{ hass_configurator_home }}:/config"
             - "{{ hass_home }}:/hass-config"
@@ -76,9 +137,29 @@
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ hass_url }};PathPrefixStrip:{{ hass_configurator_path }}"
-            traefik.frontend.auth.basic: caphm:$$2y$$05$$H2zMRdFcjXPGrEzsWWErT.ASda0DmeVjWLsBe/p9l2WdeInMqk.Zq
+            traefik.frontend.auth.basic: "{{ defaultuser.name }}:{{ hass_configurator_password }}"
             traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
             traefik.port: "3218"
+
+        esphome-dashboard:
+          image: "esphome/esphome"
+          container_name: esphome
+          hostname: esphome
+          restart: always
+          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
+          volumes:
+            - "{{ esphome_home }}:/config"
+            - "/etc/timezone:/etc/timezone:ro"
+          networks:
+            - traefik_backend
+            - iot
+            - homelan
+          labels:
+            traefik.enable: "true"
+            traefik.frontend.rule: "Host:{{ traefik_host }},localhost;PathPrefixStrip:{{ esphome_path }}"
+            traefik.frontend.auth.basic: "{{ defaultuser.name }}:{{ esphome_password }}"
+            traefik.docker.network: "{{ bridgenetworks.traefik_backend.name }}"
+            traefik.port: "6052"
 
         mosquitto:
           image: eclipse-mosquitto
@@ -113,6 +194,8 @@
           environment:
             - "HA_URL=http://home-assistant:8123"
             - "TOKEN={{ appdaemon_token }}"
+          depends_on:
+            - home-assistant
 
         ha-dockermon:
           image: philhawthorne/ha-dockermon
