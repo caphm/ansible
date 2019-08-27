@@ -146,14 +146,15 @@
           container_name: esphome
           hostname: esphome
           restart: always
-          user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
+          # user: "{{ defaultuser.uid }}:{{ defaultuser.maingid }}"
+          environment:
+            - "ESPHOME_DASHBOARD_USE_PING=true"
           volumes:
             - "{{ esphome_home }}:/config"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
-            - traefik_backend
-            - iot
             - homelan
+            - traefik_backend
           labels:
             traefik.enable: "true"
             traefik.frontend.rule: "Host:{{ traefik_host }},localhost;PathPrefixStrip:{{ esphome_path }}"
