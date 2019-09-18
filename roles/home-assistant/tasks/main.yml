@@ -56,6 +56,8 @@
           volumes:
             - "{{ hass_home }}:/config"
             - "{{ hass_home }}/sucks:/usr/local/lib/python3.7/site-packages/sucks"
+            - "{{ hass_local_component_overrides }}/ecovacs:{{ hass_docker_components }}/ecovacs"
+            - "{{ hass_local_component_overrides }}/plant:{{ hass_docker_components }}/plant"
             - "/etc/timezone:/etc/timezone:ro"
           networks:
             traefik_backend:

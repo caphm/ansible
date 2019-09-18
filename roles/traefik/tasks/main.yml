@@ -74,7 +74,7 @@
             - "{{ traefik_home }}/acme.json:/acme.json"
             - "{{ traefik_home }}/ssl/localhost/cert.pem:/defaultcert.pem"
             - "{{ traefik_home }}/ssl/localhost/key.pem:/defaultcert_key.pem"
-            - /var/run/docker.sock:/var/run/docker.sock
+            - "/var/run/docker.sock:/var/run/docker.sock"
             - "/etc/timezone:/etc/timezone:ro"
           environment:
             - "CF_API_EMAIL={{email_address}}"

@@ -255,6 +255,8 @@ grafana_plugins:
 influxdb_home: "{{ appdata }}/influxdb"
 hass_configurator_path: /configurator
 esphome_path: /esphome
+hass_local_component_overrides: "/home/{{ defaultuser.name }}/repos/home-assistant/homeassistant/components"
+hass_docker_components: /usr/src/homeassistant/homeassistant/components
 hass_configurator_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           37396435343661623830613663326435613033343332363131323965613030333236326564356463

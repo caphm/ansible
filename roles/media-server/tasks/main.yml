@@ -7,7 +7,6 @@
     mode: 0755
   loop:
     - "{{ plex_home }}"
-    - "{{ plex_home }}/certs"
     - "{{ plex_transcode }}"
     - "{{ plex_tmp }}"
     - "{{ filebot_home }}"
@@ -52,7 +51,6 @@
             traefik_backend:
             homelan:
               ipv4_address: "{{ macvlannetworks.homelan.static_ips.plex }}"
-          # Uncomment this to enable HW accelerated transcoding (PlexPass required)
           devices:
            - /dev/dri:/dev/dri
           privileged: true
